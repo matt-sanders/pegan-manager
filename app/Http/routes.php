@@ -11,10 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController'
+]);
+
+Route::group(['middleware' => ['auth']], function(){
+    
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    
+    Route::get('/home', 'HomeController@index');
 });
 
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
