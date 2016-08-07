@@ -2,10 +2,13 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Moloquent;
+use Illuminate\Auth\Authenticatable as Authenticatable;
+//use Illuminate\Auth\Authenticatable as Authenticatable;
 
-class User extends Authenticatable
+class User extends Moloquent implements \Illuminate\Contracts\Auth\Authenticatable
 {
+    use Authenticatable;
     /**
      * The attributes that are mass assignable.
      *
