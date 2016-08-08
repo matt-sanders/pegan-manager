@@ -20,6 +20,7 @@ class IngredientController extends Controller
         $ingredient->title = $request->title;
         $ingredient->desc = $request->desc;
         $ingredient->type = $request->type ?? 'ingredient';
+        $ingredient->parent = $request->parent;
         $ingredient->save();
 
         return response()->json(['ingredient' => $ingredient]);
