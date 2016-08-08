@@ -46,10 +46,14 @@ class IngredientControllerTest extends TestCase
     public function testCreateIngredientWithAuth()
     {
         $this->logIn();
-        $response = $this->createIngredient();
+        $this->createIngredient();
         $this->assertResponseStatus(200);
 
-        
+        $this->seeJson([
+            'title' => $this->ingredientData['title'],
+            'desc' => $this->ingredientData['desc'],
+            'type' => 'ingredient'
+        ]);
     }
     
 }
