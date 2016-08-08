@@ -74,7 +74,7 @@ This is the second step',
     }
 
     /**
-     * Should convert markdown on create and update
+     * Should convert markdown on create
      */
     public function testConvertMarkdown()
     {
@@ -90,5 +90,23 @@ This is the second step',
         $output = $testRecipe->convertMarkdown();
 
         $this->assertEquals($output, $recipe->recipe->pretty_directions);
+    }
+
+    /**
+     * Should convert an image to base64
+     */
+    public function testConvertImage()
+    {
+        $path = dirname(__FILE__).'/test.jpg';
+        echo $path;
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $path);
+        //$upload = \Symfony\Component\HttpFoundation\File\UploadedFile ($path, null, $mime, null, null, true);
+
+        $this->logIn();
+        $recipe = array(
+            'image' => $upload
+        );
+        $response = $this->createRecipe($recipe);
     }
 }

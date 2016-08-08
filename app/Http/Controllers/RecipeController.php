@@ -17,10 +17,14 @@ class RecipeController extends Controller
     public function store(Request $request)
     {
         $recipe = new Recipe;
-        $fields = ['title', 'directions', 'ingredients', 'prep', 'cook', 'link', 'linkTitle', 'image', 'yield'];
         foreach ( $recipe->getFillable() as $field ){
             $recipe->{$field} = $request->{$field};
         }
+
+        $image = $request->file('image');
+        /*if ( $image ){
+            $recipe->image = base64_encode($image);
+            }*/
         $recipe->save();
         return response()->json(['recipe' => $recipe]);
     }
