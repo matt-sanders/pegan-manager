@@ -24,7 +24,13 @@ Route::group(['middleware' => ['auth']], function(){
     
     Route::get('/home', 'HomeController@index');
 
-    Route::group(['prefix' => 'api'], function(){
+});
+
+Route::group(['prefix' => 'api'], function(){
+
+    Route::get('/ingredients', 'IngredientController@retrieveAll');
+    
+    Route::group(['middleware' => ['auth']], function(){
         Route::post('/ingredient', 'IngredientController@store');
     });
 });

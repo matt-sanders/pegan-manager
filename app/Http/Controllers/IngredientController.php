@@ -8,6 +8,12 @@ use App\Http\Requests;
 
 class IngredientController extends Controller
 {
+    /**
+     * Create a single ingredient
+     *
+     * @param Request $request
+     * @return Response
+     */
     public function store(Request $request)
     {
         $ingredient = new Ingredient;
@@ -17,5 +23,16 @@ class IngredientController extends Controller
         $ingredient->save();
 
         return response()->json(['ingredient' => $ingredient]);
+    }
+
+    /**
+     * Get all ingredients
+     *
+     * @return Response
+     */
+    public function retrieveAll(Request $request)
+    {
+        $ingredients = Ingredient::all();
+        return response()->json(['ingredients' => $ingredients]);
     }
 }
