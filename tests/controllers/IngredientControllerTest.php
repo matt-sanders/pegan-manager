@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
 
 class IngredientControllerTest extends TestCase
 {
@@ -14,17 +13,6 @@ class IngredientControllerTest extends TestCase
         'title' => 'Thyme',
         'desc' => 'This is a really great ingredient'
     ];
-
-    public $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
-
-    /**
-     * log in as a user
-     */
-    public function logIn(){
-        $user = new User(['name' => 'Admin']);
-        $this->actingAs($user);
-        return $user;
-    }
     
     /**
      * Attempts to create an ingredient

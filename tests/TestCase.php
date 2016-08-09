@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
     /**
@@ -8,6 +10,20 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      * @var string
      */
     protected $baseUrl = 'http://localhost';
+
+    /**
+     * Server string used when making ajax calls
+     */
+    public $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+    
+    /**
+     * log in as a user
+     */
+    public function logIn(){
+        $user = new User(['name' => 'Admin']);
+        $this->actingAs($user);
+        return $user;
+    }
 
     /**
      * Creates the application.

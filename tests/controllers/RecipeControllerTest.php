@@ -3,7 +3,6 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\User;
 use App\Recipe;
 
 class RecipeControllerTest extends TestCase
@@ -28,17 +27,6 @@ This is the second step',
             ]
         ]
     ];
-
-    public $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
-    
-    /**
-     * log in as a user
-     */
-    public function logIn(){
-        $user = new User(['name' => 'Admin']);
-        $this->actingAs($user);
-        return $user;
-    }
 
     /**
      * Attempts to create a recipe
@@ -97,16 +85,31 @@ This is the second step',
      */
     public function testConvertImage()
     {
-        $path = dirname(__FILE__).'/test.jpg';
-        echo $path;
+        $path = __DIR__.'/test.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $path);
-        //$upload = \Symfony\Component\HttpFoundation\File\UploadedFile ($path, null, $mime, null, null, true);
+        $name = 'test.jpg';
+        $upload = new \Illuminate\Http\UploadedFile($path, $name, filesize($path), 'image/jpeg', null, true);
 
+        //log in and create our recipe
         $this->logIn();
         $recipe = array(
             'image' => $upload
         );
-        $response = $this->createRecipe($recipe);
+
+        $response = $this->call('POST', '/api/recipe', $recipe, [], ['image' => $upload], $this->server);
+
+        
+
+        //get the newly create recipe data
+        $newRecipe = json_decode($response->getContent());
+
+        //base64 encode our image
+        $image_data = file_get_contents( $path );
+        $image_64 = base64_encode($image_data);
+
+        //check it matches
+        $this->assertEquals($image_64, $newRecipe->recipe->image);
+        
     }
 }
