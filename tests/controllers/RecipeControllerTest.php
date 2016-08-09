@@ -32,7 +32,7 @@ This is the second step',
     /**
      * Attempts to create a recipe
      */
-    public function createRecipe($recipe = array())
+    public function createRecipe($recipe = [])
     {
         if ( count( $recipe ) == 0) $recipe = $this->recipeData;
         $response = $this->post('/api/recipe', $recipe, $this->server);
@@ -42,7 +42,7 @@ This is the second step',
     /**
      * Attempts to update a recipe
      */
-    public function updateRecipe($id, $recipe = array())
+    public function updateRecipe($id, $recipe = [])
     {
         $response = $this->put('/api/recipe/'.$id, $recipe, $this->server);
     }
@@ -102,9 +102,9 @@ This is the second step',
 
         //log in and create our recipe
         $this->logIn();
-        $recipe = array(
+        $recipe = [
             'image' => $upload
-        );
+        ];
 
         $response = $this->call('POST', '/api/recipe', $recipe, [], ['image' => $upload], $this->server);
 
@@ -141,7 +141,7 @@ This is the second step',
         $recipe = json_decode($response->response->getContent())->recipe;
 
         //update the recipe
-        $this->put('/api/recipe/'.$recipe->_id, array('title' => 'New Title'));
+        $this->put('/api/recipe/'.$recipe->_id, ['title' => 'New Title']);
         $this->seeJson(['title' => 'New Title', 'prep' => $this->recipeData['prep'] ]);
     }
 }

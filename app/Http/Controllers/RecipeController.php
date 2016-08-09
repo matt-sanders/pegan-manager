@@ -32,7 +32,8 @@ class RecipeController extends Controller
 
     /**
      * Update a recipe
-     * 
+     *
+     * @param string $id 
      * @param Request $request
      * @return Response
      */
@@ -45,5 +46,15 @@ class RecipeController extends Controller
 
         $recipe->save();
         return response()->json(['recipe' => $recipe]);
+    }
+
+    /**
+     * Delete a recipe
+     *
+     * @param string $id
+     */
+    public function remove($id)
+    {
+        Recipe::destroy($id);
     }
 }
