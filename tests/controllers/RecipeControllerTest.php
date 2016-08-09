@@ -12,6 +12,7 @@ class RecipeControllerTest extends TestCase
     
     public $recipeData = [
         'title' => 'This is a brand new recipe',
+        'prep' => '20',
         'directions' => '## Step 2
 This is the second step',
         'ingredients' => [
@@ -36,6 +37,14 @@ This is the second step',
         if ( count( $recipe ) == 0) $recipe = $this->recipeData;
         $response = $this->post('/api/recipe', $recipe, $this->server);
         return $response;
+    }
+
+    /**
+     * Attempts to update a recipe
+     */
+    public function updateRecipe($id, $recipe = array())
+    {
+        $response = $this->put('/api/recipe/'.$id, $recipe, $this->server);
     }
     
     /**
@@ -111,5 +120,28 @@ This is the second step',
         //check it matches
         $this->assertEquals($image_64, $newRecipe->recipe->image);
         
+    }
+
+    /**
+     * Shouldn't be able to update the recipe without auth
+     */
+    public function testUpdateRecipeNoAuth()
+    {
+        $this->updateRecipe('1234');
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     * Should update a recipe
+     */
+    public function testUpdateRecipe()
+    {
+        $this->logIn();
+        $response = $this->createRecipe();
+        $recipe = json_decode($response->response->getContent())->recipe;
+
+        //update the recipe
+        $this->put('/api/recipe/'.$recipe->_id, array('title' => 'New Title'));
+        $this->seeJson(['title' => 'New Title', 'prep' => $this->recipeData['prep'] ]);
     }
 }

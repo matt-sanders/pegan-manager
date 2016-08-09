@@ -27,4 +27,19 @@ class Recipe extends Moloquent
         $this->pretty_directions = $Parsedown->text($this->directions);
         return $this->pretty_directions;
     }
+
+    /**
+     * Encode any images before saving
+     * @return string
+     */
+    public function encodeImage()
+    {
+        if ( $this->raw_image )
+        {
+            $this->image = base64_encode(file_get_contents($this->raw_image->getRealPath()));
+            unset($this->raw_image);
+        }
+
+        return $this->image;
+    }
 }

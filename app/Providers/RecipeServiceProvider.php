@@ -17,6 +17,7 @@ class RecipeServiceProvider extends ServiceProvider
         //register the conversion hook when saving a recipe
         Recipe::saving(function($recipe){
             $recipe->convertMarkdown();
+            $recipe->encodeImage();
         });
     }
 

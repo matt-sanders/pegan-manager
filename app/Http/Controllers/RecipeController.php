@@ -24,9 +24,25 @@ class RecipeController extends Controller
 
         //encode the image to save in our DB
         if ( $request->hasFile('image') ){
-            $image = $request->file('image');
-            $recipe->image = base64_encode(file_get_contents($image->getRealPath()));
+            $recipe->raw_image = $request->file('image');
         }
+        $recipe->save();
+        return response()->json(['recipe' => $recipe]);
+    }
+
+    /**
+     * Update a recipe
+     * 
+     * @param Request $request
+     * @return Response
+     */
+    public function update($id, Request $request)
+    {
+        $recipe = Recipe::find($id);
+        foreach ( $recipe->getFillable() as $field ){
+            if ( isset( $request->{$field} ) ) $recipe->{$field} = $request->{$field};
+        }
+
         $recipe->save();
         return response()->json(['recipe' => $recipe]);
     }
