@@ -66,6 +66,18 @@ class RecipeController extends Controller
     public function retrieveAll()
     {
         $recipes = Recipe::all();
-        return response()->json([$recipes]);
+        return response()->json(['recipes' => $recipes]);
+    }
+
+    /**
+     * Get one recipe
+     *
+     * @param string $id
+     * @param Request $request
+     */
+    public function retrieveOne($id, Request $request)
+    {
+        $recipe = Recipe::find($id);
+        return response()->json(['recipe' => $recipe]);
     }
 }

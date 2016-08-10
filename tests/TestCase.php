@@ -26,6 +26,17 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     }
 
     /**
+     * Decodes the response and returns the json
+     *
+     * @param Response $response
+     * @return Object
+     */
+    public function decodeResponse($response)
+    {
+        return json_decode($response->response->getContent());
+    }
+
+    /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application

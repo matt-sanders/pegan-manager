@@ -30,6 +30,7 @@ Route::group(['prefix' => 'api'], function(){
 
     Route::get('/ingredients', 'IngredientController@retrieveAll');
     Route::get('/recipes', 'RecipeController@retrieveAll');
+    Route::get('/recipe/{id}', 'RecipeController@retrieveOne');
     
     Route::group(['middleware' => ['auth']], function(){
         Route::post('/ingredient', 'IngredientController@store');

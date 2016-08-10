@@ -79,7 +79,7 @@ This is the second step',
         $response = $this->createRecipe();
 
         //get the response
-        $recipe = json_decode($response->response->getContent());
+        $recipe = $this->decodeResponse($response);
 
         //convert markdown to html
         $testRecipe = new Recipe();
@@ -138,7 +138,7 @@ This is the second step',
     {
         $this->logIn();
         $response = $this->createRecipe();
-        $recipe = json_decode($response->response->getContent())->recipe;
+        $recipe = $this->decodeResponse($response)->recipe;
 
         //update the recipe
         $this->put('/api/recipe/'.$recipe->_id, ['title' => 'New Title']);
@@ -150,7 +150,39 @@ This is the second step',
      */
     public function testGetRecipes()
     {
+        $this->logIn();
+        $this->createRecipe();
+        $this->visit('/logout');
+        
         $this->get('/api/recipes', [], $this->server);
+        $response = $this->assertResponseStatus(200);
+        $recipes = $this->decodeResponse($response)->recipes;
+
+        //check we've actually got something
+        $this->assertEquals(1, count($recipes));
+
+        //check that it matches
+        $this->assertEquals($this->recipeData['title'], $recipes[0]->title);
+    }
+
+    /**
+     * Get single recipe
+     */
+    public function testGetRecipe()
+    {
+        $this->logIn();
+        $response = $this->createRecipe();
+        
+        //get the recipe
+        $recipe = $this->decodeResponse($response)->recipe;
+
+        $this->visit('/logout');
+
+        //try and get the recipe
+        $response = $this->get('/api/recipe/'.$recipe->_id, [], $this->server);        
         $this->assertResponseStatus(200);
+        $newRecipe = $this->decodeResponse($response)->recipe;
+
+        $this->assertEquals($newRecipe->_id, $recipe->_id);
     }
 }
