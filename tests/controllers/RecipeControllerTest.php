@@ -185,4 +185,29 @@ This is the second step',
 
         $this->assertEquals($newRecipe->_id, $recipe->_id);
     }
+
+    /**
+     * Should not be able to delete a recipe without being logged in
+     */
+    public function testDeleteNoAuth()
+    {
+        $this->delete('/api/recipe/1234', [], $this->server);
+        $this->assertResponseStatus(401);
+    }
+
+    /**
+     * Should actually delete a recipe
+     */
+    public function testDeleteRecipe()
+    {
+        $this->logIn();
+        $response = $this->createRecipe();
+        $recipe = $this->decodeResponse($response)->recipe;
+
+        $this->delete('/api/recipe/'.$recipe->_id, [], $this->server);
+        $this->assertResponseStatus(200);
+
+        $this->get('/api/recipe'.$recipe->_id, [], $this->server);
+        $this->assertResponseStatus(404);
+    }
 }

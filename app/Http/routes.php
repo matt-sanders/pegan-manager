@@ -36,7 +36,7 @@ Route::group(['prefix' => 'api'], function(){
         Route::post('/ingredient', 'IngredientController@store');
         Route::post('/recipe', 'RecipeController@store');
         Route::put('/recipe/{id}', 'RecipeController@update');
-        //Route::delete('/recipe/{id}', 'RecipeController@remove');
+        Route::delete('/recipe/{id}', 'RecipeController@remove');
     });
 });
 
