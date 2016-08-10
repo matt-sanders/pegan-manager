@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function(){
 Route::group(['prefix' => 'api'], function(){
 
     Route::get('/ingredients', 'IngredientController@retrieveAll');
+    Route::get('/recipes', 'RecipeController@retrieveAll');
     
     Route::group(['middleware' => ['auth']], function(){
         Route::post('/ingredient', 'IngredientController@store');

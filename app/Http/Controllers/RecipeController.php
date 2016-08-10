@@ -57,4 +57,15 @@ class RecipeController extends Controller
     {
         Recipe::destroy($id);
     }
+
+    /**
+     * Retrieve all recipes
+     *
+     * @return Response
+     */
+    public function retrieveAll()
+    {
+        $recipes = Recipe::all();
+        return response()->json([$recipes]);
+    }
 }

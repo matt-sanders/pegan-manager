@@ -144,4 +144,13 @@ This is the second step',
         $this->put('/api/recipe/'.$recipe->_id, ['title' => 'New Title']);
         $this->seeJson(['title' => 'New Title', 'prep' => $this->recipeData['prep'] ]);
     }
+
+    /**
+     * Get all recipes
+     */
+    public function testGetRecipes()
+    {
+        $this->get('/api/recipes', [], $this->server);
+        $this->assertResponseStatus(200);
+    }
 }
