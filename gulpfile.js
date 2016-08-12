@@ -1,29 +1,16 @@
 var elixir = require('laravel-elixir');
-var gulp = require('gulp');
-var webpack = require('webpack-stream');
-var watch = require('gulp-watch');
-var sass = require('gulp-sass');
 
+/*
+ |--------------------------------------------------------------------------
+ | Elixir Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Elixir provides a clean, fluent API for defining some basic Gulp tasks
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for our application, as well as publishing vendor resources.
+ |
+ */
 
-gulp.task('webpack', function(){
-
-    
-    return gulp.src('resources/assets/js/app.js')
-        .pipe(webpack( require('./webpack.config.js') ))
-        .pipe(gulp.dest('public/js'));
+elixir(function(mix) {
+    mix.sass('styles.scss');
 });
-
-gulp.task('styles', function(){
-    return gulp.src('resources/assets/sass/**/*.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('public/css'));
-});
-
-gulp.task('watch', function(){
-    gulp.watch('resources/assets/js/**/*.js', ['webpack']);
-    gulp.watch('resources/assets/sass/**/*.scss', ['styles']);
-});
-
-
-gulp.task('default', ['watch']);
-gulp.task('build', ['webpack', 'styles']);

@@ -5732,7 +5732,7 @@ button.close {
 
 .form-group {
   position: relative;
-  border: 1px solid #ff0000; }
+  border: 1px solid #fff; }
 
 .clear-input {
   background-color: transparent;
@@ -5743,4 +5743,4 @@ button.close {
     box-shadow: none;
     border-color: transparent; }
 
-/*# sourceMappingURL=app.css.map */
+/*# sourceMappingURL=styles.css.map */

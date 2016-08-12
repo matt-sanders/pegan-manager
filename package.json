@@ -6,16 +6,20 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build": "node build/build.js",
+    "build": "node build/build.js && gulp --production",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "test": "npm run unit",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "sass": "gulp watch"
   },
   "dependencies": {
     "vue": "^1.0.21",
     "babel-runtime": "^6.0.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "laravel-elixir": "^5.0.0",
+    "bootstrap-sass": "^3.3.0",
     "babel-core": "^6.0.0",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.0.0",
