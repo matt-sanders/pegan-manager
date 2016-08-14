@@ -32,10 +32,10 @@ This is the second step',
     /**
      * Attempts to create a recipe
      */
-    public function createRecipe($recipe = [])
+    public function createRecipe($recipe = [], $createUser = false)
     {
         if ( count( $recipe ) == 0) $recipe = $this->recipeData;
-        $response = $this->post('/api/recipe', $recipe, $this->server);
+        $response = $this->post('/api/recipe', $recipe, $this->headers($createUser));
         return $response;
     }
 
@@ -44,7 +44,7 @@ This is the second step',
      */
     public function updateRecipe($id, $recipe = [])
     {
-        $response = $this->put('/api/recipe/'.$id, $recipe, $this->server);
+        $response = $this->put('/api/recipe/'.$id, $recipe, $this->headers());
     }
     
     /**
@@ -53,7 +53,7 @@ This is the second step',
     public function testCreateRecipeNoAuth()
     {
         $this->createRecipe();
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(400);
     }
 
     /**
@@ -61,8 +61,7 @@ This is the second step',
      */
     public function testCreateRecipeAuth()
     {
-        $this->logIn();
-        $this->createRecipe();
+        $this->createRecipe([], true);
         $this->assertResponseStatus(200);
 
         $this->seeJson([
@@ -75,8 +74,7 @@ This is the second step',
      */
     public function testConvertMarkdown()
     {
-        $this->logIn();
-        $response = $this->createRecipe();
+        $response = $this->createRecipe([], true);
 
         //get the response
         $recipe = $this->decodeResponse($response);
@@ -101,12 +99,11 @@ This is the second step',
         $upload = new \Illuminate\Http\UploadedFile($path, $name, filesize($path), 'image/jpeg', null, true);
 
         //log in and create our recipe
-        $this->logIn();
         $recipe = [
             'image' => $upload
         ];
 
-        $response = $this->call('POST', '/api/recipe', $recipe, [], ['image' => $upload], $this->server);
+        $response = $this->call('POST', '/api/recipe', $recipe, [], ['image' => $upload], $this->headers(true));
 
         
 
@@ -128,7 +125,7 @@ This is the second step',
     public function testUpdateRecipeNoAuth()
     {
         $this->updateRecipe('1234');
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(400);
     }
 
     /**
@@ -136,12 +133,11 @@ This is the second step',
      */
     public function testUpdateRecipe()
     {
-        $this->logIn();
-        $response = $this->createRecipe();
+        $response = $this->createRecipe([], true);
         $recipe = $this->decodeResponse($response)->recipe;
 
         //update the recipe
-        $this->put('/api/recipe/'.$recipe->_id, ['title' => 'New Title']);
+        $this->put('/api/recipe/'.$recipe->_id, ['title' => 'New Title'], $this->headers(true));
         $this->seeJson(['title' => 'New Title', 'prep' => $this->recipeData['prep'] ]);
     }
 
@@ -150,11 +146,9 @@ This is the second step',
      */
     public function testGetRecipes()
     {
-        $this->logIn();
-        $this->createRecipe();
-        $this->visit('/logout');
+        $this->createRecipe([], true);
         
-        $this->get('/api/recipes', [], $this->server);
+        $this->get('/api/recipes', [], $this->headers());
         $response = $this->assertResponseStatus(200);
         $recipes = $this->decodeResponse($response)->recipes;
 
@@ -170,16 +164,13 @@ This is the second step',
      */
     public function testGetRecipe()
     {
-        $this->logIn();
-        $response = $this->createRecipe();
+        $response = $this->createRecipe([], true);
         
         //get the recipe
         $recipe = $this->decodeResponse($response)->recipe;
 
-        $this->visit('/logout');
-
         //try and get the recipe
-        $response = $this->get('/api/recipe/'.$recipe->_id, [], $this->server);        
+        $response = $this->get('/api/recipe/'.$recipe->_id, [], $this->headers(true));        
         $this->assertResponseStatus(200);
         $newRecipe = $this->decodeResponse($response)->recipe;
 
@@ -191,8 +182,8 @@ This is the second step',
      */
     public function testDeleteNoAuth()
     {
-        $this->delete('/api/recipe/1234', [], $this->server);
-        $this->assertResponseStatus(401);
+        $this->delete('/api/recipe/1234', [], $this->headers());
+        $this->assertResponseStatus(400);
     }
 
     /**
@@ -200,14 +191,13 @@ This is the second step',
      */
     public function testDeleteRecipe()
     {
-        $this->logIn();
-        $response = $this->createRecipe();
+        $response = $this->createRecipe([], true);
         $recipe = $this->decodeResponse($response)->recipe;
 
-        $this->delete('/api/recipe/'.$recipe->_id, [], $this->server);
+        $this->delete('/api/recipe/'.$recipe->_id, [], $this->headers(true));
         $this->assertResponseStatus(200);
 
-        $this->get('/api/recipe'.$recipe->_id, [], $this->server);
+        $this->get('/api/recipe'.$recipe->_id, [], $this->headers());
         $this->assertResponseStatus(404);
     }
 }

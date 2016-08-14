@@ -17,10 +17,10 @@ class IngredientControllerTest extends TestCase
     /**
      * Attempts to create an ingredient
      */
-    public function createIngredient($ingredient = array())
+    public function createIngredient($ingredient = [], $createUser = false)
     {
         if ( count($ingredient) == 0 ) $ingredient = $this->ingredientData;
-        $response = $this->post('/api/ingredient', $ingredient, $this->server);
+        $response = $this->post('/api/ingredient', $ingredient, $this->headers($createUser));
         return $response;
     }
     
@@ -30,7 +30,7 @@ class IngredientControllerTest extends TestCase
     public function testCreateIngredientNoAuth()
     {
         $this->createIngredient();
-        $this->assertResponseStatus(401);
+        $this->assertResponseStatus(400);
     }
 
     /**
@@ -38,8 +38,7 @@ class IngredientControllerTest extends TestCase
      */
     public function testCreateIngredientWithAuth()
     {
-        $this->logIn();
-        $this->createIngredient();
+        $this->createIngredient([], true);
         $this->assertResponseStatus(200);
 
         $this->seeJson([
@@ -54,17 +53,16 @@ class IngredientControllerTest extends TestCase
      */
     public function testAllIngredients()
     {
-        $this->get('/api/ingredients', $this->server);
+        $this->get('/api/ingredients', [], $this->headers());
         $this->assertResponseStatus(200);
 
-        $this->logIn();
-        $this->createIngredient();
+        $this->createIngredient([], true);
         $this->createIngredient([
             'title' => 'This is a title',
             'type' => 'title'
-        ]);
+        ], true);
 
-        $this->get('/api/ingredients', $this->server);
+        $this->get('/api/ingredients', [], $this->headers());
         $this->seeJson([
             'title' => $this->ingredientData['title'],
             'desc' => $this->ingredientData['desc'],

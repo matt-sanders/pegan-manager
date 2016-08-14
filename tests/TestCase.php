@@ -14,7 +14,19 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     /**
      * Server string used when making ajax calls
      */
-    public $server = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];
+    public function headers($createUser = false)
+    {
+        $headers = ['HTTP_X-Requested-With' => 'XMLHttpRequest'];;
+
+        if ( $createUser ){
+            $user = factory(App\User::class)->create();
+            $token = JWTAuth::fromUser($user);
+            JWTAuth::setToken($token);
+            $headers['Authorization'] = 'Bearer'.$token;
+        }
+
+        return $headers;
+    }
     
     /**
      * log in as a user

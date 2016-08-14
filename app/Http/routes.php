@@ -16,7 +16,7 @@ Route::controllers([
     'password' => 'Auth\PasswordController'
 ]);
 
-Route::group(['middleware' => ['auth']], function(){
+Route::group(['middleware' => ['jwt.auth']], function(){
     
     Route::get('/', function () {
         return view('welcome');
@@ -34,7 +34,7 @@ Route::group(['prefix' => 'api'], function(){
     Route::get('/recipes', 'RecipeController@retrieveAll');
     Route::get('/recipe/{id}', 'RecipeController@retrieveOne');
     
-    Route::group(['middleware' => ['auth']], function(){
+    Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('/ingredient', 'IngredientController@store');
         Route::post('/recipe', 'RecipeController@store');
         Route::put('/recipe/{id}', 'RecipeController@update');
