@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth']], function(){
 
 Route::group(['prefix' => 'api'], function(){
 
+    Route::post('/authenticate', 'AuthenticateController@authenticate');
+
     Route::get('/ingredients', 'IngredientController@retrieveAll');
     Route::get('/recipes', 'RecipeController@retrieveAll');
     Route::get('/recipe/{id}', 'RecipeController@retrieveOne');
