@@ -5,6 +5,7 @@ Homestead.yaml
 Homestead.json
 .env
 .env.testing
+/config/jwt.php
 
 # -*- mode: gitignore; -*-
 *~
