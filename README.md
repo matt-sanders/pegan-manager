@@ -10,6 +10,8 @@ Download the repo and run:
 
 ```sh
 $ php composer.phar install
+$ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\JWTAuthServiceProvider"
+$ php artisan jwt:generate
 ```
 
 ## Unit Testing
