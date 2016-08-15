@@ -39,7 +39,11 @@ module.exports = {
         exclude: /node_modules/
       }
     ],
-    loaders: [
+      loaders: [
+          {
+              test: /\~$|\#$/,
+              loader: 'ignore-loader'
+          },
       {
         test: /\.vue$/,
         loader: 'vue'

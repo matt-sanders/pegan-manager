@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for src/components/Hello.vue</title>
+    <title>Code coverage report for src/auth/index.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,28 +16,28 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">src/components/</a> Hello.vue
+      <a href="../../index.html">all files</a> / <a href="index.html">src/auth/</a> index.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">66.67% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>2/3</span>
+        <span class='fraction'>9/12</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
-        <span class="quiet">Functions</span>
-        <span class='fraction'>0/1</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>2/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">72.73% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/2</span>
+        <span class='fraction'>8/11</span>
       </div>
     </div>
   </div>
@@ -72,7 +72,16 @@
 27
 28
 29
-30</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+30
+31
+32
+33
+34
+35
+36
+37
+38</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -81,6 +90,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -89,46 +108,51 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// &lt;template&gt;
-//   &lt;div class="hello"&gt;
-//     &lt;h1&gt;{{ msg }}&lt;/h1&gt;
-//   &lt;/div&gt;
-// &lt;/template&gt;
-//
-// &lt;script&gt;
-export default <span class="fstat-no" title="function not covered" >{</span>
-  data () {
-<span class="cstat-no" title="statement not covered" >    r</span>eturn {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      msg: 'Hello World!'
-    }
-  }
-}
-// &lt;/script&gt;
-//
-// &lt;!-- Add "scoped" attribute to limit CSS to this component only --&gt;
-// &lt;style scoped&gt;
-// h1 {
-//   color: #42b983;
-// }
-// &lt;/style&gt;
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const API_URL = 'http://localhost:8000/'
+const LOGIN_URL = API_URL + 'authenticate'
+export default {
+    user: {
+        authenticated: false
+    },
 &nbsp;
-/* generated by vue-loader */
+    /**
+     * logs the user in
+     *
+     * @param object $context
+     * @param object $creds
+     * @param string $redirect
+     */
+    login(context, creds, redirect){
+        context.$http.post(LOGIN_URL, creds)
+            .then(<span class="fstat-no" title="function not covered" >(response) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                c</span>onsole.log("passed")
+            }, <span class="fstat-no" title="function not covered" >(response) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >                c</span>onsole.log("not passed")
+<span class="cstat-no" title="statement not covered" >                c</span>ontext.error = response.data.error
+            })
+    },
+&nbsp;
+    /**
+     * Checks whether the user has a current token and updates the model
+     */
+    checkAuth() {
+        var jwt = localStorage.getItem('id_token')
+        if (jwt) {
+            this.user.authenticated = true
+        } else {
+            this.user.authenticated = false
+        }
+    }
+}
 &nbsp;
 &nbsp;</pre></td></tr>
 </table></pre>
