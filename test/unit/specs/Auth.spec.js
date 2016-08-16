@@ -8,12 +8,6 @@ const creds = {
     password: 'test'
 }
 
-const component = Vue.component({
-    data: function(){
-        return { error: '' }
-    }
-})
-
 describe('Auth', () => {
     
     it('should check if the user has a current token', () => {
@@ -33,22 +27,21 @@ describe('Auth', () => {
                 status: 401
             }));
         });
-        
 
         const vm = new Vue({
-            template: '<div><component></component></div>',
-            components: {testComponent}
+            data: {
+                error: ''
+            }
         }).$mount()
 
-        let testComponent = vm.$refs.component;
         
-        Auth.login(vm.$refs.component, creds);
+        Auth.login(vm, creds)
 
 
-        testComponent.$nextTick(() => {
-            expect(testComponent.error).to.equal('something');
-            done();
-        });
+        setTimeout(function(){
+            expect(vm.error).to.equal('something')
+            done()
+        }, 0)
 
         Vue.http.interceptors.shift();
         
