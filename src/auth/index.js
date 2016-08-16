@@ -15,11 +15,21 @@ export default {
     login(context, creds, redirect){
         context.$http.post(LOGIN_URL, creds)
             .then((response) => {
-                console.log("passed")
+
+                localStorage.setItem('id_token', response.data.token)
+                this.user.authenticated = true
+                
             }, (response) => {
-                console.log("not passed")
                 context.error = response.data.error
             })
+    },
+
+    /**
+     * logs the user out
+     */
+    logout(){
+        //localStorage.removeItem('id_token')
+        //this.user.authenticated = false
     },
 
     /**

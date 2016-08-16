@@ -9,14 +9,29 @@ const creds = {
 }
 
 describe('Auth', () => {
+
+    const getComponent = () => {
+        let vm = new Vue({
+            data: {
+                error: ''
+            }
+        }).$mount();
+        
+        return vm;
+    }
+
+    beforeEach(() => {
+        Auth.user.authenticated = false
+        localStorage.removeItem('id_token')
+    })
     
     it('should check if the user has a current token', () => {
         Auth.checkAuth()
-        expect(Auth.user.authenticated).to.equal(false)
+        expect(Auth.user.authenticated).to.be.false
 
         localStorage.setItem('id_token', '1234')
         Auth.checkAuth()
-        expect(Auth.user.authenticated).to.equal(true)
+        expect(Auth.user.authenticated).to.be.true
     });
 
     it('should throw an error on unsuccessful login', (done) => {
@@ -28,12 +43,7 @@ describe('Auth', () => {
             }));
         });
 
-        const vm = new Vue({
-            data: {
-                error: ''
-            }
-        }).$mount()
-
+        const vm = getComponent()
         
         Auth.login(vm, creds)
 
@@ -43,7 +53,28 @@ describe('Auth', () => {
             done()
         }, 0)
 
-        Vue.http.interceptors.shift();
+        Vue.http.interceptors.shift()
         
-    });
-});
+    })
+
+    it('should log the user in', (done) => {
+
+        Vue.http.interceptors.unshift((request, next) => {
+            var body = {'token' : '1234'}
+            next(request.respondWith(body, { status: 200 }))
+        })
+
+        const vm = getComponent()
+
+        Auth.login(vm, creds)
+
+        setTimeout(function(){
+            expect(Auth.user.authenticated).to.be.true
+            expect(localStorage.getItem('id_token')).to.equal('1234')
+            done()
+        }, 0)
+
+        Vue.http.interceptors.shift()
+        
+    })
+})
