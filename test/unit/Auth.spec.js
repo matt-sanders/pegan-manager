@@ -112,5 +112,6 @@ describe('Auth', () => {
         Auth.logout();
         expect(localStorage.getItem('id_token')).to.equal(null);
         expect(Auth.user.authenticated).to.be.false;
+        expect(router.go).to.have.been.calledWith('/login');
     });
 });
