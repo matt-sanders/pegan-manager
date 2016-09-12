@@ -22,8 +22,9 @@ router.map({
 })
 
 router.redirect({
-    '*': '/home'
+    '*': '/login'
 })
 
 /* eslint-disable no-new */
 router.start(App, '#app')
+

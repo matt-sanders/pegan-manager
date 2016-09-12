@@ -1,6 +1,6 @@
-//import {router} from '../main'
-const API_URL = 'http://localhost:8000/'
-const LOGIN_URL = API_URL + 'authenticate'
+import {router} from '../app';
+const API_URL = 'http://localhost:8000/';
+const LOGIN_URL = API_URL + 'authenticate';
 export default {
     user: {
         authenticated: false
@@ -17,16 +17,16 @@ export default {
         context.$http.post(LOGIN_URL, creds)
             .then((response) => {
 
-                localStorage.setItem('id_token', response.data.token)
-                this.user.authenticated = true
+                localStorage.setItem('id_token', response.data.token);
+                this.user.authenticated = true;
 
                 if ( redirect ){
-                    router.go(redirect)
+                    router.go(redirect);
                 }
                 
             }, (response) => {
-                context.error = response.data.error
-            })
+                context.error = response.data.error;
+            });
     },
 
     /**
@@ -41,11 +41,11 @@ export default {
      * Checks whether the user has a current token and updates the model
      */
     checkAuth() {
-        var jwt = localStorage.getItem('id_token')
+        var jwt = localStorage.getItem('id_token');
         if (jwt) {
-            this.user.authenticated = true
+            this.user.authenticated = true;
         } else {
-            this.user.authenticated = false
+            this.user.authenticated = false;
         }
     }
-}
+};
