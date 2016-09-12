@@ -33,8 +33,8 @@ export default {
      * logs the user out
      */
     logout(){
-        //localStorage.removeItem('id_token')
-        //this.user.authenticated = false
+        localStorage.removeItem('id_token');
+        this.user.authenticated = false;
     },
 
     /**

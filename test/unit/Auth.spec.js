@@ -105,4 +105,12 @@ describe('Auth', () => {
         },0);
         
     });
+
+    it('should log the user out', () => {
+        localStorage.setItem('id_token', 'testing');
+        Auth.user.authenticated = true;
+        Auth.logout();
+        expect(localStorage.getItem('id_token')).to.equal(null);
+        expect(Auth.user.authenticated).to.be.false;
+    });
 });
