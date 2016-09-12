@@ -3,16 +3,19 @@ import auth from './auth';
 import App from './App.vue';
 import Login from './components/Login.vue';
 import VueRouter from 'vue-router';
-//import VueResource from 'vue-resource';
-//Vue.use(VueResource);
+import VueResource from 'vue-resource';
+import VueFormly from 'vue-formly';
+import VueFormlyBootstrap from 'vue-formly-bootstrap';
+Vue.use(VueFormly);
+Vue.use(VueFormlyBootstrap);
+Vue.use(VueResource);
 Vue.use(VueRouter);
-//import auth from './auth';
 
 //set the headers
-//Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
+Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
 
 //check the users status when the app starts
-//auth.checkAuth();
+auth.checkAuth();
 
 export var router = new VueRouter();
 

@@ -1,5 +1,8 @@
 <template>
-  <button @click="submit()"></button>
+  <form @submit="submit()">
+    <formly-form :form="credentials"></formly-form>
+    <button>Login</button>
+  </form>
 </template>
 
 <script>
@@ -8,8 +11,14 @@
      data() {
          return {
              credentials: {
-                 email: '',
-                 password: ''
+                 email: {
+                     type: 'input',
+                     inputType: 'email'
+                 },
+                 password: {
+                     type: 'input',
+                     inputType: 'password'
+                 }
              },
              error: ''
          }
@@ -17,11 +26,11 @@
      methods: {
          submit() {
              var credentials = {
-                 email: this.credentials.email,
-                 password: this.credentials.password
+                 email: this.credentials.email.value,
+                 password: this.credentials.password.value
              }
 
-             auth.login(this, credentials, 'dashboard')
+             Auth.login(this, credentials, '/dashboard')
          }
      }
  }
