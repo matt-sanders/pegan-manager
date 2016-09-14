@@ -1,6 +1,5 @@
 import {router} from '../app';
-const API_URL = 'http://localhost:8000/';
-const LOGIN_URL = API_URL + 'authenticate';
+import * as Api from '../api';
 export default {
     user: {
         authenticated: false
@@ -14,9 +13,8 @@ export default {
      * @param string $redirect
      */
     login(context, creds, redirect){
-        context.$http.post(LOGIN_URL, creds)
+        Api.login(creds)
             .then((response) => {
-
                 localStorage.setItem('id_token', response.data.token);
                 this.user.authenticated = true;
 
@@ -25,7 +23,7 @@ export default {
                 }
                 
             }, (response) => {
-                context.error = response.data.error;
+                context.error = response.body.error;
             });
     },
 
