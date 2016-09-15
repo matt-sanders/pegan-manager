@@ -28,12 +28,20 @@ export function login({dispatch}, creds, redirect = false ){
 }
 
 /**
-* Logs a user out
+ * Logs a user out
  */
 export function logout({dispatch}){
     localStorage.removeItem('id_token');
     setAuth({dispatch}, false);
     router.go('/login');
+}
+
+/**
+ * Checks whether the user has a current token
+ */
+export function checkAuth({dispatch}){
+    let jwt = localStorage.getItem('id_token');
+    setAuth({dispatch}, !!jwt);
 }
 
 /**

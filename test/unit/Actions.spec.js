@@ -48,6 +48,22 @@ sinon.spy(router, 'go');
 
 describe('Actions', () => {
 
+    describe('check auth', () => {
+        it('should be false', done => {
+            localStorage.removeItem('id_token');
+            testAction(actions.checkAuth, [], authState, [
+                { name: 'SET_AUTH', payload: [false] }
+            ],done);
+        });
+        
+        it('should be true', done => {
+            localStorage.setItem('id_token', '1234');
+            testAction(actions.checkAuth, [], authState, [
+                { name: 'SET_AUTH', payload: [true] }
+            ],done);
+        });
+    });
+
     describe('logout', () => {
         beforeEach(() => {
             authState.authenticated = true;
