@@ -44,7 +44,29 @@ const creds = {
 
 let authState = Auth.state;
 
+sinon.spy(router, 'go');
+
 describe('Actions', () => {
+
+    describe('logout', () => {
+        beforeEach(() => {
+            authState.authenticated = true;
+            localStorage.setItem('id_token', '1234');
+        });
+
+        it('should log the user out', done => {
+            testAction(actions.logout, [], authState, [
+                { name: 'SET_AUTH', payload: [false] }
+            ], done);
+        });
+
+        it('should remove from local storage', () => {
+            const dispatch = function(){};
+            actions.logout({dispatch});
+            expect(localStorage.getItem('id_token')).to.equal(null);
+            expect(router.go).to.have.been.calledWith('/login');
+        });
+    });
 
     describe('login', () => {
         
@@ -84,6 +106,23 @@ describe('Actions', () => {
             Vue.http.interceptors.shift();
         });
 
+        it('should save to local storage', done => {
+            Vue.http.interceptors.push((request, next) => {
+                var body = {'token' : '1234'};
+                next(request.respondWith(body, { status: 200 }));
+            });
+            const dispatch = function(){};
+
+            actions.login({dispatch}, creds);
+
+            setTimeout(()=>{
+                expect(localStorage.getItem('id_token')).to.equal('1234');
+                done();
+            }, 0);
+            
+            Vue.http.interceptors.shift();
+        });
+
         it('should redirect the user', done => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {'token' : '1234'};
@@ -91,7 +130,6 @@ describe('Actions', () => {
             });
 
             const dispatch = function(){};
-            sinon.spy(router, 'go');
             
             actions.login({dispatch}, creds, '/test');
 

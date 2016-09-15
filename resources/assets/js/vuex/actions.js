@@ -28,6 +28,15 @@ export function login({dispatch}, creds, redirect = false ){
 }
 
 /**
+* Logs a user out
+ */
+export function logout({dispatch}){
+    localStorage.removeItem('id_token');
+    setAuth({dispatch}, false);
+    router.go('/login');
+}
+
+/**
 * Set the app state to be authed or not
 * @param {boolean} authenticated
 */
