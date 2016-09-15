@@ -2,7 +2,7 @@ import chai from 'chai';
 const expect = chai.expect;
 import Auth from '../../resources/assets/js/vuex/modules/auth';
 
-let state
+let state;
 
 describe('Mutations', () =>{
 

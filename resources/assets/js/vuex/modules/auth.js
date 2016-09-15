@@ -2,7 +2,7 @@ import { SET_AUTH, SET_AUTH_ERR } from '../mutation-types';
 
 const state = {
     authenticated: false,
-    error: null
+    error: false
 };
 
 const mutations = {
