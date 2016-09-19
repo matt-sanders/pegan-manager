@@ -5776,6 +5776,9 @@ body {
   .panel h2 {
     font-size: 1.3em; }
 
+.banner {
+  background: #fff; }
+
 form div.form-group label {
   font-weight: normal;
   position: relative;
@@ -5792,9 +5795,10 @@ form div.form-group input.form-control {
   border-right: none;
   padding-left: 0;
   padding-top: 0;
-  height: 25px; }
+  height: 25px;
+  color: #646464; }
 
-form div.form-group.has-value label, form div.form-group.is-active label {
+form div.form-group.formly-has-value label, form div.form-group.formly-has-focus label {
   top: 0;
   font-size: 0.8em;
   color: #a8a8a8; }

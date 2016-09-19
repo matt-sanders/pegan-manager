@@ -182,7 +182,7 @@ process.umask = function() { return 0; };
 
 },{}],2:[function(require,module,exports){
 /**
- * vue-formly-bootstrap v0.4.0
+ * vue-formly-bootstrap v1.0.1
  * https://github.com/matt-sanders/vue-formly-bootstrap
  * Released under the MIT License.
  */
@@ -921,7 +921,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 41 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"form-group\">\n  <label v-if=\"form[key].label\" :for=\"form[key].id ? form[key].id : null\">{{form[key].label}}</label>\n  <input class=\"form-control\" :class=\"form[key].classes\" :id=\"form[key].id ? form[key].id : null\" :type=\"form[key].inputType || text\" v-model=\"form[key].value\" @blur=\"onBlur\" @focus=\"onFocus\" @click=\"onClick\" @change=\"onChange\" @keyup=\"onKeyup\" @keydown=\"onKeydown\" v-formly-atts=\"form[key].atts\">\n</div>\n";
+	module.exports = "\n<div class=\"form-group formly-input\" :class=\"{'formly-has-value': form[key].value, 'formly-has-focus': form[key].$active}\">\n  <label v-if=\"form[key].label\" :for=\"form[key].id ? form[key].id : null\">{{form[key].label}}</label>\n  <input class=\"form-control\" :class=\"form[key].classes\" :id=\"form[key].id ? form[key].id : null\" :type=\"form[key].inputType || text\" v-model=\"form[key].value\" @blur=\"onBlur\" @focus=\"onFocus\" @click=\"onClick\" @change=\"onChange\" @keyup=\"onKeyup\" @keydown=\"onKeydown\" v-formly-atts=\"form[key].atts\">\n</div>\n";
 
 /***/ },
 /* 42 */
@@ -27219,7 +27219,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form :submit.prevent=\"login(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">Login</button>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"login(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">Login</button>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

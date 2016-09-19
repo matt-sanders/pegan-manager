@@ -7,6 +7,6 @@ elixir(function (mix) {
 
     mix.browserify('app.js')
 
-    mix.version(['js/app.js', 'js/vendor.js', 'css/app.css'])
+    mix.version(['js/app.js', 'css/app.css'])
 });
 

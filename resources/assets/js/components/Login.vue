@@ -6,7 +6,7 @@
           <h2>Login</h2>
         </div>
         <div class="panel-body">
-          <form :submit.prevent="login(this.credentials.email.value, this.credentials.password.value)">
+          <form v-on:submit.prevent="login(this.credentials.email.value, this.credentials.password.value)">
             <formly-form :form="credentials"></formly-form>
             <div class="row">
               <div class="col-md-4 col-md-offset-4">
