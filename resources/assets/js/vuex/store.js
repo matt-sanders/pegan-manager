@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import auth from './modules/auth';
 Vue.use(Vuex);
 
-export default new Vuex.store({
+export default new Vuex.Store({
     modules: {
         auth
     }

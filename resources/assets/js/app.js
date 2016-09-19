@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import auth from './auth';
 import App from './App.vue';
 import Login from './components/Login.vue';
 import VueRouter from 'vue-router';
@@ -15,7 +14,7 @@ Vue.use(VueRouter);
 Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
 
 //check the users status when the app starts
-auth.checkAuth();
+//auth.checkAuth();
 
 export var router = new VueRouter();
 

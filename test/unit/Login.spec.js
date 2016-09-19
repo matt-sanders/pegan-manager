@@ -3,42 +3,53 @@ const expect = chai.expect;
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Vue from 'vue';
+import Vuex from 'vuex';
 import VueFormly from 'vue-formly';
 import VueFormlyBootstrap from 'vue-formly-bootstrap';
+import * as actions from '../../resources/assets/js/vuex/actions';
 import Login from '../../resources/assets/js/components/Login.vue';
-import Auth from '../../resources/assets/js/auth';
+Vue.use(Vuex);
 Vue.use(VueFormly);
 Vue.use(VueFormlyBootstrap);
 chai.use(sinonChai);
+
+let store = new Vuex.Store();
 
 const getComponent = () => {
     let vm = new Vue({
         template: '<div><login v-ref:login></login></div>',
         components: {
             Login
-        }
+        },
+        store: store
     }).$mount();
+    
     return vm;
-};
-
-
+}
 describe('Login', () => {
 
     it('should trigger login', () => {
-        let spy = sinon.spy(Auth, 'login');
-        let vm = getComponent();
-        let creds = {
-            email: 'test@test.com',
-            password: 'testing'
-        };
-        vm.$refs.login.credentials.email.value = creds.email;
-        vm.$refs.login.credentials.password.value = creds.password;
-        vm.$refs.login.submit();
+        sinon.stub(actions, 'login').returns({});
 
-        expect(Auth.login).to.be.called;
-        expect(spy.args[0][1]).to.deep.equal(creds);
-        expect(spy.args[0][2]).to.equal('/dashboard');
-        spy.reset();
+        let vm = getComponent();
+
+        let loginComp = vm.$refs.login;
+
+        loginComp.credentials.email.value = 'test@test.com';
+        loginComp.credentials.email.password = 'testing';
+
+        vm.$el.querySelectorAll('form')[0].submit();
+        //vm.$el.querySelectorAll('button')[0].click();
+
+        expect(actions.login).to.be.called;
+
+        /*const stubs = {
+            '../vuex/actions': {
+                login: function(){console.log('hit');}
+            }
+        };*/
+        //const proxyquire = require('proxyquireify')(require)
+
     });
     
 });

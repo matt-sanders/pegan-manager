@@ -1,0 +1,67 @@
+$brand-primary: #409BB6;
+$brand-success: #e8903c;
+$border-radius-base: 0;
+$border-radius-large: 0;
+$border-radius-small: 0;
+$gray-base: #313131;
+
+@import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+body
+{
+    background-color: transparent;
+}
+
+.panel
+{
+    border: none;
+
+    h1, h2, h3, h4, h5, h6
+    {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    h2
+    {
+        font-size: 1.3em;
+    }
+}
+
+form
+{
+    div.form-group
+    {
+        label
+        {
+            font-weight: normal;
+            position: relative;
+            top: 20px;
+            outline: none;
+            margin-bottom: 0;
+            transition: all 0.3s ease;
+        }//label
+        
+        input.form-control
+        {
+            box-shadow: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 0;
+            padding-top: 0;
+            height: 25px;
+        }//input
+
+        &.has-value,
+        &.is-active
+         {
+             label
+             {
+                 top: 0;
+                 font-size: 0.8em;
+                 color: $gray-light;
+             }//label
+         }//active, value
+    }//form-group
+}//form

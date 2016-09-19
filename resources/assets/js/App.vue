@@ -5,10 +5,11 @@
 </template>
 
 <script>
+ import store from './vuex/store';
+ export default {
+     components: {
 
-export default {
-  components: {
-
-  }
-}
+     },
+     store: store
+ }
 </script>

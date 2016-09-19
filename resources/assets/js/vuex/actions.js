@@ -8,6 +8,7 @@ import * as Api from '../api';
 * @param {string} redirect
 */
 export function login({dispatch}, creds, redirect = false ){
+    console.log('hit');
     Api.login(creds)
         .then( response => {
             //save the token for later
