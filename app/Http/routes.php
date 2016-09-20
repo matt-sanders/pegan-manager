@@ -25,7 +25,7 @@ Route::group(['middleware' => ['jwt.auth']], function(){
     
 });
 
-Route::group(['prefix' => 'api'], function(){
+Route::group(['prefix' => 'api', 'middleware' => 'cors'], function(){
 
     Route::post('/authenticate', 'AuthenticateController@authenticate');
 

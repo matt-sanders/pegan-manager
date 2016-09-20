@@ -11,7 +11,9 @@ Vue.use(VueResource);
 Vue.use(VueRouter);
 
 //set the headers
-Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
+Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://localhost';
+//Vue.http.headers.common['Access-Control-Request-Method'] = '*';
+//Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
 
 //check the users status when the app starts
 //auth.checkAuth();

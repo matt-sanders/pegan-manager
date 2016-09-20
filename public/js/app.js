@@ -27144,7 +27144,9 @@ _vue2.default.use(_vueResource2.default);
 _vue2.default.use(_vueRouter2.default);
 
 //set the headers
-_vue2.default.http.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('id_token');
+_vue2.default.http.headers.common['Access-Control-Allow-Origin'] = 'http://localhost';
+//Vue.http.headers.common['Access-Control-Request-Method'] = '*';
+//Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
 
 //check the users status when the app starts
 //auth.checkAuth();
@@ -27191,7 +27193,7 @@ exports.default = {
                     inputType: 'password'
                 }
             },
-            error: ''
+            working: false
         };
     },
 
@@ -27208,18 +27210,18 @@ exports.default = {
     },
     methods: {
         submit: function submit() {
-            var credentials = {
-                email: this.credentials.email.value,
-                password: this.credentials.password.value
-            };
-            console.log('hit submission');
-            //login(store, credentials);
-            //Auth.login(this, credentials, '/dashboard')
+            this.working = true;
+            this.login(this.credentials.email.value, this.credentials.password.value);
+        }
+    },
+    watch: {
+        'errors': function errors(value) {
+            this.working = false;
         }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"login(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">Login</button>\n              </div>\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            <div class=\"alert alert-danger\" role=\"alert\" v-show=\"errors\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27236,7 +27238,7 @@ if (module.hot) {(function () {  module.hot.accept()
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var API_URL = exports.API_URL = 'http://localhost:8000/';
+var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
 },{}],14:[function(require,module,exports){
 'use strict';

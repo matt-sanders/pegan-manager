@@ -157,6 +157,11 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RecipeServiceProvider::class,
 
+        /*
+         * CORS
+         */
+        Barryvdh\Cors\ServiceProvider::class,
+
         /**
          * JWT
          */
