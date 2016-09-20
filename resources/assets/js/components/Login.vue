@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row margin-top">
     <div class="col-md-4 col-md-offset-4">
       <div class="panel panel-default"> 
         <div class="panel-heading text-center">
@@ -13,7 +13,8 @@
                 <button class="btn btn-success btn-block">{{this.working ? 'Loading...' : 'Log In'}}</button>
               </div>
             </div>
-            <div class="alert alert-danger" role="alert" v-show="errors">
+            
+            <div class="alert alert-danger margin-top margin-no-bottom" role="alert" v-show="errors && !working">
               Uh oh! Looks like something didn't quite add up. Check your details and try again.
             </div>
           </form>

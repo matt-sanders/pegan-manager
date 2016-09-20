@@ -8,11 +8,10 @@ import * as Api from '../api';
 * @param {string} redirect
 */
 export function login({dispatch}, creds, redirect = false ){
-    console.log('hit');
     Api.login(creds)
         .then( response => {
             //save the token for later
-            localStorage.setItem('id_token', response.body.token);
+            localStorage.setItem('id_token', response.data.token);
             
             //update the store
             setAuth({dispatch}, true);
@@ -24,7 +23,7 @@ export function login({dispatch}, creds, redirect = false ){
             }
         }, response => {
             setAuth({dispatch}, false);
-            setAuthErr({dispatch}, response.body.error);
+            setAuthErr({dispatch}, response.data.error);
         });
 }
 

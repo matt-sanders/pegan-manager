@@ -27221,7 +27221,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            <div class=\"alert alert-danger\" role=\"alert\" v-show=\"errors\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            \n            <div class=\"alert alert-danger margin-top margin-no-bottom\" role=\"alert\" v-show=\"errors &amp;&amp; !working\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27283,10 +27283,9 @@ function login(_ref, creds) {
     var dispatch = _ref.dispatch;
     var redirect = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-    console.log('hit');
     Api.login(creds).then(function (response) {
         //save the token for later
-        localStorage.setItem('id_token', response.body.token);
+        localStorage.setItem('id_token', response.data.token);
 
         //update the store
         setAuth({ dispatch: dispatch }, true);
@@ -27298,7 +27297,7 @@ function login(_ref, creds) {
         }
     }, function (response) {
         setAuth({ dispatch: dispatch }, false);
-        setAuthErr({ dispatch: dispatch }, response.body.error);
+        setAuthErr({ dispatch: dispatch }, response.data.error);
     });
 }
 

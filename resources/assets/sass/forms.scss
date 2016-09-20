@@ -1,0 +1,38 @@
+form
+{
+    div.form-group
+    {
+        label
+        {
+            font-weight: normal;
+            position: relative;
+            top: 20px;
+            outline: none;
+            margin-bottom: 0;
+            transition: all 0.3s ease;
+        }//label
+        
+        input.form-control
+        {
+            box-shadow: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            padding-left: 0;
+            padding-top: 0;
+            height: 25px;
+            color: $gray-dark;
+        }//input
+
+        &.formly-has-value,
+        &.formly-has-focus
+         {
+             label
+             {
+                 top: 0;
+                 font-size: 0.8em;
+                 color: $gray-light;
+             }//label
+         }//active, value
+    }//form-group
+}//form

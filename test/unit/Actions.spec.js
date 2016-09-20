@@ -95,7 +95,8 @@ describe('Actions', () => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {error: 'something'};
                 next(request.respondWith(body, {
-                    status: 401
+                    status: 401,
+                    data: body
                 }));
             });
 
@@ -111,7 +112,7 @@ describe('Actions', () => {
         it('should log the user in', done => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200 }));
+                next(request.respondWith(body, { status: 200, data: body }));
             });
 
             testAction(actions.login, [creds], authState, [
@@ -125,7 +126,7 @@ describe('Actions', () => {
         it('should save to local storage', done => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200 }));
+                next(request.respondWith(body, { status: 200, data: body }));
             });
             const dispatch = function(){};
 
@@ -142,7 +143,7 @@ describe('Actions', () => {
         it('should redirect the user', done => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200 }));
+                next(request.respondWith(body, { status: 200, data: body }));
             });
 
             const dispatch = function(){};
