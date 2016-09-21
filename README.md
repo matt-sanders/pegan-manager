@@ -4,7 +4,9 @@ The Recipe Manager will eventually become the backend manager for a recipe app. 
 
 ## Installation
 
-Recipe Manager requires PHP7 to run
+###Laravel
+
+Recipe Manager requires PHP7 and MongoDB to run. Laravel is mainly used as an API. It does serve the frontend initially but the rest is handled by VueJS. Authentication has been set up using JWT. Currently you'll need to manually create a user until I create a migrate file.
 
 Download the repo and run:
 
@@ -13,8 +15,9 @@ $ php composer.phar install
 $ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\JWTAuthServiceProvider"
 $ php artisan jwt:generate
 ```
+Make sure you copy the .env.example file to .env and .env.testing respectively.
 
-## Unit Testing
+#### Unit Testing
 
 Tests can be run with:
 
@@ -28,5 +31,15 @@ or
 $ ./vendor/bin/phpunit
 ```
 
-## To Do
-- Give admins ability to create new users (at the moment this is done by inserting a record into the db)
+Tests are located in `/tests`
+
+###VueJS
+
+This is still in development. However, once ready you can `npm install` and `npm run dev` to start gulp which will watch for changes on all js and sass files.
+
+####Unit Testing
+```sh
+npm test
+```
+
+Tests are located in `/test`
