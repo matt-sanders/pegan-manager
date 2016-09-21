@@ -16,14 +16,7 @@ Route::controllers([
     'password' => 'Auth\PasswordController'
 ]);
 
-/*Route::get('/', function () {
-    return view('welcome');
-    });*/
 Route::get('/', 'HomeController@index');
-
-Route::group(['middleware' => ['jwt.auth']], function(){
-    
-});
 
 Route::group(['prefix' => 'api', 'middleware' => 'cors'], function(){
 
