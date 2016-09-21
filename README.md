@@ -17,6 +17,8 @@ $ php artisan jwt:generate
 ```
 Make sure you copy the .env.example file to .env and .env.testing respectively.
 
+Once set up you can run `php artisan serve` to get the front-end going, but note it's very much not finished.
+
 #### Unit Testing
 
 Tests can be run with:
