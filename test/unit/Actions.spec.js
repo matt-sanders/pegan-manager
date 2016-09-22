@@ -163,6 +163,16 @@ describe('Actions', () => {
             
         });
 
+        it('handleError', done => {
+            let response = {
+                status: 401
+            };
+
+            testAction(actions.handleError, [response], authState, [
+                { name: 'SET_AUTH', payload: [false] }
+            ], done);
+        });
+
         it('setAuth', done => {
 
             testAction(actions.setAuth, [true], authState, [

@@ -40,6 +40,16 @@ export function logout({dispatch}){
 }
 
 /**
+ * Should detect 401 errors and log the user out
+ * @param {object} response
+ */
+export function handleError({dispatch}, response){
+    if ( response.status == '401' ){
+        logout({dispatch});
+    }
+}
+
+/**
  * Checks whether the user has a current token
  */
 export function checkAuth({dispatch}){
