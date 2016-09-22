@@ -5800,6 +5800,8 @@ body {
 
 .panel {
   border: none; }
+  .panel .panel-heading {
+    border-bottom: none; }
   .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6 {
     margin-top: 0;
     margin-bottom: 0; }

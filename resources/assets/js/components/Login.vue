@@ -10,7 +10,7 @@
             <formly-form :form="credentials"></formly-form>
             <div class="row">
               <div class="col-md-4 col-md-offset-4">
-                <button class="btn btn-success btn-block">{{this.working ? 'Loading...' : 'Log In'}}</button>
+                <button class="btn btn-success btn-block" :disabled="!credentials.$valid">{{this.working ? 'Loading...' : 'Log In'}}</button>
               </div>
             </div>
             
@@ -32,12 +32,14 @@
                  email: {
                      type: 'input',
                      label: 'email',
-                     inputType: 'email'
+                     inputType: 'email',
+                     required: true
                  },
                  password: {
                      type: 'input',
                      label: 'password',
-                     inputType: 'password'
+                     inputType: 'password',
+                     required: true
                  }
              },
              working: false
@@ -53,7 +55,11 @@
      methods: {
          submit() {
              this.working = true;
-             this.login(this.credentials.email.value, this.credentials.password.value);
+             let creds = {
+                 email: this.credentials.email.value,
+                 password: this.credentials.password.value
+             };
+             this.login(creds);
          }
      },
      watch: {

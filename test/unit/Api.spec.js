@@ -17,12 +17,18 @@ Vue.http.interceptors.unshift((request, next)=>{
 });
 
 let postSpy = sinon.spy(Vue.http, 'post');
+let getSpy = sinon.spy(Vue.http, 'get');
 
 describe('Api', () => {
 
     it('login', () => {
         Api.login({});
         expect(Vue.http.post).to.be.calledWith(API_URL+'authenticate', {});
+    });
+
+    it('getRecipes', () => {
+        Api.getRecipes();
+        expect(Vue.http.get).to.be.calledWith(API_URL+'recipes');
     });
     
 });

@@ -1,6 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
 import Auth from '../../resources/assets/js/vuex/modules/auth';
+import Recipes from '../../resources/assets/js/vuex/modules/recipes';
 
 let state;
 
@@ -25,6 +26,25 @@ describe('Mutations', () =>{
             expect(state.error).to.equal('Something');
         });
         
+    });
+
+    describe('Recipes', () => {
+        beforeEach(()=>{
+            state = {
+                recipes: []
+            };
+        });
+
+        it('SET_RECIPES', ()=>{
+            let recipes = [
+                {
+                    foo: 'bar',
+                    id: 'something'
+                }
+            ];
+            Recipes.mutations.SET_RECIPES(state, recipes);
+            expect(state.recipes).to.deep.equal(recipes);
+        });
     });
     
 });

@@ -95,8 +95,7 @@ describe('Actions', () => {
             Vue.http.interceptors.push((request, next) => {
                 var body = {error: 'something'};
                 next(request.respondWith(body, {
-                    status: 401,
-                    data: body
+                    status: 401
                 }));
             });
 

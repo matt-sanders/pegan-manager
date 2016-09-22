@@ -27185,12 +27185,14 @@ exports.default = {
                 email: {
                     type: 'input',
                     label: 'email',
-                    inputType: 'email'
+                    inputType: 'email',
+                    required: true
                 },
                 password: {
                     type: 'input',
                     label: 'password',
-                    inputType: 'password'
+                    inputType: 'password',
+                    required: true
                 }
             },
             working: false
@@ -27211,7 +27213,11 @@ exports.default = {
     methods: {
         submit: function submit() {
             this.working = true;
-            this.login(this.credentials.email.value, this.credentials.password.value);
+            var creds = {
+                email: this.credentials.email.value,
+                password: this.credentials.password.value
+            };
+            this.login(creds);
         }
     },
     watch: {
@@ -27221,7 +27227,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            \n            <div class=\"alert alert-danger margin-top margin-no-bottom\" role=\"alert\" v-show=\"errors &amp;&amp; !working\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\" :disabled=\"!credentials.$valid\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            \n            <div class=\"alert alert-danger margin-top margin-no-bottom\" role=\"alert\" v-show=\"errors &amp;&amp; !working\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27274,6 +27280,15 @@ function _interopRequireWildcard(obj) {
     }
 }
 
+function parseResponse(response) {
+    if (typeof response.data == 'Object') return response.data;
+    if (typeof response.body == 'string') {
+        var body = JSON.parse(response.body);
+        return body;
+    }
+    return response.body;
+}
+
 /**
 * Logs a user in
 * @param {object} creds
@@ -27284,8 +27299,9 @@ function login(_ref, creds) {
     var redirect = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
     Api.login(creds).then(function (response) {
+        var body = parseResponse(response);
         //save the token for later
-        localStorage.setItem('id_token', response.data.token);
+        localStorage.setItem('id_token', body.token);
 
         //update the store
         setAuth({ dispatch: dispatch }, true);
@@ -27296,8 +27312,9 @@ function login(_ref, creds) {
             _app.router.go(redirect);
         }
     }, function (response) {
+        var body = parseResponse(response);
         setAuth({ dispatch: dispatch }, false);
-        setAuthErr({ dispatch: dispatch }, response.data.error);
+        setAuthErr({ dispatch: dispatch }, body.error);
     });
 }
 

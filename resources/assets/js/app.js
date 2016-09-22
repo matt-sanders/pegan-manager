@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import Login from './components/Login.vue';
+import {setHeaders} from './api';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueFormly from 'vue-formly';
@@ -10,13 +11,7 @@ Vue.use(VueFormlyBootstrap);
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
-//set the headers
-Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://localhost';
-//Vue.http.headers.common['Access-Control-Request-Method'] = '*';
-//Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
-
-//check the users status when the app starts
-//auth.checkAuth();
+setHeaders();
 
 export var router = new VueRouter();
 
