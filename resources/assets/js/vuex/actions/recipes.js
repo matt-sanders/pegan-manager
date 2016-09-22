@@ -6,6 +6,12 @@ import * as Api from '../../api';
 /**
  * Should retrieve all recipes
  */
-export function getRecipes({dispatch}){
-    
+export function setRecipes({dispatch}){
+    Api.getRecipes()
+        .then( response => {
+            let body = parseResponse(response);
+            dispatch(types.SET_RECIPES, body.recipes);
+        }, response => {
+            
+        });
 }

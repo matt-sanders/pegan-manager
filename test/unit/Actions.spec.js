@@ -8,6 +8,7 @@ import VueResource from 'vue-resource';
 import * as actions from '../../resources/assets/js/vuex/actions';
 import {router} from '../../resources/assets/js/app';
 import Auth from '../../resources/assets/js/vuex/modules/auth';
+import Recipes from '../../resources/assets/js/vuex/modules/recipes';
 chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -43,134 +44,163 @@ const creds = {
 };
 
 let authState = Auth.state;
+let recipeState = Recipes.state;
 
 sinon.spy(router, 'go');
 
 describe('Actions', () => {
 
-    describe('check auth', () => {
-        it('should be false', done => {
-            localStorage.removeItem('id_token');
-            testAction(actions.checkAuth, [], authState, [
-                { name: 'SET_AUTH', payload: [false] }
-            ],done);
+    describe('Auth', () => {
+
+        describe('check auth', () => {
+            it('should be false', done => {
+                localStorage.removeItem('id_token');
+                testAction(actions.checkAuth, [], authState, [
+                    { name: 'SET_AUTH', payload: [false] }
+                ],done);
+            });
+            
+            it('should be true', done => {
+                localStorage.setItem('id_token', '1234');
+                testAction(actions.checkAuth, [], authState, [
+                    { name: 'SET_AUTH', payload: [true] }
+                ],done);
+            });
         });
-        
-        it('should be true', done => {
-            localStorage.setItem('id_token', '1234');
-            testAction(actions.checkAuth, [], authState, [
+
+        describe('logout', () => {
+            beforeEach(() => {
+                authState.authenticated = true;
+                localStorage.setItem('id_token', '1234');
+            });
+
+            it('should log the user out', done => {
+                testAction(actions.logout, [], authState, [
+                    { name: 'SET_AUTH', payload: [false] }
+                ], done);
+            });
+
+            it('should remove from local storage', () => {
+                const dispatch = function(){};
+                actions.logout({dispatch});
+                expect(localStorage.getItem('id_token')).to.equal(null);
+                expect(router.go).to.have.been.calledWith('/login');
+            });
+        });
+
+        describe('login', () => {
+            
+            beforeEach(() => {
+                authState.authenticated = false;
+                localStorage.removeItem('id_token');
+            });
+
+            it('should throw an error on unsuccesful login', done => {
+                Vue.http.interceptors.push((request, next) => {
+                    var body = {error: 'something'};
+                    next(request.respondWith(body, {
+                        status: 401
+                    }));
+                });
+
+                
+                testAction(actions.login, [creds], authState, [
+                    { name: 'SET_AUTH', payload: [false] },
+                    { name: 'SET_AUTH_ERR', payload: ['something'] }
+                ], done);
+
+                Vue.http.interceptors.shift();
+            });
+
+            it('should log the user in', done => {
+                Vue.http.interceptors.push((request, next) => {
+                    var body = {'token' : '1234'};
+                    next(request.respondWith(body, { status: 200, data: body }));
+                });
+
+                testAction(actions.login, [creds], authState, [
+                    { name: 'SET_AUTH', payload: [true] },
+                    { name: 'SET_AUTH_ERR', payload: [false] }
+                ], done);
+                
+                Vue.http.interceptors.shift();
+            });
+
+            it('should save to local storage', done => {
+                Vue.http.interceptors.push((request, next) => {
+                    var body = {'token' : '1234'};
+                    next(request.respondWith(body, { status: 200, data: body }));
+                });
+                const dispatch = function(){};
+
+                actions.login({dispatch}, creds);
+
+                setTimeout(()=>{
+                    expect(localStorage.getItem('id_token')).to.equal('1234');
+                    done();
+                }, 0);
+                
+                Vue.http.interceptors.shift();
+            });
+
+            it('should redirect the user', done => {
+                Vue.http.interceptors.push((request, next) => {
+                    var body = {'token' : '1234'};
+                    next(request.respondWith(body, { status: 200, data: body }));
+                });
+
+                const dispatch = function(){};
+                
+                actions.login({dispatch}, creds, '/test');
+
+                setTimeout(()=>{
+                    expect(router.go).to.have.been.called;
+                    done();
+                }, 0);
+
+                Vue.http.interceptors.shift();            
+            });
+            
+        });
+
+        it('setAuth', done => {
+
+            testAction(actions.setAuth, [true], authState, [
                 { name: 'SET_AUTH', payload: [true] }
-            ],done);
-        });
-    });
-
-    describe('logout', () => {
-        beforeEach(() => {
-            authState.authenticated = true;
-            localStorage.setItem('id_token', '1234');
+            ], done);
+            
         });
 
-        it('should log the user out', done => {
-            testAction(actions.logout, [], authState, [
-                { name: 'SET_AUTH', payload: [false] }
+        it('setAuthErr', done => {
+            testAction(actions.setAuthErr, ['some error'], authState,[
+                { name: 'SET_AUTH_ERR', payload: ['some error'] }
             ], done);
         });
 
-        it('should remove from local storage', () => {
-            const dispatch = function(){};
-            actions.logout({dispatch});
-            expect(localStorage.getItem('id_token')).to.equal(null);
-            expect(router.go).to.have.been.calledWith('/login');
-        });
     });
 
-    describe('login', () => {
-        
-        beforeEach(() => {
-            authState.authenticated = false;
-            localStorage.removeItem('id_token');
-        });
+    describe('Recipes', () => {
 
-        it('should throw an error on unsuccesful login', done => {
+        beforeEach(()=>{
+            recipeState.recipes = [];
+        });
+        
+        it('setRecipes', done =>{
+            let recipes = [
+                {
+                    foo: 'bar'
+                }
+            ];
             Vue.http.interceptors.push((request, next) => {
-                var body = {error: 'something'};
-                next(request.respondWith(body, {
-                    status: 401
-                }));
+                var body = {recipes: recipes};
+                next(request.respondWith(body, { status: 200, data: body }));
             });
 
-            
-            testAction(actions.login, [creds], authState, [
-                { name: 'SET_AUTH', payload: [false] },
-                { name: 'SET_AUTH_ERR', payload: ['something'] }
+            testAction(actions.setRecipes, [], recipeState, [
+                { name: 'SET_RECIPES', payload: [recipes] },
             ], done);
 
             Vue.http.interceptors.shift();
         });
-
-        it('should log the user in', done => {
-            Vue.http.interceptors.push((request, next) => {
-                var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200, data: body }));
-            });
-
-            testAction(actions.login, [creds], authState, [
-                { name: 'SET_AUTH', payload: [true] },
-                { name: 'SET_AUTH_ERR', payload: [false] }
-            ], done);
-            
-            Vue.http.interceptors.shift();
-        });
-
-        it('should save to local storage', done => {
-            Vue.http.interceptors.push((request, next) => {
-                var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200, data: body }));
-            });
-            const dispatch = function(){};
-
-            actions.login({dispatch}, creds);
-
-            setTimeout(()=>{
-                expect(localStorage.getItem('id_token')).to.equal('1234');
-                done();
-            }, 0);
-            
-            Vue.http.interceptors.shift();
-        });
-
-        it('should redirect the user', done => {
-            Vue.http.interceptors.push((request, next) => {
-                var body = {'token' : '1234'};
-                next(request.respondWith(body, { status: 200, data: body }));
-            });
-
-            const dispatch = function(){};
-            
-            actions.login({dispatch}, creds, '/test');
-
-            setTimeout(()=>{
-                expect(router.go).to.have.been.called;
-                done();
-            }, 0);
-
-            Vue.http.interceptors.shift();            
-        });
-        
     });
-
-    it('setAuth', done => {
-
-        testAction(actions.setAuth, [true], authState, [
-            { name: 'SET_AUTH', payload: [true] }
-        ], done);
-        
-    });
-
-    it('setAuthErr', done => {
-        testAction(actions.setAuthErr, ['some error'], authState,[
-            { name: 'SET_AUTH_ERR', payload: ['some error'] }
-        ], done);
-    });
-    
 });
