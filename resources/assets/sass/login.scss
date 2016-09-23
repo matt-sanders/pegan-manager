@@ -1,0 +1,11 @@
+#login
+{
+    .panel
+    {
+        @media #{$max-md}
+        {
+            margin-left: 20px;
+            margin-right: 20px;
+        }//max-md
+    }//panel
+}//login

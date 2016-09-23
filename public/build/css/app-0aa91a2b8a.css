@@ -5806,10 +5806,6 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   transition: all 0.5s ease;
   overflow: hidden;
   height: 0; }
-  #main-nav.active {
-    height: 100%; }
-    #main-nav.active .nav-item {
-      opacity: 1; }
   #main-nav:hover {
     width: 200px; }
     #main-nav:hover .nav-item a .nav-label {
@@ -5839,6 +5835,16 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
         -webkit-transition: all 0.5s ease;
         transition: all 0.5s ease; }
 
+.active #main-nav {
+  height: 100%; }
+  .active #main-nav .nav-item {
+    opacity: 1; }
+
+@media screen and (max-width: 991px) {
+  #login .panel {
+    margin-left: 20px;
+    margin-right: 20px; } }
+
 html {
   height: 100%; }
 
@@ -5850,6 +5856,11 @@ body {
   height: calc(100% - 50px);
   position: relative;
   overflow: auto; }
+  #app.active {
+    padding-left: 50px; }
+    @media screen and (min-width: 992px) {
+      #app.active {
+        padding-left: 0; } }
 
 .panel {
   border: none; }

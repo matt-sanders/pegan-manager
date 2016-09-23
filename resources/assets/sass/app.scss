@@ -8,9 +8,11 @@ $icon-font-path: "../../public/fonts/bootstrap/";
 $speed: 0.5s;
 $ease: ease;
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "./mixins";
 @import "./forms";
 @import "./margins";
 @import "./nav";
+@import "./login";
 
 
 html
@@ -29,6 +31,16 @@ body
     height: calc(100% - 50px);
     position: relative;
     overflow: auto;
+
+    &.active
+    {
+        padding-left: 50px;
+
+        @media #{$md}
+        {
+            padding-left: 0;
+        }
+    }//active
 }
 
 .panel

@@ -10,15 +10,6 @@
     overflow: hidden;
     height: 0;
 
-    &.active
-    {
-        height: 100%;
-        .nav-item
-        {
-            opacity: 1;
-        }//nav-item
-    }//active
-
     &:hover
           {
               width: 200px;
@@ -72,3 +63,15 @@
           }//nav-item
           
 }//main-nav
+
+.active
+{
+    #main-nav
+    {
+        height: 100%;
+        .nav-item
+        {
+            opacity: 1;
+        }//nav-item
+    }//main-nav
+}//active

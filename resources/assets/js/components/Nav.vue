@@ -1,5 +1,5 @@
 <template>
-  <div id="main-nav" :class="{'active': authenticated}">
+  <div id="main-nav">
     <div class="nav-item" v-for="item in items">
       <a v-link="item.route">
         <span class="glyphicon glyphicon-{{item.icon}}"></span>
@@ -30,11 +30,6 @@
                      icon: 'off'
                  }
              ]
-         }
-     },
-     vuex: {
-         getters: {
-             authenticated: state => state.auth.authenticated
          }
      }
  }

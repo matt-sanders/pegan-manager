@@ -27063,10 +27063,17 @@ exports.default = {
     components: {
         mainNav: _Nav2.default
     },
-    store: _store2.default
+    store: _store2.default,
+    vuex: {
+        getters: {
+            authenticated: function authenticated(state) {
+                return state.auth.authenticated;
+            }
+        }
+    }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n  <main-nav></main-nav>\n  <router-view></router-view>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <router-view></router-view>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27247,7 +27254,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\" :disabled=\"!credentials.$valid\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            \n            <div class=\"alert alert-danger margin-top margin-no-bottom\" role=\"alert\" v-show=\"errors &amp;&amp; !working\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n  <div class=\"row margin-top\" id=\"login\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <div class=\"panel panel-default\"> \n        <div class=\"panel-heading text-center\">\n          <h2>Login</h2>\n        </div>\n        <div class=\"panel-body\">\n          <form v-on:submit.prevent=\"submit(this.credentials.email.value, this.credentials.password.value)\">\n            <formly-form :form=\"credentials\"></formly-form>\n            <div class=\"row\">\n              <div class=\"col-md-4 col-md-offset-4\">\n                <button class=\"btn btn-success btn-block\" :disabled=\"!credentials.$valid\">{{this.working ? 'Loading...' : 'Log In'}}</button>\n              </div>\n            </div>\n            \n            <div class=\"alert alert-danger margin-top margin-no-bottom\" role=\"alert\" v-show=\"errors &amp;&amp; !working\">\n              Uh oh! Looks like something didn't quite add up. Check your details and try again.\n            </div>\n          </form>\n        </div>\n      </div>\n    </div>\n</div>"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27281,18 +27288,10 @@ exports.default = {
                 icon: 'off'
             }]
         };
-    },
-
-    vuex: {
-        getters: {
-            authenticated: function authenticated(state) {
-                return state.auth.authenticated;
-            }
-        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"main-nav\" :class=\"{'active': authenticated}\">\n  <div class=\"nav-item\" v-for=\"item in items\">\n    <a v-link=\"item.route\">\n      <span class=\"glyphicon glyphicon-{{item.icon}}\"></span>\n      <span class=\"nav-label\">{{item.label}}</span>\n    </a>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div id=\"main-nav\">\n  <div class=\"nav-item\" v-for=\"item in items\">\n    <a v-link=\"item.route\">\n      <span class=\"glyphicon glyphicon-{{item.icon}}\"></span>\n      <span class=\"nav-label\">{{item.label}}</span>\n    </a>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

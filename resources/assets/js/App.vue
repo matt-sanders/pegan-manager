@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{'active': authenticated}">
     <main-nav></main-nav>
     <router-view></router-view>
   </div>
@@ -12,6 +12,11 @@
      components: {
          mainNav
      },
-     store: store
+     store: store,
+     vuex: {
+         getters: {
+             authenticated: state => state.auth.authenticated
+         }
+     }
  }
 </script>
