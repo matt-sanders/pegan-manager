@@ -1,6 +1,6 @@
 #main-nav
 {
-    background-color: lighten($gray-base, 70%);
+    background-color: lighten(#000, 13%);
     position: absolute;
     left: 0;
     top: 0;
@@ -39,14 +39,14 @@
               {
                   display: block;
                   text-align: left;
-                  color: $text-color;
+                  color: $gray-light;
                   line-height: 40px;
                   text-decoration: none;
                   transition: all $speed $ease;
 
                   &:hover
                         {
-                            background-color: lighten($gray-base, 60%);
+                            background-color: $gray-darker;
                         }//hover
 
                   &.v-link-active

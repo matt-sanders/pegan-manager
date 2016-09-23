@@ -5796,7 +5796,7 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   margin-bottom: 0; }
 
 #main-nav {
-  background-color: #e4e4e4;
+  background-color: #212121;
   position: absolute;
   left: 0;
   top: 0;
@@ -5822,13 +5822,13 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
     #main-nav .nav-item a {
       display: block;
       text-align: left;
-      color: #646464;
+      color: #a8a8a8;
       line-height: 40px;
       text-decoration: none;
       -webkit-transition: all 0.5s ease;
       transition: all 0.5s ease; }
       #main-nav .nav-item a:hover {
-        background-color: #cacaca; }
+        background-color: #535353; }
       #main-nav .nav-item a .glyphicon {
         display: inline-block;
         vertical-align: middle;
