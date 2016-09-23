@@ -238,8 +238,8 @@ th {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot");
-  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
+  src: url("../../public/fonts/bootstrap/glyphicons-halflings-regular.eot");
+  src: url("../../public/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../../public/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("../../public/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("../../public/fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("../../public/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
 
 .glyphicon {
   position: relative;
@@ -5795,8 +5795,61 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
 .margin-no-bottom {
   margin-bottom: 0; }
 
+#main-nav {
+  background-color: #e4e4e4;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  overflow: hidden;
+  height: 0; }
+  #main-nav.active {
+    height: 100%; }
+    #main-nav.active .nav-item {
+      opacity: 1; }
+  #main-nav:hover {
+    width: 200px; }
+    #main-nav:hover .nav-item a .nav-label {
+      opacity: 1; }
+  #main-nav .nav-item {
+    width: 200px;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease 0.2s;
+    transition: opacity 0.5s ease 0.2s; }
+    #main-nav .nav-item a {
+      display: block;
+      text-align: left;
+      color: #646464;
+      line-height: 40px;
+      text-decoration: none;
+      -webkit-transition: all 0.5s ease;
+      transition: all 0.5s ease; }
+      #main-nav .nav-item a:hover {
+        background-color: #cacaca; }
+      #main-nav .nav-item a .glyphicon {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50px;
+        text-align: center; }
+      #main-nav .nav-item a .nav-label {
+        opacity: 0;
+        -webkit-transition: all 0.5s ease;
+        transition: all 0.5s ease; }
+
+html {
+  height: 100%; }
+
 body {
+  height: 100%;
   background-color: transparent; }
+
+#app {
+  height: calc(100% - 50px);
+  position: relative;
+  overflow: auto; }
 
 .panel {
   border: none; }

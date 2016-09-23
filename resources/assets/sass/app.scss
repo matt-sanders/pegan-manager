@@ -4,14 +4,31 @@ $border-radius-base: 0;
 $border-radius-large: 0;
 $border-radius-small: 0;
 $gray-base: #313131;
-
+$icon-font-path: "../../public/fonts/bootstrap/";
+$speed: 0.5s;
+$ease: ease;
 @import "../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "./forms";
 @import "./margins";
+@import "./nav";
+
+
+html
+{
+    height: 100%;
+}
 
 body
 {
+    height: 100%;
     background-color: transparent;
+}
+
+#app
+{
+    height: calc(100% - 50px);
+    position: relative;
+    overflow: auto;
 }
 
 .panel

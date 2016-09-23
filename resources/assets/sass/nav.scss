@@ -1,0 +1,74 @@
+#main-nav
+{
+    background-color: lighten($gray-base, 70%);
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 50px;
+    transition: all $speed $ease;
+    overflow: hidden;
+    height: 0;
+
+    &.active
+    {
+        height: 100%;
+        .nav-item
+        {
+            opacity: 1;
+        }//nav-item
+    }//active
+
+    &:hover
+          {
+              width: 200px;
+
+              .nav-item a .nav-label
+              {
+                  opacity: 1;
+              }//nav-label
+          }//hover
+
+          .nav-item
+          {
+              width: 200px;
+              opacity: 0;
+              transition: opacity $speed $ease 0.2s;
+              
+              a
+              {
+                  display: block;
+                  text-align: left;
+                  color: $text-color;
+                  line-height: 40px;
+                  text-decoration: none;
+                  transition: all $speed $ease;
+
+                  &:hover
+                        {
+                            background-color: lighten($gray-base, 60%);
+                        }//hover
+
+                  &.v-link-active
+                  {
+
+                  }//v-link-active
+
+                  .glyphicon
+                  {
+                      display: inline-block;
+                      vertical-align: middle;
+                      width: 50px;
+                      text-align: center;
+                  }//glyphicon
+                  
+                  .nav-label
+                  {
+                      opacity: 0;
+                      transition: all $speed $ease;
+                  }//nav-label
+              }//a
+
+          }//nav-item
+          
+}//main-nav
