@@ -6,12 +6,20 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueFormly from 'vue-formly';
 import VueFormlyBootstrap from 'vue-formly-bootstrap';
-import Login from '../../../resources/assets/js/components/Login.vue';
+const LoginInjector = require('!!vue?inject!../../../resources/assets/js/components/Login.vue');
 import auth from '../../../resources/assets/js/vuex/modules/auth';
 Vue.use(Vuex);
 Vue.use(VueFormly);
 Vue.use(VueFormlyBootstrap);
 chai.use(sinonChai);
+
+let LoginSpy = sinon.spy();
+
+const LoginWithMocks = LoginInjector({
+    '../vuex/actions/auth': {
+        login: LoginSpy
+    }
+});
 
 let store = new Vuex.Store({
     modules: {
@@ -23,7 +31,7 @@ const getComponent = () => {
     let vm = new Vue({
         template: '<div><login v-ref:login></login></div>',
         components: {
-            Login
+            login: LoginWithMocks
         },
         store: store
     }).$mount();
@@ -34,29 +42,18 @@ const getComponent = () => {
 describe('Login', () => {
     
     it('should trigger login', () => {
-        return;
-        /*
-        sinon.stub(actions, 'login').returns({});
 
         let vm = getComponent();
 
         let loginComp = vm.$refs.login;
 
         loginComp.credentials.email.value = 'test@test.com';
-        loginComp.credentials.email.password = 'testing';
+        loginComp.credentials.password.value = 'testing';
 
-        vm.$el.querySelectorAll('form')[0].submit();
-        //vm.$el.querySelectorAll('button')[0].click();
+        loginComp.submit();
 
-        expect(actions.login).to.be.called;
-         */
-
-        /*const stubs = {
-            '../vuex/actions': {
-                login: function(){console.log('hit');}
-            }
-        };*/
-        //const proxyquire = require('proxyquireify')(require)
+        expect(LoginSpy).to.be.called;
+        expect(LoginSpy.args[0][1]).to.deep.equal({ email: 'test@test.com', password: 'testing'});
 
     });
     
