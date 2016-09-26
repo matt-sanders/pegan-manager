@@ -4,8 +4,8 @@ import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Vue from 'vue';
 import VueResource from 'vue-resource';
-import * as Api from '../../resources/assets/js/api';
-import {API_URL} from '../../resources/assets/js/constants';
+import * as Api from '../../../resources/assets/js/api';
+import {API_URL} from '../../../resources/assets/js/constants';
 chai.use(sinonChai);
 Vue.use(VueResource);
 

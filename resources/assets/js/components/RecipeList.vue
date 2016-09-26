@@ -10,7 +10,7 @@
 </template>
 
 <script>
- import * as actions from '../vuex/actions';
+ import * as recipeActions from '../vuex/actions/recipes';
  export default {
      data() {
 
@@ -20,7 +20,7 @@
              recipes: state => state.recipes.recipes
          },
          actions: {
-             setRecipes: actions.setRecipes
+             setRecipes: recipeActions.setRecipes
          }
      },
      created(){

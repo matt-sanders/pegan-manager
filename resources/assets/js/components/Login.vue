@@ -24,7 +24,7 @@
 </template>
 
 <script>
- import * as actions from '../vuex/actions';
+ import * as authActions from '../vuex/actions/auth';
  export default {
      data() {
          return {
@@ -50,7 +50,7 @@
              authenticated: state => state.auth.authenticated,
              errors: state => state.auth.error            
          },
-         actions: { login: actions.login }
+         actions: { login: authActions.login }
      },
      methods: {
          submit() {

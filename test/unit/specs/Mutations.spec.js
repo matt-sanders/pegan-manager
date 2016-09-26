@@ -1,7 +1,7 @@
 import chai from 'chai';
 const expect = chai.expect;
-import Auth from '../../resources/assets/js/vuex/modules/auth';
-import Recipes from '../../resources/assets/js/vuex/modules/recipes';
+import Auth from '../../../resources/assets/js/vuex/modules/auth';
+import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
 
 let state;
 

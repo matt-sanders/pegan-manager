@@ -5,10 +5,11 @@ import sinon from 'sinon';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import * as actions from '../../resources/assets/js/vuex/actions';
-import {router} from '../../resources/assets/js/app';
-import Auth from '../../resources/assets/js/vuex/modules/auth';
-import Recipes from '../../resources/assets/js/vuex/modules/recipes';
+import * as authActions from '../../../resources/assets/js/vuex/actions/auth';
+import * as recipeActions from '../../../resources/assets/js/vuex/actions/recipes';
+import {router} from '../../../resources/assets/js/app';
+import Auth from '../../../resources/assets/js/vuex/modules/auth';
+import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
 chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -55,14 +56,14 @@ describe('Actions', () => {
         describe('check auth', () => {
             it('should be false', done => {
                 localStorage.removeItem('id_token');
-                testAction(actions.checkAuth, [], authState, [
+                testAction(authActions.checkAuth, [], authState, [
                     { name: 'SET_AUTH', payload: [false] }
                 ],done);
             });
             
             it('should be true', done => {
                 localStorage.setItem('id_token', '1234');
-                testAction(actions.checkAuth, [], authState, [
+                testAction(authActions.checkAuth, [], authState, [
                     { name: 'SET_AUTH', payload: [true] }
                 ],done);
             });
@@ -75,14 +76,14 @@ describe('Actions', () => {
             });
 
             it('should log the user out', done => {
-                testAction(actions.logout, [], authState, [
+                testAction(authActions.logout, [], authState, [
                     { name: 'SET_AUTH', payload: [false] }
                 ], done);
             });
 
             it('should remove from local storage', () => {
                 const dispatch = function(){};
-                actions.logout({dispatch});
+                authActions.logout({dispatch});
                 expect(localStorage.getItem('id_token')).to.equal(null);
                 expect(router.go).to.have.been.calledWith('/login');
             });
@@ -104,7 +105,7 @@ describe('Actions', () => {
                 });
 
                 
-                testAction(actions.login, [creds], authState, [
+                testAction(authActions.login, [creds], authState, [
                     { name: 'SET_AUTH', payload: [false] },
                     { name: 'SET_AUTH_ERR', payload: ['something'] }
                 ], done);
@@ -118,7 +119,7 @@ describe('Actions', () => {
                     next(request.respondWith(body, { status: 200, data: body }));
                 });
 
-                testAction(actions.login, [creds], authState, [
+                testAction(authActions.login, [creds], authState, [
                     { name: 'SET_AUTH', payload: [true] },
                     { name: 'SET_AUTH_ERR', payload: [false] }
                 ], done);
@@ -133,7 +134,7 @@ describe('Actions', () => {
                 });
                 const dispatch = function(){};
 
-                actions.login({dispatch}, creds);
+                authActions.login({dispatch}, creds);
 
                 setTimeout(()=>{
                     expect(localStorage.getItem('id_token')).to.equal('1234');
@@ -151,7 +152,7 @@ describe('Actions', () => {
 
                 const dispatch = function(){};
                 
-                actions.login({dispatch}, creds, '/test');
+                authActions.login({dispatch}, creds, '/test');
 
                 setTimeout(()=>{
                     expect(router.go).to.have.been.called;
@@ -168,21 +169,21 @@ describe('Actions', () => {
                 status: 401
             };
 
-            testAction(actions.handleError, [response], authState, [
+            testAction(authActions.handleError, [response], authState, [
                 { name: 'SET_AUTH', payload: [false] }
             ], done);
         });
 
         it('setAuth', done => {
 
-            testAction(actions.setAuth, [true], authState, [
+            testAction(authActions.setAuth, [true], authState, [
                 { name: 'SET_AUTH', payload: [true] }
             ], done);
             
         });
 
         it('setAuthErr', done => {
-            testAction(actions.setAuthErr, ['some error'], authState,[
+            testAction(authActions.setAuthErr, ['some error'], authState,[
                 { name: 'SET_AUTH_ERR', payload: ['some error'] }
             ], done);
         });
@@ -206,7 +207,7 @@ describe('Actions', () => {
                 next(request.respondWith(body, { status: 200, data: body }));
             });
 
-            testAction(actions.setRecipes, [], recipeState, [
+            testAction(recipeActions.setRecipes, [], recipeState, [
                 { name: 'SET_RECIPES', payload: [recipes] },
             ], done);
 
