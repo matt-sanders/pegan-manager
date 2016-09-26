@@ -6,12 +6,20 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueFormly from 'vue-formly';
 import VueFormlyBootstrap from 'vue-formly-bootstrap';
-import RecipeList from '../../../resources/assets/js/components/RecipeList.vue';
+const RecipeListInjector = require('!!vue?inject!../../../resources/assets/js/components/RecipeList.vue');
 import recipes from '../../../resources/assets/js/vuex/modules/recipes';
 Vue.use(Vuex);
 Vue.use(VueFormly);
 Vue.use(VueFormlyBootstrap);
 chai.use(sinonChai);
+
+let RecipeSpy = sinon.spy();
+
+const RecipeListWithMocks = RecipeListInjector({
+    '../vuex/actions/recipes': {
+        setRecipes: RecipeSpy
+    }
+});
 
 let store = new Vuex.Store({
     modules:{
@@ -23,7 +31,7 @@ const getComponent = () => {
     let vm = new Vue({
         template: '<div><recipe-list v-ref:recipe></recipe-list></div>',
         components: {
-            RecipeList
+            'recipe-list': RecipeListWithMocks
         },
         store: store
     }).$mount();
@@ -34,13 +42,7 @@ const getComponent = () => {
 describe('RecipeList', () => {
     it('should display error on no recipes', () => {
 
-        /*
-        console.log(actions);
-        sinon.stub(actions,'setRecipes', () => {
-
-        });
-
-        actions.setRecipes.restore();
-         */
+        getComponent();
+        expect(RecipeSpy).to.be.called;
     });
 });
