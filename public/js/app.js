@@ -27637,7 +27637,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n  <div v-show=\"recipes.length > 0\" class=\"recipe-list\">\n    \n  </div>\n  <div v-show=\"recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n\n  {{recipes.length}}\n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"margin-top\">\n  <div v-show=\"recipes.recipes.length > 0\" class=\"recipe-list\">\n    \n  </div>\n  <div v-show=\"recipes.recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n  \n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27787,6 +27787,7 @@ function setRecipes(_ref) {
 
     Api.getRecipes().then(function (response) {
         var body = (0, _utils.parseResponse)(response);
+        console.log(body.recipes);
         dispatch(types.SET_RECIPES, body.recipes);
     }, function (response) {});
 }

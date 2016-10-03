@@ -10,6 +10,7 @@ export function setRecipes({dispatch}){
     Api.getRecipes()
         .then( response => {
             let body = parseResponse(response);
+            console.log(body.recipes);
             dispatch(types.SET_RECIPES, body.recipes);
         }, response => {
             
