@@ -8,7 +8,7 @@
         <form v-on:submit.prevent="submit">
           <formly-form :form="recipeForm">
             <button class="btn btn-success" :disabled="!recipeForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
-            <a class="btn btn-default" v-link="/recipes">Cancel</a>
+            <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
           </formly-form>
         </form>
       </div>

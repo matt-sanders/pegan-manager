@@ -27593,7 +27593,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n      \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"/recipes\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n      \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
