@@ -59,7 +59,7 @@
                  email: this.credentials.email.value,
                  password: this.credentials.password.value
              };
-             this.login(creds);
+             this.login(creds, 'recipes');
          }
      },
      watch: {

@@ -1,13 +1,16 @@
 <template>
   <div :class="{'active': authenticated}">
     <main-nav></main-nav>
-    <router-view></router-view>
+    <div class="container-fluid">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
  import store from './vuex/store';
  import mainNav from './components/Nav.vue';
+ import {checkAuth} from './vuex/actions/auth';
  export default {
      components: {
          mainNav
@@ -16,7 +19,13 @@
      vuex: {
          getters: {
              authenticated: state => state.auth.authenticated
+         },
+         actions: {
+             checkAuth: checkAuth
          }
+     },
+     created(){
+         this.checkAuth();
      }
  }
 </script>

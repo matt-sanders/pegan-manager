@@ -1,4 +1,220 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
+},{"core-js/library/fn/object/define-property":3}],2:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+
+var _defineProperty = require("../core-js/object/define-property");
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (obj, key, value) {
+  if (key in obj) {
+    (0, _defineProperty2.default)(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+};
+},{"../core-js/object/define-property":1}],3:[function(require,module,exports){
+require('../../modules/es6.object.define-property');
+var $Object = require('../../modules/_core').Object;
+module.exports = function defineProperty(it, key, desc){
+  return $Object.defineProperty(it, key, desc);
+};
+},{"../../modules/_core":6,"../../modules/es6.object.define-property":19}],4:[function(require,module,exports){
+module.exports = function(it){
+  if(typeof it != 'function')throw TypeError(it + ' is not a function!');
+  return it;
+};
+},{}],5:[function(require,module,exports){
+var isObject = require('./_is-object');
+module.exports = function(it){
+  if(!isObject(it))throw TypeError(it + ' is not an object!');
+  return it;
+};
+},{"./_is-object":15}],6:[function(require,module,exports){
+var core = module.exports = {version: '2.4.0'};
+if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
+},{}],7:[function(require,module,exports){
+// optional / simple context binding
+var aFunction = require('./_a-function');
+module.exports = function(fn, that, length){
+  aFunction(fn);
+  if(that === undefined)return fn;
+  switch(length){
+    case 1: return function(a){
+      return fn.call(that, a);
+    };
+    case 2: return function(a, b){
+      return fn.call(that, a, b);
+    };
+    case 3: return function(a, b, c){
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function(/* ...args */){
+    return fn.apply(that, arguments);
+  };
+};
+},{"./_a-function":4}],8:[function(require,module,exports){
+// Thank's IE8 for his funny defineProperty
+module.exports = !require('./_fails')(function(){
+  return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
+});
+},{"./_fails":11}],9:[function(require,module,exports){
+var isObject = require('./_is-object')
+  , document = require('./_global').document
+  // in old IE typeof document.createElement is 'object'
+  , is = isObject(document) && isObject(document.createElement);
+module.exports = function(it){
+  return is ? document.createElement(it) : {};
+};
+},{"./_global":12,"./_is-object":15}],10:[function(require,module,exports){
+var global    = require('./_global')
+  , core      = require('./_core')
+  , ctx       = require('./_ctx')
+  , hide      = require('./_hide')
+  , PROTOTYPE = 'prototype';
+
+var $export = function(type, name, source){
+  var IS_FORCED = type & $export.F
+    , IS_GLOBAL = type & $export.G
+    , IS_STATIC = type & $export.S
+    , IS_PROTO  = type & $export.P
+    , IS_BIND   = type & $export.B
+    , IS_WRAP   = type & $export.W
+    , exports   = IS_GLOBAL ? core : core[name] || (core[name] = {})
+    , expProto  = exports[PROTOTYPE]
+    , target    = IS_GLOBAL ? global : IS_STATIC ? global[name] : (global[name] || {})[PROTOTYPE]
+    , key, own, out;
+  if(IS_GLOBAL)source = name;
+  for(key in source){
+    // contains in native
+    own = !IS_FORCED && target && target[key] !== undefined;
+    if(own && key in exports)continue;
+    // export native or passed
+    out = own ? target[key] : source[key];
+    // prevent global pollution for namespaces
+    exports[key] = IS_GLOBAL && typeof target[key] != 'function' ? source[key]
+    // bind timers to global for call from export context
+    : IS_BIND && own ? ctx(out, global)
+    // wrap global constructors for prevent change them in library
+    : IS_WRAP && target[key] == out ? (function(C){
+      var F = function(a, b, c){
+        if(this instanceof C){
+          switch(arguments.length){
+            case 0: return new C;
+            case 1: return new C(a);
+            case 2: return new C(a, b);
+          } return new C(a, b, c);
+        } return C.apply(this, arguments);
+      };
+      F[PROTOTYPE] = C[PROTOTYPE];
+      return F;
+    // make static versions for prototype methods
+    })(out) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+    // export proto methods to core.%CONSTRUCTOR%.methods.%NAME%
+    if(IS_PROTO){
+      (exports.virtual || (exports.virtual = {}))[key] = out;
+      // export proto methods to core.%CONSTRUCTOR%.prototype.%NAME%
+      if(type & $export.R && expProto && !expProto[key])hide(expProto, key, out);
+    }
+  }
+};
+// type bitmap
+$export.F = 1;   // forced
+$export.G = 2;   // global
+$export.S = 4;   // static
+$export.P = 8;   // proto
+$export.B = 16;  // bind
+$export.W = 32;  // wrap
+$export.U = 64;  // safe
+$export.R = 128; // real proto method for `library` 
+module.exports = $export;
+},{"./_core":6,"./_ctx":7,"./_global":12,"./_hide":13}],11:[function(require,module,exports){
+module.exports = function(exec){
+  try {
+    return !!exec();
+  } catch(e){
+    return true;
+  }
+};
+},{}],12:[function(require,module,exports){
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
+},{}],13:[function(require,module,exports){
+var dP         = require('./_object-dp')
+  , createDesc = require('./_property-desc');
+module.exports = require('./_descriptors') ? function(object, key, value){
+  return dP.f(object, key, createDesc(1, value));
+} : function(object, key, value){
+  object[key] = value;
+  return object;
+};
+},{"./_descriptors":8,"./_object-dp":16,"./_property-desc":17}],14:[function(require,module,exports){
+module.exports = !require('./_descriptors') && !require('./_fails')(function(){
+  return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
+});
+},{"./_descriptors":8,"./_dom-create":9,"./_fails":11}],15:[function(require,module,exports){
+module.exports = function(it){
+  return typeof it === 'object' ? it !== null : typeof it === 'function';
+};
+},{}],16:[function(require,module,exports){
+var anObject       = require('./_an-object')
+  , IE8_DOM_DEFINE = require('./_ie8-dom-define')
+  , toPrimitive    = require('./_to-primitive')
+  , dP             = Object.defineProperty;
+
+exports.f = require('./_descriptors') ? Object.defineProperty : function defineProperty(O, P, Attributes){
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if(IE8_DOM_DEFINE)try {
+    return dP(O, P, Attributes);
+  } catch(e){ /* empty */ }
+  if('get' in Attributes || 'set' in Attributes)throw TypeError('Accessors not supported!');
+  if('value' in Attributes)O[P] = Attributes.value;
+  return O;
+};
+},{"./_an-object":5,"./_descriptors":8,"./_ie8-dom-define":14,"./_to-primitive":18}],17:[function(require,module,exports){
+module.exports = function(bitmap, value){
+  return {
+    enumerable  : !(bitmap & 1),
+    configurable: !(bitmap & 2),
+    writable    : !(bitmap & 4),
+    value       : value
+  };
+};
+},{}],18:[function(require,module,exports){
+// 7.1.1 ToPrimitive(input [, PreferredType])
+var isObject = require('./_is-object');
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+module.exports = function(it, S){
+  if(!isObject(it))return it;
+  var fn, val;
+  if(S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it)))return val;
+  if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+},{"./_is-object":15}],19:[function(require,module,exports){
+var $export = require('./_export');
+// 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
+$export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
+},{"./_descriptors":8,"./_export":10,"./_object-dp":16}],20:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -180,7 +396,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],2:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 /**
  * vue-formly-bootstrap v1.0.1
  * https://github.com/matt-sanders/vue-formly-bootstrap
@@ -1057,7 +1273,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])))
 });
 ;
-},{"vue":7,"vue-hot-reload-api":4}],3:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23}],22:[function(require,module,exports){
 /**
  * vue-formly v0.1.2
  * https://github.com/matt-sanders/vue-formly
@@ -11978,7 +12194,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-},{"vue":7,"vue-hot-reload-api":4}],4:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23}],23:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -12279,7 +12495,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],5:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /*!
  * vue-resource v0.9.3
  * https://github.com/vuejs/vue-resource
@@ -13592,7 +13808,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],6:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 /*!
  * vue-router v0.7.13
  * (c) 2016 Evan You
@@ -16302,7 +16518,7 @@ module.exports = plugin;
   return Router;
 
 }));
-},{}],7:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -26379,7 +26595,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":1}],8:[function(require,module,exports){
+},{"_process":20}],27:[function(require,module,exports){
 /*!
  * Vuex v1.0.0-rc.2
  * (c) 2016 Evan You
@@ -27042,7 +27258,7 @@ module.exports = Vue;
   return index;
 
 }));
-},{}],9:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27057,6 +27273,8 @@ var _Nav = require('./components/Nav.vue');
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
+var _auth = require('./vuex/actions/auth');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -27069,11 +27287,17 @@ exports.default = {
             authenticated: function authenticated(state) {
                 return state.auth.authenticated;
             }
+        },
+        actions: {
+            checkAuth: _auth.checkAuth
         }
+    },
+    created: function created() {
+        this.checkAuth();
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <router-view></router-view>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27084,7 +27308,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Nav.vue":13,"./vuex/store":21,"vue":7,"vue-hot-reload-api":4}],10:[function(require,module,exports){
+},{"./components/Nav.vue":32,"./vuex/actions/auth":36,"./vuex/store":42,"vue":26,"vue-hot-reload-api":23}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27104,32 +27328,20 @@ function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
 }
 
-/**
- * Makes a request to the login url
- * @param {object} creds
- * @return {Promise}
- */
 function login(creds) {
   return _vue2.default.http.post(_constants.API_URL + 'authenticate', creds);
 }
 
-/**
- * Sets the authorisation header
- */
 function setHeaders() {
   _vue2.default.http.headers.common['Access-Control-Allow-Origin'] = 'http://localhost';
   _vue2.default.http.headers.common['Authorization'] = 'Bearer' + localStorage.getItem('id_token');
 }
 
-/**
- * Retrieves all available recipes
- * @return {Promise}
- */
 function getRecipes() {
   return _vue2.default.http.get(_constants.API_URL + 'recipes');
 }
 
-},{"../constants":14,"vue":7}],11:[function(require,module,exports){
+},{"../constants":35,"vue":26}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27148,6 +27360,14 @@ var _App2 = _interopRequireDefault(_App);
 var _Login = require('./components/Login.vue');
 
 var _Login2 = _interopRequireDefault(_Login);
+
+var _RecipeList = require('./components/RecipeList.vue');
+
+var _RecipeList2 = _interopRequireDefault(_RecipeList);
+
+var _RecipeEdit = require('./components/RecipeEdit.vue');
+
+var _RecipeEdit2 = _interopRequireDefault(_RecipeEdit);
 
 var _api = require('./api');
 
@@ -27183,6 +27403,12 @@ var router = exports.router = new _vueRouter2.default();
 router.map({
     '/login': {
         component: _Login2.default
+    },
+    '/recipes': {
+        component: _RecipeList2.default
+    },
+    '/recipe/:recipeId': {
+        component: _RecipeEdit2.default
     }
 });
 
@@ -27192,16 +27418,16 @@ router.redirect({
 
 router.start(_App2.default, '#app');
 
-},{"./App.vue":9,"./api":10,"./components/Login.vue":12,"vue":7,"vue-formly":3,"vue-formly-bootstrap":2,"vue-resource":5,"vue-router":6}],12:[function(require,module,exports){
+},{"./App.vue":28,"./api":29,"./components/Login.vue":31,"./components/RecipeEdit.vue":33,"./components/RecipeList.vue":34,"vue":26,"vue-formly":22,"vue-formly-bootstrap":21,"vue-resource":24,"vue-router":25}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _actions = require('../vuex/actions');
+var _auth = require('../vuex/actions/auth');
 
-var actions = _interopRequireWildcard(_actions);
+var authActions = _interopRequireWildcard(_auth);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -27235,7 +27461,7 @@ exports.default = {
                 return state.auth.error;
             }
         },
-        actions: { login: actions.login }
+        actions: { login: authActions.login }
     },
     methods: {
         submit: function submit() {
@@ -27244,7 +27470,7 @@ exports.default = {
                 email: this.credentials.email.value,
                 password: this.credentials.password.value
             };
-            this.login(creds);
+            this.login(creds, 'recipes');
         }
     },
     watch: {
@@ -27265,7 +27491,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-63f434e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions":15,"vue":7,"vue-hot-reload-api":4}],13:[function(require,module,exports){
+},{"../vuex/actions/auth":36,"vue":26,"vue-hot-reload-api":23}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27276,15 +27502,11 @@ exports.default = {
         return {
             items: [{
                 label: 'Recipes',
-                route: 'recipes',
+                route: '/recipes',
                 icon: 'cutlery'
             }, {
-                label: 'Ingredients',
-                route: 'ingredients',
-                icon: 'apple'
-            }, {
                 label: 'Logout',
-                route: 'logout',
+                route: '/logout',
                 icon: 'off'
             }]
         };
@@ -27302,7 +27524,131 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78a23448", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":7,"vue-hot-reload-api":4}],14:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23}],33:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    data: function data() {
+        return {
+            working: false,
+            newRecipe: false,
+            recipeForm: {
+                title: {
+                    type: 'input',
+                    label: 'title',
+                    required: true
+                },
+                prep: {
+                    type: 'input',
+                    label: 'prep time'
+                },
+                cook: {
+                    type: 'input',
+                    label: 'cook time'
+                },
+                'yield': {
+                    type: 'input',
+                    label: 'yield'
+                },
+                desc: {
+                    type: 'textarea',
+                    label: 'desc',
+                    required: true
+                },
+                directions: {
+                    type: 'textarea',
+                    label: 'directions',
+                    required: true
+                },
+                tags: {
+                    type: 'input',
+                    label: 'tags'
+                },
+                link: {
+                    type: 'input',
+                    label: 'link'
+                },
+                image: {
+                    type: 'input',
+                    label: 'image',
+                    inputType: 'file'
+                }
+            }
+        };
+    },
+
+    methods: {
+        submit: function submit() {
+            if (this.working) return;
+            this.working = true;
+        }
+    },
+    created: function created() {
+        if (this.$route.params.recipeId == 'new') {
+            this.newRecipe = true;
+        } else {}
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n      \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"/recipes\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-78b15c8f", module.exports)
+  } else {
+    hotAPI.update("_v-78b15c8f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":26,"vue-hot-reload-api":23}],34:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _recipes = require('../vuex/actions/recipes');
+
+var recipeActions = _interopRequireWildcard(_recipes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+exports.default = {
+    data: function data() {
+        return {};
+    },
+
+    vuex: {
+        getters: {
+            recipes: function recipes(state) {
+                return state.recipes;
+            }
+        },
+        actions: {
+            setRecipes: recipeActions.setRecipes
+        }
+    },
+    created: function created() {
+        this.setRecipes();
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div>\n  <div v-show=\"recipes.length > 0\" class=\"recipe-list\">\n    \n  </div>\n  <div v-show=\"recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n\n  {{recipes.length}}\n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-69693523", module.exports)
+  } else {
+    hotAPI.update("_v-69693523", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../vuex/actions/recipes":37,"vue":26,"vue-hot-reload-api":23}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27310,38 +27656,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
-},{}],15:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _auth = require('./actions/auth');
-
-Object.keys(_auth).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _auth[key];
-    }
-  });
-});
-
-var _recipes = require('./actions/recipes');
-
-Object.keys(_recipes).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _recipes[key];
-    }
-  });
-});
-
-},{"./actions/auth":16,"./actions/recipes":17}],16:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27378,25 +27693,18 @@ function _interopRequireWildcard(obj) {
     }
 }
 
-/**
-* Logs a user in
-* @param {object} creds
-* @param {string} redirect
-*/
 function login(_ref, creds) {
     var dispatch = _ref.dispatch;
     var redirect = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
     Api.login(creds).then(function (response) {
         var body = (0, _utils.parseResponse)(response);
-        //save the token for later
+
         localStorage.setItem('id_token', body.token);
 
-        //update the store
         setAuth({ dispatch: dispatch }, true);
         setAuthErr({ dispatch: dispatch }, false);
 
-        //redirect if we need to
         if (redirect) {
             _app.router.go(redirect);
         }
@@ -27407,9 +27715,6 @@ function login(_ref, creds) {
     });
 }
 
-/**
- * Logs a user out
- */
 function logout(_ref2) {
     var dispatch = _ref2.dispatch;
 
@@ -27418,10 +27723,6 @@ function logout(_ref2) {
     _app.router.go('/login');
 }
 
-/**
- * Should detect 401 errors and log the user out
- * @param {object} response
- */
 function handleError(_ref3, response) {
     var dispatch = _ref3.dispatch;
 
@@ -27430,9 +27731,6 @@ function handleError(_ref3, response) {
     }
 }
 
-/**
- * Checks whether the user has a current token
- */
 function checkAuth(_ref4) {
     var dispatch = _ref4.dispatch;
 
@@ -27440,27 +27738,19 @@ function checkAuth(_ref4) {
     setAuth({ dispatch: dispatch }, !!jwt);
 }
 
-/**
-* Set the app state to be authed or not
-* @param {boolean} authenticated
-*/
 function setAuth(_ref5, authenticated) {
     var dispatch = _ref5.dispatch;
 
     dispatch(types.SET_AUTH, authenticated);
 }
 
-/**
-* Set any authentication errors
-* @param {string/object/null/boolean} error
-*/
 function setAuthErr(_ref6, error) {
     var dispatch = _ref6.dispatch;
 
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":10,"../../app":11,"../mutation-types":20,"./utils.js":18}],17:[function(require,module,exports){
+},{"../../api":29,"../../app":30,"../mutation-types":41,"./utils.js":38}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27492,9 +27782,6 @@ function _interopRequireWildcard(obj) {
     }
 }
 
-/**
- * Should retrieve all recipes
- */
 function setRecipes(_ref) {
     var dispatch = _ref.dispatch;
 
@@ -27504,7 +27791,7 @@ function setRecipes(_ref) {
     }, function (response) {});
 }
 
-},{"../../api":10,"../../app":11,"../mutation-types":20,"./utils.js":18}],18:[function(require,module,exports){
+},{"../../api":29,"../../app":30,"../mutation-types":41,"./utils.js":38}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27520,23 +27807,23 @@ function parseResponse(response) {
     return response.body;
 }
 
-},{}],19:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 var _mutations;
 
 var _mutationTypes = require('../mutation-types');
 
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });
-    } else {
-        obj[key] = value;
-    }return obj;
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
 }
 
 var state = {
@@ -27544,9 +27831,9 @@ var state = {
     error: false
 };
 
-var mutations = (_mutations = {}, _defineProperty(_mutations, _mutationTypes.SET_AUTH, function (state, isAuthenticated) {
+var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_AUTH, function (state, isAuthenticated) {
     state.authenticated = isAuthenticated;
-}), _defineProperty(_mutations, _mutationTypes.SET_AUTH_ERR, function (state, error) {
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_AUTH_ERR, function (state, error) {
     state.error = error;
 }), _mutations);
 
@@ -27555,7 +27842,37 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":20}],20:[function(require,module,exports){
+},{"../mutation-types":41,"babel-runtime/helpers/defineProperty":2}],40:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _mutationTypes = require('../mutation-types');
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+var state = {
+    recipes: []
+};
+
+var mutations = (0, _defineProperty3.default)({}, _mutationTypes.SET_RECIPES, function (state, recipes) {
+    state.recipes = recipes;
+});
+
+exports.default = {
+    state: state,
+    mutations: mutations
+};
+
+},{"../mutation-types":41,"babel-runtime/helpers/defineProperty":2}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27565,7 +27882,7 @@ var SET_AUTH = exports.SET_AUTH = 'SET_AUTH';
 var SET_AUTH_ERR = exports.SET_AUTH_ERR = 'SET_AUTH_ERR';
 var SET_RECIPES = exports.SET_RECIPES = 'SET_RECIPES';
 
-},{}],21:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27584,6 +27901,10 @@ var _auth = require('./modules/auth');
 
 var _auth2 = _interopRequireDefault(_auth);
 
+var _recipes = require('./modules/recipes');
+
+var _recipes2 = _interopRequireDefault(_recipes);
+
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -27592,10 +27913,11 @@ _vue2.default.use(_vuex2.default);
 
 exports.default = new _vuex2.default.Store({
     modules: {
-        auth: _auth2.default
+        auth: _auth2.default,
+        recipes: _recipes2.default
     }
 });
 
-},{"./modules/auth":19,"vue":7,"vuex":8}]},{},[11]);
+},{"./modules/auth":39,"./modules/recipes":40,"vue":26,"vuex":27}]},{},[30]);
 
 //# sourceMappingURL=app.js.map

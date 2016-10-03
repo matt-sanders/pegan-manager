@@ -16,17 +16,12 @@
              items: [
                  {
                      label: 'Recipes',
-                     route: 'recipes',
+                     route: '/recipes',
                      icon: 'cutlery'
                  },
                  {
-                     label: 'Ingredients',
-                     route: 'ingredients',
-                     icon: 'apple'
-                 },
-                 {
                      label: 'Logout',
-                     route: 'logout',
+                     route: '/logout',
                      icon: 'off'
                  }
              ]

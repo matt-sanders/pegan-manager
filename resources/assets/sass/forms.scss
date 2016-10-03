@@ -6,10 +6,10 @@ form
         {
             font-weight: normal;
             position: relative;
-            top: 20px;
             outline: none;
-            margin-bottom: 0;
             transition: all 0.3s ease;
+            font-size: 0.8em;
+            color: lighten($gray-dark, 10%);
         }//label
         
         input.form-control
@@ -21,8 +21,20 @@ form
             padding-left: 0;
             padding-top: 0;
             height: 25px;
+            background-color: transparent;
             color: $gray-dark;
         }//input
+
+        &.formly-input
+        {
+            label
+            {
+                top: 20px;
+                margin-bottom: 0;
+                font-size: 1em;
+                color: $gray-base;
+            }//label
+        }//formly-input
 
         &.formly-has-value,
         &.formly-has-focus
@@ -31,7 +43,7 @@ form
              {
                  top: 0;
                  font-size: 0.8em;
-                 color: $gray-light;
+                 color: lighten($gray-dark, 10%);
              }//label
          }//active, value
     }//form-group

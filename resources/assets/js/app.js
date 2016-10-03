@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 import Login from './components/Login.vue';
+import RecipeList from './components/RecipeList.vue';
+import RecipeEdit from './components/RecipeEdit.vue';
 import {setHeaders} from './api';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
@@ -18,6 +20,12 @@ export var router = new VueRouter();
 router.map({
     '/login': {
         component: Login
+    },
+    '/recipes': {
+        component: RecipeList
+    },
+    '/recipe/:recipeId': {
+        component: RecipeEdit
     }
 });
 

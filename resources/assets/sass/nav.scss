@@ -9,6 +9,7 @@
     transition: all $speed $ease;
     overflow: hidden;
     height: 0;
+    z-index: 20;
 
     &:hover
           {
