@@ -25,3 +25,12 @@ export function setHeaders(){
 export function getRecipes(){
     return Vue.http.get(API_URL+'recipes');
 }
+
+/**
+ * Saves a recipe
+ * @param {object} $recipe
+ * @return {Promise}
+ */
+export function saveRecipe(recipe){
+    return Vue.http.post(API_URL+'recipe', recipe);
+}

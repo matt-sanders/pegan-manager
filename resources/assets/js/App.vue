@@ -1,5 +1,6 @@
 <template>
   <div :class="{'active': authenticated}">
+    <loader></loader>
     <main-nav></main-nav>
     <div class="container-fluid">
       <router-view></router-view>
@@ -10,10 +11,12 @@
 <script>
  import store from './vuex/store';
  import mainNav from './components/Nav.vue';
+ import Loader from './components/Loader.vue';
  import {checkAuth} from './vuex/actions/auth';
  export default {
      components: {
-         mainNav
+         mainNav,
+         Loader
      },
      store: store,
      vuex: {

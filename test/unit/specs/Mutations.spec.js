@@ -31,7 +31,9 @@ describe('Mutations', () =>{
     describe('Recipes', () => {
         beforeEach(()=>{
             state = {
-                recipes: []
+                recipes: [],
+                saving_recipe: false,
+                recipe_err: false
             };
         });
 
@@ -44,6 +46,25 @@ describe('Mutations', () =>{
             ];
             Recipes.mutations.SET_RECIPES(state, recipes);
             expect(state.recipes).to.deep.equal(recipes);
+        });
+
+        it('ADD_RECIPE', () => {
+            let recipe = {
+                title: 'test'
+            };
+            Recipes.mutations.ADD_RECIPE(state, recipe);
+            expect(state.recipes).to.be.length(1);
+            expect(state.recipes[0]).to.deep.equal(recipe);
+        });
+
+        it('SAVING_RECIPE', () => {
+            Recipes.mutations.SAVING_RECIPE(state, true);
+            expect(state.saving_recipe).to.be.true;
+        });
+
+        it('RECIPE_ERR', () => {
+            Recipes.mutations.RECIPE_ERR(state, true);
+            expect(state.recipe_err).to.be.true;
         });
     });
     

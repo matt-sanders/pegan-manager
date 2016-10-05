@@ -213,5 +213,50 @@ describe('Actions', () => {
 
             Vue.http.interceptors.shift();
         });
+
+        it('saveRecipe', done => {
+            let recipes = [
+                {
+                    foo: 'bar'
+                }
+            ];
+            let recipe = {
+                title: 'new'
+            };
+
+            recipes.push(recipe);
+
+            Vue.http.interceptors.push((request, next) => {
+                var body = {recipe: recipe};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            testAction(recipeActions.saveRecipe, [recipe], recipeState, [
+                { name: 'SAVING_RECIPE', payload: [true] },
+                { name: 'RECIPE_ERR', payload: [false] },
+                { name: 'ADD_RECIPE', payload: [recipe] },
+                { name: 'SAVING_RECIPE', payload: [false] }
+            ], done);
+
+            Vue.http.interceptors.shift();
+        });
+
+        it('saveRecipe error', done => {
+            Vue.http.interceptors.push((request, next) => {
+                var body = {};
+                next(request.respondWith(body, { status: 500, data: body }));
+            });
+
+            let recipe = {};
+
+            testAction(recipeActions.saveRecipe, [recipe], recipeState, [
+                { name: 'SAVING_RECIPE', payload: [true] },
+                { name: 'RECIPE_ERR', payload: [false] },
+                { name: 'RECIPE_ERR', payload: [true] },
+                { name: 'SAVING_RECIPE', payload: [false] }
+            ], done);
+
+            Vue.http.interceptors.shift();
+        });
     });
 });

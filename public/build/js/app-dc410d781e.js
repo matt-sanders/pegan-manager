@@ -27273,13 +27273,18 @@ var _Nav = require('./components/Nav.vue');
 
 var _Nav2 = _interopRequireDefault(_Nav);
 
+var _Loader = require('./components/Loader.vue');
+
+var _Loader2 = _interopRequireDefault(_Loader);
+
 var _auth = require('./vuex/actions/auth');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     components: {
-        mainNav: _Nav2.default
+        mainNav: _Nav2.default,
+        Loader: _Loader2.default
     },
     store: _store2.default,
     vuex: {
@@ -27297,7 +27302,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <loader></loader>\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27308,7 +27313,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Nav.vue":32,"./vuex/actions/auth":36,"./vuex/store":42,"vue":26,"vue-hot-reload-api":23}],29:[function(require,module,exports){
+},{"./components/Loader.vue":31,"./components/Nav.vue":33,"./vuex/actions/auth":37,"./vuex/store":43,"vue":26,"vue-hot-reload-api":23}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27317,6 +27322,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.login = login;
 exports.setHeaders = setHeaders;
 exports.getRecipes = getRecipes;
+exports.saveRecipe = saveRecipe;
 
 var _vue = require('vue');
 
@@ -27341,7 +27347,11 @@ function getRecipes() {
   return _vue2.default.http.get(_constants.API_URL + 'recipes');
 }
 
-},{"../constants":35,"vue":26}],30:[function(require,module,exports){
+function saveRecipe(recipe) {
+  return _vue2.default.http.post(_constants.API_URL + 'recipe', recipe);
+}
+
+},{"../constants":36,"vue":26}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27418,7 +27428,21 @@ router.redirect({
 
 router.start(_App2.default, '#app');
 
-},{"./App.vue":28,"./api":29,"./components/Login.vue":31,"./components/RecipeEdit.vue":33,"./components/RecipeList.vue":34,"vue":26,"vue-formly":22,"vue-formly-bootstrap":21,"vue-resource":24,"vue-router":25}],31:[function(require,module,exports){
+},{"./App.vue":28,"./api":29,"./components/Login.vue":32,"./components/RecipeEdit.vue":34,"./components/RecipeList.vue":35,"vue":26,"vue-formly":22,"vue-formly-bootstrap":21,"vue-resource":24,"vue-router":25}],31:[function(require,module,exports){
+"use strict";
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"loader\">\n  <div class=\"spinner\"></div>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-d1e3c42c", module.exports)
+  } else {
+    hotAPI.update("_v-d1e3c42c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"vue":26,"vue-hot-reload-api":23}],32:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27491,7 +27515,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-63f434e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/auth":36,"vue":26,"vue-hot-reload-api":23}],32:[function(require,module,exports){
+},{"../vuex/actions/auth":37,"vue":26,"vue-hot-reload-api":23}],33:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27524,7 +27548,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78a23448", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":26,"vue-hot-reload-api":23}],33:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23}],34:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27604,7 +27628,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78b15c8f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":26,"vue-hot-reload-api":23}],34:[function(require,module,exports){
+},{"vue":26,"vue-hot-reload-api":23}],35:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27648,7 +27672,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-69693523", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":37,"vue":26,"vue-hot-reload-api":23}],35:[function(require,module,exports){
+},{"../vuex/actions/recipes":38,"vue":26,"vue-hot-reload-api":23}],36:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27656,7 +27680,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27750,13 +27774,14 @@ function setAuthErr(_ref6, error) {
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":29,"../../app":30,"../mutation-types":41,"./utils.js":38}],37:[function(require,module,exports){
+},{"../../api":29,"../../app":30,"../mutation-types":42,"./utils.js":39}],38:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.setRecipes = setRecipes;
+exports.saveRecipe = saveRecipe;
 
 var _mutationTypes = require('../mutation-types');
 
@@ -27787,12 +27812,20 @@ function setRecipes(_ref) {
 
     Api.getRecipes().then(function (response) {
         var body = (0, _utils.parseResponse)(response);
-        console.log(body.recipes);
         dispatch(types.SET_RECIPES, body.recipes);
     }, function (response) {});
 }
 
-},{"../../api":29,"../../app":30,"../mutation-types":41,"./utils.js":38}],38:[function(require,module,exports){
+function saveRecipe(_ref2, recipe) {
+    var dispatch = _ref2.dispatch;
+
+    Api.saveRecipe(recipe).then(function (response) {
+        var body = (0, _utils.parseResponse)(response);
+        dispatch(types.ADD_RECIPE, body.recipe);
+    }, function (response) {});
+}
+
+},{"../../api":29,"../../app":30,"../mutation-types":42,"./utils.js":39}],39:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27808,7 +27841,7 @@ function parseResponse(response) {
     return response.body;
 }
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27843,7 +27876,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":41,"babel-runtime/helpers/defineProperty":2}],40:[function(require,module,exports){
+},{"../mutation-types":42,"babel-runtime/helpers/defineProperty":2}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27853,6 +27886,8 @@ Object.defineProperty(exports, "__esModule", {
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _mutations;
 
 var _mutationTypes = require('../mutation-types');
 
@@ -27864,16 +27899,18 @@ var state = {
     recipes: []
 };
 
-var mutations = (0, _defineProperty3.default)({}, _mutationTypes.SET_RECIPES, function (state, recipes) {
+var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_RECIPES, function (state, recipes) {
     state.recipes = recipes;
-});
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.ADD_RECIPE, function (state, recipe) {
+    state.recipes.push(recipe);
+}), _mutations);
 
 exports.default = {
     state: state,
     mutations: mutations
 };
 
-},{"../mutation-types":41,"babel-runtime/helpers/defineProperty":2}],41:[function(require,module,exports){
+},{"../mutation-types":42,"babel-runtime/helpers/defineProperty":2}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27882,8 +27919,9 @@ Object.defineProperty(exports, "__esModule", {
 var SET_AUTH = exports.SET_AUTH = 'SET_AUTH';
 var SET_AUTH_ERR = exports.SET_AUTH_ERR = 'SET_AUTH_ERR';
 var SET_RECIPES = exports.SET_RECIPES = 'SET_RECIPES';
+var ADD_RECIPE = exports.ADD_RECIPE = 'ADD_RECIPE';
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27919,6 +27957,6 @@ exports.default = new _vuex2.default.Store({
     }
 });
 
-},{"./modules/auth":39,"./modules/recipes":40,"vue":26,"vuex":27}]},{},[30]);
+},{"./modules/auth":40,"./modules/recipes":41,"vue":26,"vuex":27}]},{},[30]);
 
 //# sourceMappingURL=app.js.map
