@@ -1,8 +1,8 @@
 import {SET_RECIPES, ADD_RECIPE, SAVING_RECIPE, RECIPE_ERR} from '../mutation-types';
 const state = {
     recipes: [],
-    saving_recipe: false,
-    recipe_err: false
+    savingRecipe: false,
+    recipeErr: false
 };
 
 const mutations = {
@@ -13,10 +13,10 @@ const mutations = {
         state.recipes.push(recipe);
     },
     [SAVING_RECIPE](state, saving){
-        state.saving_recipe = saving;
+        state.savingRecipe = saving;
     },
     [RECIPE_ERR](state, err){
-        state.recipe_err = err;
+        state.recipeErr = err;
     }
 };
 

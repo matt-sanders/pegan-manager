@@ -20,7 +20,6 @@
  export default {
      data() {
          return {
-             working: false,
              newRecipe: false,
              recipeForm: {
                  title: {
@@ -64,6 +63,12 @@
                      inputType: 'file'
                  }
              }
+         }
+     },
+     vuex: {
+         getters: {
+             working: state => state.recipes.savingRecipe,
+             recipeErr: state => state.recipes.recipeErr
          }
      },
      methods: {
