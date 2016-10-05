@@ -17,6 +17,7 @@
 </template>
 
 <script>
+ import {saveRecipe} from '../vuex/actions/recipes';
  export default {
      data() {
          return {
@@ -69,12 +70,21 @@
          getters: {
              working: state => state.recipes.savingRecipe,
              recipeErr: state => state.recipes.recipeErr
+         },
+         actions: {
+             saveRecipe: saveRecipe
          }
      },
      methods: {
          submit() {
-             if ( this.working ) return;
-             this.working = true;
+             if ( this.working || !this.recipeForm.$valid ) return;
+
+             let recipe = {};
+             Object.keys(this.recipeForm).forEach(key => {
+                 recipe[key] = this.recipeForm[key].value;
+             });
+
+             this.saveRecipe(recipe);
          }
      },
      created(){
