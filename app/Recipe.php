@@ -13,7 +13,7 @@ class Recipe extends Moloquent
      * @var array
      */
     protected $fillable = [
-        'title', 'directions', 'ingredients', 'prep', 'cook', 'link', 'linkTitle', 'image', 'yield'
+        'title', 'directions', 'ingredients', 'prep', 'cook', 'link', 'linkTitle', 'image', 'yield', 'desc', 'tags'
     ];
 
     /**
