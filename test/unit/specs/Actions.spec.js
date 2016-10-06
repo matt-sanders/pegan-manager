@@ -7,9 +7,11 @@ import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import * as authActions from '../../../resources/assets/js/vuex/actions/auth';
 import * as recipeActions from '../../../resources/assets/js/vuex/actions/recipes';
+import * as ingredientActions from '../../../resources/assets/js/vuex/actions/ingredients';
 import {router} from '../../../resources/assets/js/app';
 import Auth from '../../../resources/assets/js/vuex/modules/auth';
 import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
+import Ingredients from '../../../resources/assets/js/vuex/modules/ingredients';
 chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -46,6 +48,7 @@ const creds = {
 
 let authState = Auth.state;
 let recipeState = Recipes.state;
+let ingredientState = Ingredients.state;
 
 sinon.spy(router, 'go');
 
@@ -278,6 +281,31 @@ describe('Actions', () => {
                 { name: 'RECIPE_ERR', payload: [false] },
                 { name: 'RECIPE_ERR', payload: [true] },
                 { name: 'SAVING_RECIPE', payload: [false] }
+            ], done);
+
+            Vue.http.interceptors.shift();
+        });
+    });
+
+    describe("Ingredients", () => {
+
+        beforeEach(()=>{
+            ingredientState.ingredients = [];
+        });
+        
+        it('setIngredients', done => {
+            let ingredients = [
+                {
+                    title: 'test'
+                }
+            ];
+            Vue.http.interceptors.push((request, next) => {
+                var body = {ingredients: ingredients};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            testAction(ingredientActions.setIngredients, [], ingredientState, [
+                {name: 'SET_INGREDIENTS', payload: [ingredients]}
             ], done);
 
             Vue.http.interceptors.shift();

@@ -38,5 +38,16 @@ describe('Api', () => {
         Api.saveRecipe(recipe);
         expect(Vue.http.post).to.be.calledWith(API_URL+'recipe', recipe);
     });
+
+    it('getIngredients', () => {
+        Api.getIngredients();
+        expect(Vue.http.get).to.be.calledWith(API_URL+'ingredients');
+    });
+
+    it('saveIngredient', () => {
+        let ingredient = {};
+        Api.saveIngredient(ingredient);
+        expect(Vue.http.post).to.be.calledWith(API_URL+'ingredient', ingredient);
+    });
     
 });

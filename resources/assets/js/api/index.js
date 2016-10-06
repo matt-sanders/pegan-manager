@@ -35,3 +35,21 @@ export function saveRecipe(recipe){
     setHeaders();
     return Vue.http.post(API_URL+'recipe', recipe);
 }
+
+/**
+ * Retrieves all ingredients
+ * @return {Promise}
+ */
+export function getIngredients(){
+    return Vue.http.get(API_URL+'ingredients');
+}
+
+/**
+ * Saves an ingredient
+ * @param {object} $ingredient
+ * @return {Promise}
+ */
+export function saveIngredient(ingredient){
+    setHeaders();
+    return Vue.http.post(API_URL+'ingredient', ingredient);
+}
