@@ -3,8 +3,7 @@
     <div class="row">
       <div class="col-md-4">
         <h1 v-if="newRecipe">New Recipe</h1>
-        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
-        
+        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>        
         <form v-on:submit.prevent="submit">
           <formly-form :form="recipeForm">
             <button class="btn btn-success" :disabled="!recipeForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
@@ -17,7 +16,7 @@
 </template>
 
 <script>
- import {saveRecipe} from '../vuex/actions/recipes';
+ import * as recipeActions from '../vuex/actions/recipes';
  export default {
      data() {
          return {
@@ -69,10 +68,12 @@
      vuex: {
          getters: {
              working: state => state.recipes.savingRecipe,
-             recipeErr: state => state.recipes.recipeErr
+             recipeErr: state => state.recipes.recipeErr,
+             recipes: state => state.recipes.recipes
          },
          actions: {
-             saveRecipe: saveRecipe
+             saveRecipe: recipeActions.saveRecipe,
+             setRecipes: recipeActions.setRecipes
          }
      },
      methods: {
@@ -87,11 +88,26 @@
              this.saveRecipe(recipe);
          }
      },
+     computed: {
+         recipe(){
+             if ( this.$route.params.recipeId == 'new' ) return {};
+             let recipes =  this.recipes.filter(recipe => {
+                 return recipe._id == this.$route.params.recipeId;
+             });
+             if ( recipes.length == 0 ) return {};
+
+             //go through and set all the fields data
+             Object.keys(this.recipeForm).forEach(key=>{
+                 if ( !recipes[0][key] ) return;
+                 this.recipeForm[key].value = recipes[0][key];
+             });
+             return recipes[0];
+         }
+     },
      created(){
+         this.setRecipes();
          if ( this.$route.params.recipeId == 'new' ){
              this.newRecipe = true;
-         } else {
-
          }
      }
  }

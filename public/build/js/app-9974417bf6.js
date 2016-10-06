@@ -27718,6 +27718,10 @@ var _keys2 = _interopRequireDefault(_keys);
 
 var _recipes = require('../vuex/actions/recipes');
 
+var recipeActions = _interopRequireWildcard(_recipes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -27776,10 +27780,14 @@ exports.default = {
             },
             recipeErr: function recipeErr(state) {
                 return state.recipes.recipeErr;
+            },
+            recipes: function recipes(state) {
+                return state.recipes.recipes;
             }
         },
         actions: {
-            saveRecipe: _recipes.saveRecipe
+            saveRecipe: recipeActions.saveRecipe,
+            setRecipes: recipeActions.setRecipes
         }
     },
     methods: {
@@ -27796,14 +27804,32 @@ exports.default = {
             this.saveRecipe(recipe);
         }
     },
+    computed: {
+        recipe: function recipe() {
+            var _this2 = this;
+
+            if (this.$route.params.recipeId == 'new') return {};
+            var recipes = this.recipes.filter(function (recipe) {
+                return recipe._id == _this2.$route.params.recipeId;
+            });
+            if (recipes.length == 0) return {};
+
+            (0, _keys2.default)(this.recipeForm).forEach(function (key) {
+                if (!recipes[0][key]) return;
+                _this2.recipeForm[key].value = recipes[0][key];
+            });
+            return recipes[0];
+        }
+    },
     created: function created() {
+        this.setRecipes();
         if (this.$route.params.recipeId == 'new') {
             this.newRecipe = true;
-        } else {}
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n      \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>        \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27835,7 +27861,7 @@ exports.default = {
     vuex: {
         getters: {
             recipes: function recipes(state) {
-                return state.recipes;
+                return state.recipes.recipes;
             }
         },
         actions: {
@@ -27847,7 +27873,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"margin-top\">\n  <div v-show=\"recipes.recipes.length > 0\" class=\"recipe-list\">\n    <div v-for=\"recipe in recipes.recipes\">\n      {{recipe.title}}\n    </div>\n  </div>\n  <div v-show=\"recipes.recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n  \n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"margin-top\">\n  <div v-show=\"recipes.length > 0\" class=\"recipe-list\">\n    <div v-for=\"recipe in recipes\">\n      <a v-link=\"'/recipe/'+recipe._id\">{{recipe.title}}</a>\n    </div>\n  </div>\n  <div v-show=\"recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n  \n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

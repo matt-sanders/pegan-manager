@@ -1,11 +1,11 @@
 <template>
   <div class="margin-top" >
-    <div v-show="recipes.recipes.length > 0" class="recipe-list">
-      <div v-for="recipe in recipes.recipes">
-        {{recipe.title}}
+    <div v-show="recipes.length > 0" class="recipe-list">
+      <div v-for="recipe in recipes">
+        <a v-link="'/recipe/'+recipe._id">{{recipe.title}}</a>
       </div>
     </div>
-    <div v-show="recipes.recipes.length == 0" class="alert alert-warning" role="alert">
+    <div v-show="recipes.length == 0" class="alert alert-warning" role="alert">
       You don't have any recipes
     </div>
     
@@ -25,7 +25,7 @@
      },
      vuex: {
          getters: {
-             recipes: state => state.recipes
+             recipes: state => state.recipes.recipes
          },
          actions: {
              setRecipes: recipeActions.setRecipes
