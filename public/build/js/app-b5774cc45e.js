@@ -1,6 +1,8 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = { "default": require("core-js/library/fn/object/define-property"), __esModule: true };
-},{"core-js/library/fn/object/define-property":3}],2:[function(require,module,exports){
+},{"core-js/library/fn/object/define-property":4}],2:[function(require,module,exports){
+module.exports = { "default": require("core-js/library/fn/object/keys"), __esModule: true };
+},{"core-js/library/fn/object/keys":5}],3:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -25,27 +27,58 @@ exports.default = function (obj, key, value) {
 
   return obj;
 };
-},{"../core-js/object/define-property":1}],3:[function(require,module,exports){
+},{"../core-js/object/define-property":1}],4:[function(require,module,exports){
 require('../../modules/es6.object.define-property');
 var $Object = require('../../modules/_core').Object;
 module.exports = function defineProperty(it, key, desc){
   return $Object.defineProperty(it, key, desc);
 };
-},{"../../modules/_core":6,"../../modules/es6.object.define-property":19}],4:[function(require,module,exports){
+},{"../../modules/_core":10,"../../modules/es6.object.define-property":38}],5:[function(require,module,exports){
+require('../../modules/es6.object.keys');
+module.exports = require('../../modules/_core').Object.keys;
+},{"../../modules/_core":10,"../../modules/es6.object.keys":39}],6:[function(require,module,exports){
 module.exports = function(it){
   if(typeof it != 'function')throw TypeError(it + ' is not a function!');
   return it;
 };
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var isObject = require('./_is-object');
 module.exports = function(it){
   if(!isObject(it))throw TypeError(it + ' is not an object!');
   return it;
 };
-},{"./_is-object":15}],6:[function(require,module,exports){
+},{"./_is-object":23}],8:[function(require,module,exports){
+// false -> Array#indexOf
+// true  -> Array#includes
+var toIObject = require('./_to-iobject')
+  , toLength  = require('./_to-length')
+  , toIndex   = require('./_to-index');
+module.exports = function(IS_INCLUDES){
+  return function($this, el, fromIndex){
+    var O      = toIObject($this)
+      , length = toLength(O.length)
+      , index  = toIndex(fromIndex, length)
+      , value;
+    // Array#includes uses SameValueZero equality algorithm
+    if(IS_INCLUDES && el != el)while(length > index){
+      value = O[index++];
+      if(value != value)return true;
+    // Array#toIndex ignores holes, Array#includes - not
+    } else for(;length > index; index++)if(IS_INCLUDES || index in O){
+      if(O[index] === el)return IS_INCLUDES || index || 0;
+    } return !IS_INCLUDES && -1;
+  };
+};
+},{"./_to-index":31,"./_to-iobject":33,"./_to-length":34}],9:[function(require,module,exports){
+var toString = {}.toString;
+
+module.exports = function(it){
+  return toString.call(it).slice(8, -1);
+};
+},{}],10:[function(require,module,exports){
 var core = module.exports = {version: '2.4.0'};
 if(typeof __e == 'number')__e = core; // eslint-disable-line no-undef
-},{}],7:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // optional / simple context binding
 var aFunction = require('./_a-function');
 module.exports = function(fn, that, length){
@@ -66,12 +99,18 @@ module.exports = function(fn, that, length){
     return fn.apply(that, arguments);
   };
 };
-},{"./_a-function":4}],8:[function(require,module,exports){
+},{"./_a-function":6}],12:[function(require,module,exports){
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function(it){
+  if(it == undefined)throw TypeError("Can't call method on  " + it);
+  return it;
+};
+},{}],13:[function(require,module,exports){
 // Thank's IE8 for his funny defineProperty
 module.exports = !require('./_fails')(function(){
   return Object.defineProperty({}, 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_fails":11}],9:[function(require,module,exports){
+},{"./_fails":17}],14:[function(require,module,exports){
 var isObject = require('./_is-object')
   , document = require('./_global').document
   // in old IE typeof document.createElement is 'object'
@@ -79,7 +118,12 @@ var isObject = require('./_is-object')
 module.exports = function(it){
   return is ? document.createElement(it) : {};
 };
-},{"./_global":12,"./_is-object":15}],10:[function(require,module,exports){
+},{"./_global":18,"./_is-object":23}],15:[function(require,module,exports){
+// IE 8- don't enum bug keys
+module.exports = (
+  'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'
+).split(',');
+},{}],16:[function(require,module,exports){
 var global    = require('./_global')
   , core      = require('./_core')
   , ctx       = require('./_ctx')
@@ -141,7 +185,7 @@ $export.W = 32;  // wrap
 $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library` 
 module.exports = $export;
-},{"./_core":6,"./_ctx":7,"./_global":12,"./_hide":13}],11:[function(require,module,exports){
+},{"./_core":10,"./_ctx":11,"./_global":18,"./_hide":20}],17:[function(require,module,exports){
 module.exports = function(exec){
   try {
     return !!exec();
@@ -149,12 +193,17 @@ module.exports = function(exec){
     return true;
   }
 };
-},{}],12:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 // https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
 var global = module.exports = typeof window != 'undefined' && window.Math == Math
   ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
 if(typeof __g == 'number')__g = global; // eslint-disable-line no-undef
-},{}],13:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function(it, key){
+  return hasOwnProperty.call(it, key);
+};
+},{}],20:[function(require,module,exports){
 var dP         = require('./_object-dp')
   , createDesc = require('./_property-desc');
 module.exports = require('./_descriptors') ? function(object, key, value){
@@ -163,15 +212,21 @@ module.exports = require('./_descriptors') ? function(object, key, value){
   object[key] = value;
   return object;
 };
-},{"./_descriptors":8,"./_object-dp":16,"./_property-desc":17}],14:[function(require,module,exports){
+},{"./_descriptors":13,"./_object-dp":24,"./_property-desc":28}],21:[function(require,module,exports){
 module.exports = !require('./_descriptors') && !require('./_fails')(function(){
   return Object.defineProperty(require('./_dom-create')('div'), 'a', {get: function(){ return 7; }}).a != 7;
 });
-},{"./_descriptors":8,"./_dom-create":9,"./_fails":11}],15:[function(require,module,exports){
+},{"./_descriptors":13,"./_dom-create":14,"./_fails":17}],22:[function(require,module,exports){
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+var cof = require('./_cof');
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function(it){
+  return cof(it) == 'String' ? it.split('') : Object(it);
+};
+},{"./_cof":9}],23:[function(require,module,exports){
 module.exports = function(it){
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
-},{}],16:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var anObject       = require('./_an-object')
   , IE8_DOM_DEFINE = require('./_ie8-dom-define')
   , toPrimitive    = require('./_to-primitive')
@@ -188,7 +243,44 @@ exports.f = require('./_descriptors') ? Object.defineProperty : function defineP
   if('value' in Attributes)O[P] = Attributes.value;
   return O;
 };
-},{"./_an-object":5,"./_descriptors":8,"./_ie8-dom-define":14,"./_to-primitive":18}],17:[function(require,module,exports){
+},{"./_an-object":7,"./_descriptors":13,"./_ie8-dom-define":21,"./_to-primitive":36}],25:[function(require,module,exports){
+var has          = require('./_has')
+  , toIObject    = require('./_to-iobject')
+  , arrayIndexOf = require('./_array-includes')(false)
+  , IE_PROTO     = require('./_shared-key')('IE_PROTO');
+
+module.exports = function(object, names){
+  var O      = toIObject(object)
+    , i      = 0
+    , result = []
+    , key;
+  for(key in O)if(key != IE_PROTO)has(O, key) && result.push(key);
+  // Don't enum bug & hidden keys
+  while(names.length > i)if(has(O, key = names[i++])){
+    ~arrayIndexOf(result, key) || result.push(key);
+  }
+  return result;
+};
+},{"./_array-includes":8,"./_has":19,"./_shared-key":29,"./_to-iobject":33}],26:[function(require,module,exports){
+// 19.1.2.14 / 15.2.3.14 Object.keys(O)
+var $keys       = require('./_object-keys-internal')
+  , enumBugKeys = require('./_enum-bug-keys');
+
+module.exports = Object.keys || function keys(O){
+  return $keys(O, enumBugKeys);
+};
+},{"./_enum-bug-keys":15,"./_object-keys-internal":25}],27:[function(require,module,exports){
+// most Object methods by ES6 should accept primitives
+var $export = require('./_export')
+  , core    = require('./_core')
+  , fails   = require('./_fails');
+module.exports = function(KEY, exec){
+  var fn  = (core.Object || {})[KEY] || Object[KEY]
+    , exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function(){ fn(1); }), 'Object', exp);
+};
+},{"./_core":10,"./_export":16,"./_fails":17}],28:[function(require,module,exports){
 module.exports = function(bitmap, value){
   return {
     enumerable  : !(bitmap & 1),
@@ -197,7 +289,55 @@ module.exports = function(bitmap, value){
     value       : value
   };
 };
-},{}],18:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
+var shared = require('./_shared')('keys')
+  , uid    = require('./_uid');
+module.exports = function(key){
+  return shared[key] || (shared[key] = uid(key));
+};
+},{"./_shared":30,"./_uid":37}],30:[function(require,module,exports){
+var global = require('./_global')
+  , SHARED = '__core-js_shared__'
+  , store  = global[SHARED] || (global[SHARED] = {});
+module.exports = function(key){
+  return store[key] || (store[key] = {});
+};
+},{"./_global":18}],31:[function(require,module,exports){
+var toInteger = require('./_to-integer')
+  , max       = Math.max
+  , min       = Math.min;
+module.exports = function(index, length){
+  index = toInteger(index);
+  return index < 0 ? max(index + length, 0) : min(index, length);
+};
+},{"./_to-integer":32}],32:[function(require,module,exports){
+// 7.1.4 ToInteger
+var ceil  = Math.ceil
+  , floor = Math.floor;
+module.exports = function(it){
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+},{}],33:[function(require,module,exports){
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = require('./_iobject')
+  , defined = require('./_defined');
+module.exports = function(it){
+  return IObject(defined(it));
+};
+},{"./_defined":12,"./_iobject":22}],34:[function(require,module,exports){
+// 7.1.15 ToLength
+var toInteger = require('./_to-integer')
+  , min       = Math.min;
+module.exports = function(it){
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
+};
+},{"./_to-integer":32}],35:[function(require,module,exports){
+// 7.1.13 ToObject(argument)
+var defined = require('./_defined');
+module.exports = function(it){
+  return Object(defined(it));
+};
+},{"./_defined":12}],36:[function(require,module,exports){
 // 7.1.1 ToPrimitive(input [, PreferredType])
 var isObject = require('./_is-object');
 // instead of the ES6 spec version, we didn't implement @@toPrimitive case
@@ -210,11 +350,27 @@ module.exports = function(it, S){
   if(!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it)))return val;
   throw TypeError("Can't convert object to primitive value");
 };
-},{"./_is-object":15}],19:[function(require,module,exports){
+},{"./_is-object":23}],37:[function(require,module,exports){
+var id = 0
+  , px = Math.random();
+module.exports = function(key){
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
+};
+},{}],38:[function(require,module,exports){
 var $export = require('./_export');
 // 19.1.2.4 / 15.2.3.6 Object.defineProperty(O, P, Attributes)
 $export($export.S + $export.F * !require('./_descriptors'), 'Object', {defineProperty: require('./_object-dp').f});
-},{"./_descriptors":8,"./_export":10,"./_object-dp":16}],20:[function(require,module,exports){
+},{"./_descriptors":13,"./_export":16,"./_object-dp":24}],39:[function(require,module,exports){
+// 19.1.2.14 Object.keys(O)
+var toObject = require('./_to-object')
+  , $keys    = require('./_object-keys');
+
+require('./_object-sap')('keys', function(){
+  return function keys(it){
+    return $keys(toObject(it));
+  };
+});
+},{"./_object-keys":26,"./_object-sap":27,"./_to-object":35}],40:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -396,7 +552,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],21:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /**
  * vue-formly-bootstrap v1.0.1
  * https://github.com/matt-sanders/vue-formly-bootstrap
@@ -1273,7 +1429,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])))
 });
 ;
-},{"vue":26,"vue-hot-reload-api":23}],22:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],42:[function(require,module,exports){
 /**
  * vue-formly v0.1.2
  * https://github.com/matt-sanders/vue-formly
@@ -12194,7 +12350,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ])
 });
 ;
-},{"vue":26,"vue-hot-reload-api":23}],23:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],43:[function(require,module,exports){
 var Vue // late bind
 var map = Object.create(null)
 var shimmed = false
@@ -12495,7 +12651,7 @@ function format (id) {
   return match ? match[0] : id
 }
 
-},{}],24:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /*!
  * vue-resource v0.9.3
  * https://github.com/vuejs/vue-resource
@@ -13808,7 +13964,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 module.exports = plugin;
-},{}],25:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 /*!
  * vue-router v0.7.13
  * (c) 2016 Evan You
@@ -16518,7 +16674,7 @@ module.exports = plugin;
   return Router;
 
 }));
-},{}],26:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v1.0.26
@@ -26595,7 +26751,7 @@ setTimeout(function () {
 
 module.exports = Vue;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":20}],27:[function(require,module,exports){
+},{"_process":40}],47:[function(require,module,exports){
 /*!
  * Vuex v1.0.0-rc.2
  * (c) 2016 Evan You
@@ -27258,7 +27414,7 @@ module.exports = Vue;
   return index;
 
 }));
-},{}],28:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27302,7 +27458,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <loader></loader>\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27313,7 +27469,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Loader.vue":31,"./components/Nav.vue":33,"./vuex/actions/auth":37,"./vuex/store":43,"vue":26,"vue-hot-reload-api":23}],29:[function(require,module,exports){
+},{"./components/Loader.vue":51,"./components/Nav.vue":53,"./vuex/actions/auth":57,"./vuex/store":63,"vue":46,"vue-hot-reload-api":43}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27348,10 +27504,11 @@ function getRecipes() {
 }
 
 function saveRecipe(recipe) {
+  setHeaders();
   return _vue2.default.http.post(_constants.API_URL + 'recipe', recipe);
 }
 
-},{"../constants":36,"vue":26}],30:[function(require,module,exports){
+},{"../constants":56,"vue":46}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27428,7 +27585,7 @@ router.redirect({
 
 router.start(_App2.default, '#app');
 
-},{"./App.vue":28,"./api":29,"./components/Login.vue":32,"./components/RecipeEdit.vue":34,"./components/RecipeList.vue":35,"vue":26,"vue-formly":22,"vue-formly-bootstrap":21,"vue-resource":24,"vue-router":25}],31:[function(require,module,exports){
+},{"./App.vue":48,"./api":49,"./components/Login.vue":52,"./components/RecipeEdit.vue":54,"./components/RecipeList.vue":55,"vue":46,"vue-formly":42,"vue-formly-bootstrap":41,"vue-resource":44,"vue-router":45}],51:[function(require,module,exports){
 "use strict";
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"loader\">\n  <div class=\"spinner\"></div>\n</div>\n"
@@ -27442,7 +27599,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-d1e3c42c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":26,"vue-hot-reload-api":23}],32:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],52:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27515,7 +27672,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-63f434e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/auth":37,"vue":26,"vue-hot-reload-api":23}],33:[function(require,module,exports){
+},{"../vuex/actions/auth":57,"vue":46,"vue-hot-reload-api":43}],53:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27548,16 +27705,24 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78a23448", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":26,"vue-hot-reload-api":23}],34:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _recipes = require('../vuex/actions/recipes');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = {
     data: function data() {
         return {
-            working: false,
             newRecipe: false,
             recipeForm: {
                 title: {
@@ -27604,10 +27769,31 @@ exports.default = {
         };
     },
 
+    vuex: {
+        getters: {
+            working: function working(state) {
+                return state.recipes.savingRecipe;
+            },
+            recipeErr: function recipeErr(state) {
+                return state.recipes.recipeErr;
+            }
+        },
+        actions: {
+            saveRecipe: _recipes.saveRecipe
+        }
+    },
     methods: {
         submit: function submit() {
-            if (this.working) return;
-            this.working = true;
+            var _this = this;
+
+            if (this.working || !this.recipeForm.$valid) return;
+
+            var recipe = {};
+            (0, _keys2.default)(this.recipeForm).forEach(function (key) {
+                recipe[key] = _this.recipeForm[key].value;
+            });
+
+            this.saveRecipe(recipe);
         }
     },
     created: function created() {
@@ -27628,7 +27814,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78b15c8f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":26,"vue-hot-reload-api":23}],35:[function(require,module,exports){
+},{"../vuex/actions/recipes":58,"babel-runtime/core-js/object/keys":2,"vue":46,"vue-hot-reload-api":43}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27661,7 +27847,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"margin-top\">\n  <div v-show=\"recipes.recipes.length > 0\" class=\"recipe-list\">\n    \n  </div>\n  <div v-show=\"recipes.recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n  \n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"margin-top\">\n  <div v-show=\"recipes.recipes.length > 0\" class=\"recipe-list\">\n    <div v-for=\"recipe in recipes.recipes\">\n      {{recipe.title}}\n    </div>\n  </div>\n  <div v-show=\"recipes.recipes.length == 0\" class=\"alert alert-warning\" role=\"alert\">\n    You don't have any recipes\n  </div>\n  \n  <a v-link=\"'/recipe/new'\" class=\"new-recipe btn btn-success\">\n    <span class=\"glyphicon glyphicon-plus\"></span>\n  </a>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27672,7 +27858,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-69693523", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":38,"vue":26,"vue-hot-reload-api":23}],36:[function(require,module,exports){
+},{"../vuex/actions/recipes":58,"vue":46,"vue-hot-reload-api":43}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27680,7 +27866,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
-},{}],37:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27774,7 +27960,7 @@ function setAuthErr(_ref6, error) {
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":29,"../../app":30,"../mutation-types":42,"./utils.js":39}],38:[function(require,module,exports){
+},{"../../api":49,"../../app":50,"../mutation-types":62,"./utils.js":59}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27819,13 +28005,20 @@ function setRecipes(_ref) {
 function saveRecipe(_ref2, recipe) {
     var dispatch = _ref2.dispatch;
 
+    dispatch(types.SAVING_RECIPE, true);
+    dispatch(types.RECIPE_ERR, false);
     Api.saveRecipe(recipe).then(function (response) {
         var body = (0, _utils.parseResponse)(response);
         dispatch(types.ADD_RECIPE, body.recipe);
-    }, function (response) {});
+        dispatch(types.SAVING_RECIPE, false);
+        _app.router.go('/recipe/' + body.recipe._id);
+    }, function (response) {
+        dispatch(types.RECIPE_ERR, true);
+        dispatch(types.SAVING_RECIPE, false);
+    });
 }
 
-},{"../../api":29,"../../app":30,"../mutation-types":42,"./utils.js":39}],39:[function(require,module,exports){
+},{"../../api":49,"../../app":50,"../mutation-types":62,"./utils.js":59}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27841,7 +28034,7 @@ function parseResponse(response) {
     return response.body;
 }
 
-},{}],40:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27876,7 +28069,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":42,"babel-runtime/helpers/defineProperty":2}],41:[function(require,module,exports){
+},{"../mutation-types":62,"babel-runtime/helpers/defineProperty":3}],61:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27896,13 +28089,19 @@ function _interopRequireDefault(obj) {
 }
 
 var state = {
-    recipes: []
+    recipes: [],
+    savingRecipe: false,
+    recipeErr: false
 };
 
 var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_RECIPES, function (state, recipes) {
     state.recipes = recipes;
 }), (0, _defineProperty3.default)(_mutations, _mutationTypes.ADD_RECIPE, function (state, recipe) {
     state.recipes.push(recipe);
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.SAVING_RECIPE, function (state, saving) {
+    state.savingRecipe = saving;
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.RECIPE_ERR, function (state, err) {
+    state.recipeErr = err;
 }), _mutations);
 
 exports.default = {
@@ -27910,7 +28109,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":42,"babel-runtime/helpers/defineProperty":2}],42:[function(require,module,exports){
+},{"../mutation-types":62,"babel-runtime/helpers/defineProperty":3}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27920,8 +28119,10 @@ var SET_AUTH = exports.SET_AUTH = 'SET_AUTH';
 var SET_AUTH_ERR = exports.SET_AUTH_ERR = 'SET_AUTH_ERR';
 var SET_RECIPES = exports.SET_RECIPES = 'SET_RECIPES';
 var ADD_RECIPE = exports.ADD_RECIPE = 'ADD_RECIPE';
+var SAVING_RECIPE = exports.SAVING_RECIPE = 'SAVING_RECIPE';
+var RECIPE_ERR = exports.RECIPE_ERR = 'RECIPE_ERR';
 
-},{}],43:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27957,6 +28158,6 @@ exports.default = new _vuex2.default.Store({
     }
 });
 
-},{"./modules/auth":40,"./modules/recipes":41,"vue":26,"vuex":27}]},{},[30]);
+},{"./modules/auth":60,"./modules/recipes":61,"vue":46,"vuex":47}]},{},[50]);
 
 //# sourceMappingURL=app.js.map

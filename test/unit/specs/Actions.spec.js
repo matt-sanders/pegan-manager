@@ -221,6 +221,7 @@ describe('Actions', () => {
                 }
             ];
             let recipe = {
+                '_id': 'test',
                 title: 'new'
             };
 
@@ -238,6 +239,29 @@ describe('Actions', () => {
                 { name: 'SAVING_RECIPE', payload: [false] }
             ], done);
 
+            Vue.http.interceptors.shift();
+        });
+
+        it('saveRecipe redirect', () => {
+            let recipes = [
+                {
+                    foo: 'bar'
+                }
+            ];
+            let recipe = {
+                '_id': 'test',
+                title: 'new'
+            };
+
+            recipes.push(recipe);
+
+            Vue.http.interceptors.push((request, next) => {
+                var body = {recipe: recipe};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            expect(router.go).to.be.calledWith('/recipe/test');
+            
             Vue.http.interceptors.shift();
         });
 

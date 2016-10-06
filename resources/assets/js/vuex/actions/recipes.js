@@ -27,6 +27,7 @@ export function saveRecipe({dispatch}, recipe){
             let body = parseResponse(response);
             dispatch(types.ADD_RECIPE, body.recipe);
             dispatch(types.SAVING_RECIPE, false);
+            router.go('/recipe/'+body.recipe._id);
         }, response => {
             dispatch(types.RECIPE_ERR, true);
             dispatch(types.SAVING_RECIPE, false);

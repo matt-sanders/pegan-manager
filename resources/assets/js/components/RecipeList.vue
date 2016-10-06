@@ -1,7 +1,9 @@
 <template>
   <div class="margin-top" >
     <div v-show="recipes.recipes.length > 0" class="recipe-list">
-      
+      <div v-for="recipe in recipes.recipes">
+        {{recipe.title}}
+      </div>
     </div>
     <div v-show="recipes.recipes.length == 0" class="alert alert-warning" role="alert">
       You don't have any recipes

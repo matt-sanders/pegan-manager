@@ -1,6 +1,5 @@
 <template>
   <div :class="{'active': authenticated}">
-    <loader></loader>
     <main-nav></main-nav>
     <div class="container-fluid">
       <router-view></router-view>

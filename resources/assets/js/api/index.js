@@ -32,5 +32,6 @@ export function getRecipes(){
  * @return {Promise}
  */
 export function saveRecipe(recipe){
+    setHeaders();
     return Vue.http.post(API_URL+'recipe', recipe);
 }
