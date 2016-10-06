@@ -3,7 +3,8 @@
     <div class="row">
       <div class="col-md-4">
         <h1 v-if="newRecipe">New Recipe</h1>
-        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>        
+        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
+        <div v-if="!newRecipe">Image: {{recipe.image}}</div>
         <form v-on:submit.prevent="submit">
           <formly-form :form="recipeForm">
             <button class="btn btn-success" :disabled="!recipeForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
