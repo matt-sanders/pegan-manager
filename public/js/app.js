@@ -27611,6 +27611,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 exports.default = {
     props: ['ingredient', 'idx'],
+    computed: {
+        ingredientLabel: function ingredientLabel() {
+            var _this = this;
+
+            var ingredient = this.availableIngredients.filter(function (ing) {
+                return _this.ingredient.ing_id == ing._id;
+            });
+            return ingredient.length == 0 ? '' : ingredient[0].title;
+        }
+    },
     vuex: {
         getters: {
             availableIngredients: function availableIngredients(state) {
@@ -27620,7 +27630,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-item\">\n  <div v-show=\"!ingredient.isLabel\">\n    <input type=\"text\" v-model=\"ingredient.amount\" placeholder=\"amt\">\n    <select v-model=\"ingredient.unit\">\n      <option value=\"cup\">Cup</option>\n    </select>\n    <select v-model=\"ingredient.ing_id\">\n      <option value=\"\">Select Ingredient</option>\n      <option v-for=\"ing in availableIngredients\" value=\"{{ing._id}}\">{{ing.title}}</option>\n    </select>\n  </div>\n  <div v-show=\"ingredient.isLabel\">\n    <input type=\"text\" v-model=\"ingredient.label\" placeholder=\"eg For the sauce\">\n  </div>\n  <label for=\"ingredient_{{idx}}\" class=\"'active': ingredient.isLabel\">\n    label\n    <input type=\"checkbox\" v-model=\"ingredient.isLabel\" value=\"true\" id=\"ingredient_{{idx}}\">\n  </label>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-item\">\n  <div v-show=\"ingredient.edit\">\n    <div v-show=\"!ingredient.label\">\n      <input type=\"text\" v-model=\"ingredient.amount\" placeholder=\"amt\">\n      <select v-model=\"ingredient.unit\">\n        <option value=\"cup\">Cup</option>\n      </select>\n      <select v-model=\"ingredient.ing_id\">\n        <option value=\"\">Select Ingredient</option>\n        <option v-for=\"ing in availableIngredients\" value=\"{{ing._id}}\">{{ing.title}}</option>\n      </select>\n    </div>\n    <div v-show=\"ingredient.label\">\n      <input type=\"text\" v-model=\"ingredient.label\" placeholder=\"eg For the sauce\">\n    </div>\n    <label for=\"ingredient_{{idx}}\" class=\"'active': ingredient.isLabel\">\n      label\n      <input type=\"checkbox\" v-model=\"ingredient.label\" value=\"true\" id=\"ingredient_{{idx}}\">\n    </label>\n  </div>\n  <div v-show=\"!ingredient.edit\">\n    <div v-show=\"ingredient.label\">{{ingredient.label}}</div>\n    <div v-show=\"!ingredient.label\">{{ingredient.amount}} {{ingredient.unit}} {{ingredientLabel}}</div>\n  </div>\n  <label for=\"ingredient_edit_{{idx}}\">\n    edit\n    <input type=\"checkbox\" v-model=\"ingredient.edit\" id=\"ingredient_edit_{{idx}}\">\n  </label>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27932,7 +27942,7 @@ exports.default = {
                     label: '',
                     amount: '',
                     unit: '',
-                    ing_id: ''
+                    ingId: ''
                 };
                 if (ing.isLabel) {
                     ingredient.label = ing.label;
@@ -28031,11 +28041,11 @@ exports.default = {
     methods: {
         addIngredient: function addIngredient() {
             var ingredient = {
-                label: '',
+                label: false,
                 unit: 'cup',
                 amount: '',
                 ing_id: '',
-                isLabel: false
+                edit: true
             };
             this.ingredients.push(ingredient);
         },
@@ -28048,7 +28058,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <form v-on:submit.prevent=\"submit\">\n    <button type=\"submit\">New Ingredient</button>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <h4>Ingredients</h4>\n  <form v-on:submit.prevent=\"submit\">\n    <button type=\"submit\">New Ingredient</button>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

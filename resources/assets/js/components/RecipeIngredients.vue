@@ -1,5 +1,6 @@
 <template>
   <div class="ingredient-list">
+    <h4>Ingredients</h4>
     <form v-on:submit.prevent="submit">
       <button type="submit">New Ingredient</button>
       <add-ingredient class="ingredient-wrap" v-for="ingredient in ingredients" :ingredient="ingredient"></add-ingredient>
@@ -30,11 +31,11 @@
      methods: {
          addIngredient(){
              let ingredient = {
-                 label: '',
+                 label: false,
                  unit: 'cup',
                  amount: '',
                  ing_id: '',
-                 isLabel: false
+                 edit: true
              };
              this.ingredients.push(ingredient);
          },

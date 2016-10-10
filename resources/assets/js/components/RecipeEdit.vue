@@ -98,7 +98,7 @@
                      label: '',
                      amount: '',
                      unit: '',
-                     ing_id: ''
+                     ingId: ''
                  };
                  if ( ing.isLabel ) {
                      ingredient.label = ing.label;
