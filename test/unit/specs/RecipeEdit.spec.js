@@ -16,11 +16,19 @@ Vue.use(VueFormlyBootstrap);
 chai.use(sinonChai);
 
 let SaveRecipeSpy = sinon.spy();
+let SetRecipeSpy = sinon.spy();
+
+let IngredientMock = Vue.extend({
+    props: ['ingredients'],
+    template: '<div></div>'
+});
 
 const RecipeEditWithMocks = RecipeEditInjector({
     '../vuex/actions/recipes': {
-        saveRecipe: SaveRecipeSpy
-    }
+        saveRecipe: SaveRecipeSpy,
+        setRecipes: SetRecipeSpy
+    },
+    './RecipeIngredients.vue': IngredientMock
 });
 
 let store = new Vuex.Store({
@@ -33,7 +41,7 @@ const getComponent = () => {
     let router = new VueRouter({abstract: true});
     
     let vm = Vue.extend({
-        template: '<div><router-view></router-view></div>',
+        template: '<div><router-view v-ref:router></router-view></div>',
         store: store
     });
 
@@ -50,22 +58,26 @@ const getComponent = () => {
 
 describe('RecipeEdit', () => {
 
-    it('should save recipes', done => {
-        //let vm = getComponent();
-        //console.log(vm.app.$data);
-        //let re = vm.$refs;
+    it('should display an empty form', ()=> {
+        
+        let router = getComponent();
 
-        //just set the required fields
-        /*
-        re.recipeForm.title.value = 'test';
-        re.recipeForm.desc.value = 'test';
-        re.recipeForm.directions.value = 'test';
-         */
+        router.go('/new');
+        expect(router.app.$el.querySelector('h1').textContent).to.equal('New Recipe');
+        expect(router.app.$el.querySelectorAll('input.form-control')[0].value).to.equal('');
+    });
 
-        setTimeout(()=>{
-            //re.methods.submit();
-            //expect(SaveRecipeSpy).to.be.called;
-            done();
-        });
+    it('should populate the form with the correct recipe data', () =>{
+        let recipe = {
+            '_id': 1234,
+            'title': 'Foo'
+        };
+
+        store.state.recipes.recipes = [recipe];
+
+        let router = getComponent();
+        router.go('/1234');
+        expect(router.app.$el.querySelector('h1').textContent).to.equal('Edit '+recipe.title);
+        expect(router.app.$el.querySelectorAll('input.form-control')[0].value).to.equal(recipe.title);
     });
 });
