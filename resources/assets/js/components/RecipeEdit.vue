@@ -1,27 +1,32 @@
 <template>
   <div class="recipe-edit">
-    <div class="row">
-      <div class="col-md-4">
-        <h1 v-if="newRecipe">New Recipe</h1>
-        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
-        <div v-if="!newRecipe">Image: {{recipe.image}}</div>
-        <form v-on:submit.prevent="submit">
-          <formly-form :form="recipeForm">
-            <button class="btn btn-success" :disabled="!recipeForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
-            <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
-          </formly-form>
-        </form>
+    <h1 v-if="newRecipe">New Recipe</h1>
+    <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
+      <div class="row">
+        <div class="col-md-4">
+          <div v-if="!newRecipe">Image: {{recipe.image}}</div>
+          <form v-on:submit.prevent="submit">
+            <formly-form :form="recipeForm">
+              <button class="btn btn-success" :disabled="!recipeForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
+              <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
+            </formly-form>
+          </form>
+        </div>
+        <div class="col-md-4">
+          <recipe-ingredients :ingredients="ingredients"></recipe-ingredients>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
+ import recipeIngredients from './RecipeIngredients.vue';
  import * as recipeActions from '../vuex/actions/recipes';
  export default {
      data() {
          return {
              newRecipe: false,
+             ingredients: [],
              recipeForm: {
                  title: {
                      type: 'input',
@@ -86,6 +91,25 @@
                  recipe[key] = this.recipeForm[key].value;
              });
 
+             recipe.ingredients = [];
+             //get all the ingredients
+             this.ingredients.forEach((ing) => {
+                 let ingredient = {
+                     label: '',
+                     amount: '',
+                     unit: '',
+                     ing_id: ''
+                 };
+                 if ( ing.isLabel ) {
+                     ingredient.label = ing.label;
+                 } else {
+                     ingredient.ing_id = ing.ing_id;
+                     ingredient.amount = ing.amount;
+                     ingredient.unit = ing.unit;
+                 }
+                 recipe.ingredients.push(ingredient);
+             });
+
              this.saveRecipe(recipe);
          }
      },
@@ -102,6 +126,8 @@
                  if ( !recipes[0][key] ) return;
                  this.recipeForm[key].value = recipes[0][key];
              });
+
+             this.ingredients = recipes[0].ingredients;
              return recipes[0];
          }
      },
@@ -110,6 +136,9 @@
          if ( this.$route.params.recipeId == 'new' ){
              this.newRecipe = true;
          }
+     },
+     components: {
+         recipeIngredients
      }
  }
 </script>

@@ -79,4 +79,10 @@ body
     position: fixed;
     right: 20px;
     bottom: 20px;
+    transition: all $speed $ease;
+
+    &:hover
+          {
+              transform: rotate(90deg);
+          }//hover
 }//new-recipe

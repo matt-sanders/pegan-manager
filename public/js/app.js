@@ -27469,7 +27469,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Loader.vue":51,"./components/Nav.vue":53,"./vuex/actions/auth":57,"./vuex/store":63,"vue":46,"vue-hot-reload-api":43}],49:[function(require,module,exports){
+},{"./components/Loader.vue":53,"./components/Nav.vue":55,"./vuex/actions/auth":60,"./vuex/store":68,"vue":46,"vue-hot-reload-api":43}],49:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27479,6 +27479,8 @@ exports.login = login;
 exports.setHeaders = setHeaders;
 exports.getRecipes = getRecipes;
 exports.saveRecipe = saveRecipe;
+exports.getIngredients = getIngredients;
+exports.saveIngredient = saveIngredient;
 
 var _vue = require('vue');
 
@@ -27508,7 +27510,16 @@ function saveRecipe(recipe) {
   return _vue2.default.http.post(_constants.API_URL + 'recipe', recipe);
 }
 
-},{"../constants":56,"vue":46}],50:[function(require,module,exports){
+function getIngredients() {
+  return _vue2.default.http.get(_constants.API_URL + 'ingredients');
+}
+
+function saveIngredient(ingredient) {
+  setHeaders();
+  return _vue2.default.http.post(_constants.API_URL + 'ingredient', ingredient);
+}
+
+},{"../constants":59,"vue":46}],50:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27585,7 +27596,115 @@ router.redirect({
 
 router.start(_App2.default, '#app');
 
-},{"./App.vue":48,"./api":49,"./components/Login.vue":52,"./components/RecipeEdit.vue":54,"./components/RecipeList.vue":55,"vue":46,"vue-formly":42,"vue-formly-bootstrap":41,"vue-resource":44,"vue-router":45}],51:[function(require,module,exports){
+},{"./App.vue":48,"./api":49,"./components/Login.vue":54,"./components/RecipeEdit.vue":56,"./components/RecipeList.vue":58,"vue":46,"vue-formly":42,"vue-formly-bootstrap":41,"vue-resource":44,"vue-router":45}],51:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _ingredients = require('../vuex/actions/ingredients');
+
+var ingredientActions = _interopRequireWildcard(_ingredients);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+exports.default = {
+    props: ['ingredient', 'idx'],
+    vuex: {
+        getters: {
+            availableIngredients: function availableIngredients(state) {
+                return state.ingredients.ingredients;
+            }
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-item\">\n  <div v-show=\"!ingredient.isLabel\">\n    <input type=\"text\" v-model=\"ingredient.amount\" placeholder=\"amt\">\n    <select v-model=\"ingredient.unit\">\n      <option value=\"cup\">Cup</option>\n    </select>\n    <select v-model=\"ingredient.ing_id\">\n      <option value=\"\">Select Ingredient</option>\n      <option v-for=\"ing in availableIngredients\" value=\"{{ing._id}}\">{{ing.title}}</option>\n    </select>\n  </div>\n  <div v-show=\"ingredient.isLabel\">\n    <input type=\"text\" v-model=\"ingredient.label\" placeholder=\"eg For the sauce\">\n  </div>\n  <label for=\"ingredient_{{idx}}\" class=\"'active': ingredient.isLabel\">\n    label\n    <input type=\"checkbox\" v-model=\"ingredient.isLabel\" value=\"true\" id=\"ingredient_{{idx}}\">\n  </label>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-4f8c694b", module.exports)
+  } else {
+    hotAPI.update("_v-4f8c694b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../vuex/actions/ingredients":61,"vue":46,"vue-hot-reload-api":43}],52:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _ingredients = require('../vuex/actions/ingredients');
+
+var ingredientActions = _interopRequireWildcard(_ingredients);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    data: function data() {
+        return {
+            working: false,
+            ingredientForm: {
+                title: {
+                    type: 'input',
+                    label: 'title',
+                    required: true
+                },
+                desc: {
+                    type: 'input',
+                    label: 'description'
+                },
+                recipeId: {
+                    type: 'input',
+                    label: 'recipeId'
+                }
+            }
+        };
+    },
+
+    vuex: {
+        actions: {
+            saveIngredient: ingredientActions.saveIngredient
+        }
+    },
+    methods: {
+        submit: function submit() {
+            var _this = this;
+
+            if (this.working || !this.ingredientForm.$valid) return;
+
+            var ingredient = {};
+            (0, _keys2.default)(this.ingredientForm).forEach(function (key) {
+                ingredient[key] = _this.ingredientForm[key].value + '';
+            });
+
+            this.saveIngredient(ingredient);
+        }
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"newIngredient\">\n  <form v-on:submit.prevent=\"submit\">\n    <formly-form :form=\"ingredientForm\">\n      <button class=\"btn btn-success\" :disabled=\"!ingredientForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n    </formly-form>\n  </form>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-7bd0635c", module.exports)
+  } else {
+    hotAPI.update("_v-7bd0635c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../vuex/actions/ingredients":61,"babel-runtime/core-js/object/keys":2,"vue":46,"vue-hot-reload-api":43}],53:[function(require,module,exports){
 "use strict";
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"loader\">\n  <div class=\"spinner\"></div>\n</div>\n"
@@ -27599,7 +27718,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-d1e3c42c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":46,"vue-hot-reload-api":43}],52:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],54:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27672,7 +27791,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-63f434e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/auth":57,"vue":46,"vue-hot-reload-api":43}],53:[function(require,module,exports){
+},{"../vuex/actions/auth":60,"vue":46,"vue-hot-reload-api":43}],55:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27705,7 +27824,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78a23448", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":46,"vue-hot-reload-api":43}],54:[function(require,module,exports){
+},{"vue":46,"vue-hot-reload-api":43}],56:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27715,6 +27834,10 @@ Object.defineProperty(exports, "__esModule", {
 var _keys = require('babel-runtime/core-js/object/keys');
 
 var _keys2 = _interopRequireDefault(_keys);
+
+var _RecipeIngredients = require('./RecipeIngredients.vue');
+
+var _RecipeIngredients2 = _interopRequireDefault(_RecipeIngredients);
 
 var _recipes = require('../vuex/actions/recipes');
 
@@ -27728,6 +27851,7 @@ exports.default = {
     data: function data() {
         return {
             newRecipe: false,
+            ingredients: [],
             recipeForm: {
                 title: {
                     type: 'input',
@@ -27801,6 +27925,25 @@ exports.default = {
                 recipe[key] = _this.recipeForm[key].value;
             });
 
+            recipe.ingredients = [];
+
+            this.ingredients.forEach(function (ing) {
+                var ingredient = {
+                    label: '',
+                    amount: '',
+                    unit: '',
+                    ing_id: ''
+                };
+                if (ing.isLabel) {
+                    ingredient.label = ing.label;
+                } else {
+                    ingredient.ing_id = ing.ing_id;
+                    ingredient.amount = ing.amount;
+                    ingredient.unit = ing.unit;
+                }
+                recipe.ingredients.push(ingredient);
+            });
+
             this.saveRecipe(recipe);
         }
     },
@@ -27818,6 +27961,8 @@ exports.default = {
                 if (!recipes[0][key]) return;
                 _this2.recipeForm[key].value = recipes[0][key];
             });
+
+            this.ingredients = recipes[0].ingredients;
             return recipes[0];
         }
     },
@@ -27826,10 +27971,14 @@ exports.default = {
         if (this.$route.params.recipeId == 'new') {
             this.newRecipe = true;
         }
+    },
+
+    components: {
+        recipeIngredients: _RecipeIngredients2.default
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-4\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>        \n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"recipeForm\">\n          <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n          <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <h1 v-if=\"newRecipe\">New Recipe</h1>\n  <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <div v-if=\"!newRecipe\">Image: {{recipe.image}}</div>\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\">\n            <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n            <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -27840,7 +27989,77 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78b15c8f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":58,"babel-runtime/core-js/object/keys":2,"vue":46,"vue-hot-reload-api":43}],55:[function(require,module,exports){
+},{"../vuex/actions/recipes":62,"./RecipeIngredients.vue":57,"babel-runtime/core-js/object/keys":2,"vue":46,"vue-hot-reload-api":43}],57:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _AddIngredient = require('./AddIngredient.vue');
+
+var _AddIngredient2 = _interopRequireDefault(_AddIngredient);
+
+var _IngredientEdit = require('./IngredientEdit.vue');
+
+var _IngredientEdit2 = _interopRequireDefault(_IngredientEdit);
+
+var _ingredients = require('../vuex/actions/ingredients');
+
+var ingredientActions = _interopRequireWildcard(_ingredients);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+    props: ['ingredients'],
+    data: function data() {
+        return {};
+    },
+
+    vuex: {
+        actions: {
+            saveIngredient: ingredientActions.saveIngredient,
+            setIngredients: ingredientActions.setIngredients
+        }
+    },
+    components: {
+        addIngredient: _AddIngredient2.default,
+        ingredientEdit: _IngredientEdit2.default
+    },
+    methods: {
+        addIngredient: function addIngredient() {
+            var ingredient = {
+                label: '',
+                unit: 'cup',
+                amount: '',
+                ing_id: '',
+                isLabel: false
+            };
+            this.ingredients.push(ingredient);
+        },
+        submit: function submit() {
+            this.addIngredient();
+        }
+    },
+    created: function created() {
+        this.setIngredients();
+    }
+};
+if (module.exports.__esModule) module.exports = module.exports.default
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <form v-on:submit.prevent=\"submit\">\n    <button type=\"submit\">New Ingredient</button>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
+if (module.hot) {(function () {  module.hot.accept()
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  if (!module.hot.data) {
+    hotAPI.createRecord("_v-32d384cd", module.exports)
+  } else {
+    hotAPI.update("_v-32d384cd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
+  }
+})()}
+},{"../vuex/actions/ingredients":61,"./AddIngredient.vue":51,"./IngredientEdit.vue":52,"vue":46,"vue-hot-reload-api":43}],58:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27884,7 +28103,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-69693523", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":58,"vue":46,"vue-hot-reload-api":43}],56:[function(require,module,exports){
+},{"../vuex/actions/recipes":62,"vue":46,"vue-hot-reload-api":43}],59:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27892,7 +28111,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
-},{}],57:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27986,7 +28205,54 @@ function setAuthErr(_ref6, error) {
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":49,"../../app":50,"../mutation-types":62,"./utils.js":59}],58:[function(require,module,exports){
+},{"../../api":49,"../../app":50,"../mutation-types":67,"./utils.js":63}],61:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.setIngredients = setIngredients;
+exports.saveIngredient = saveIngredient;
+
+var _mutationTypes = require('../mutation-types');
+
+var _utils = require('./utils.js');
+
+var _api = require('../../api');
+
+var Api = _interopRequireWildcard(_api);
+
+function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+        return obj;
+    } else {
+        var newObj = {};if (obj != null) {
+            for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+            }
+        }newObj.default = obj;return newObj;
+    }
+}
+
+function setIngredients(_ref) {
+    var dispatch = _ref.dispatch;
+
+    Api.getIngredients().then(function (response) {
+        var body = (0, _utils.parseResponse)(response);
+        dispatch(_mutationTypes.SET_INGREDIENTS, body.ingredients);
+    }, function (response) {});
+}
+
+function saveIngredient(_ref2, ingredient) {
+    var dispatch = _ref2.dispatch;
+
+    Api.saveIngredient(ingredient).then(function (response) {
+        var body = (0, _utils.parseResponse)(response);
+        dispatch(_mutationTypes.ADD_INGREDIENT, body.ingredient);
+    }, function (response) {});
+}
+
+},{"../../api":49,"../mutation-types":67,"./utils.js":63}],62:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28044,7 +28310,7 @@ function saveRecipe(_ref2, recipe) {
     });
 }
 
-},{"../../api":49,"../../app":50,"../mutation-types":62,"./utils.js":59}],59:[function(require,module,exports){
+},{"../../api":49,"../../app":50,"../mutation-types":67,"./utils.js":63}],63:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28060,7 +28326,7 @@ function parseResponse(response) {
     return response.body;
 }
 
-},{}],60:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28095,7 +28361,41 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":62,"babel-runtime/helpers/defineProperty":3}],61:[function(require,module,exports){
+},{"../mutation-types":67,"babel-runtime/helpers/defineProperty":3}],65:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _mutations;
+
+var _mutationTypes = require('../mutation-types');
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+var state = {
+    ingredients: []
+};
+
+var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_INGREDIENTS, function (state, ingredients) {
+    state.ingredients = ingredients;
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.ADD_INGREDIENT, function (state, ingredient) {
+    state.ingredients.push(ingredient);
+}), _mutations);
+
+exports.default = {
+    state: state,
+    mutations: mutations
+};
+
+},{"../mutation-types":67,"babel-runtime/helpers/defineProperty":3}],66:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28135,7 +28435,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":62,"babel-runtime/helpers/defineProperty":3}],62:[function(require,module,exports){
+},{"../mutation-types":67,"babel-runtime/helpers/defineProperty":3}],67:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28147,8 +28447,10 @@ var SET_RECIPES = exports.SET_RECIPES = 'SET_RECIPES';
 var ADD_RECIPE = exports.ADD_RECIPE = 'ADD_RECIPE';
 var SAVING_RECIPE = exports.SAVING_RECIPE = 'SAVING_RECIPE';
 var RECIPE_ERR = exports.RECIPE_ERR = 'RECIPE_ERR';
+var SET_INGREDIENTS = exports.SET_INGREDIENTS = 'SET_INGREDIENTS';
+var ADD_INGREDIENT = exports.ADD_INGREDIENT = 'ADD_INGREDIENT';
 
-},{}],63:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28171,6 +28473,10 @@ var _recipes = require('./modules/recipes');
 
 var _recipes2 = _interopRequireDefault(_recipes);
 
+var _ingredients = require('./modules/ingredients');
+
+var _ingredients2 = _interopRequireDefault(_ingredients);
+
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -28180,10 +28486,11 @@ _vue2.default.use(_vuex2.default);
 exports.default = new _vuex2.default.Store({
     modules: {
         auth: _auth2.default,
-        recipes: _recipes2.default
+        recipes: _recipes2.default,
+        ingredients: _ingredients2.default
     }
 });
 
-},{"./modules/auth":60,"./modules/recipes":61,"vue":46,"vuex":47}]},{},[50]);
+},{"./modules/auth":64,"./modules/ingredients":65,"./modules/recipes":66,"vue":46,"vuex":47}]},{},[50]);
 
 //# sourceMappingURL=app.js.map
