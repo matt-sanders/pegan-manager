@@ -87,9 +87,14 @@
              if ( this.working || !this.recipeForm.$valid ) return;
 
              let recipe = {};
+             let patt = /^\$/;
              Object.keys(this.recipeForm).forEach(key => {
+                 //we don't want keys like $errors and $valid to come through
+                 if ( patt.test(key) ) return true;
                  recipe[key] = this.recipeForm[key].value;
              });
+
+             if ( this.recipe._id ) recipe._id = this.recipe._id;
 
              recipe.ingredients = [];
              //get all the ingredients

@@ -80,4 +80,39 @@ describe('RecipeEdit', () => {
         expect(router.app.$el.querySelector('h1').textContent).to.equal('Edit '+recipe.title);
         expect(router.app.$el.querySelectorAll('input.form-control')[0].value).to.equal(recipe.title);
     });
+
+    it('should update an existing record', () => {
+        let recipe = {
+            '_id': 1234,
+            'title': 'Foo',
+            'desc': 'Some Desc',
+            'directions': 'Some Directions',
+            'ingredients': []
+        };
+        store.state.recipes.recipes = [recipe];
+        let router = getComponent();
+        router.go('/1234');
+
+        let el = router.app.$children[0];
+        el.submit();
+
+        //update recipe for output
+        let recipeBase = {
+            title: '',
+            prep: '',
+            cook: '',
+            'yield': '',
+            desc: '',
+            directions: '',
+            tags: '',
+            link: '',
+            image: '',
+            ingredients: ''
+        };
+
+        let outRecipe = Object.assign(recipeBase, recipe);
+        expect(SaveRecipeSpy).to.be.called;
+        expect(SaveRecipeSpy.args[0][1]).to.deep.equal(outRecipe);
+        
+    });
 });
