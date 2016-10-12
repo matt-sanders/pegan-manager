@@ -37,6 +37,16 @@ export function saveRecipe(recipe){
 }
 
 /**
+ * Updates a recipe
+ * @param {Object} $recipe
+ * @return {Promise}
+ */
+export function updateRecipe(recipe){
+    setHeaders();
+    return Vue.http.put(API_URL+'recipe/'+recipe._id, recipe);
+}
+
+/**
  * Retrieves all ingredients
  * @return {Promise}
  */

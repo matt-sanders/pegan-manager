@@ -1,4 +1,4 @@
-import {SET_RECIPES, ADD_RECIPE, SAVING_RECIPE, RECIPE_ERR} from '../mutation-types';
+import {SET_RECIPES, ADD_RECIPE, UPDATE_RECIPE, SAVING_RECIPE, RECIPE_ERR} from '../mutation-types';
 const state = {
     recipes: [],
     savingRecipe: false,
@@ -11,6 +11,18 @@ const mutations = {
     },
     [ADD_RECIPE](state, recipe){
         state.recipes.push(recipe);
+    },
+    [UPDATE_RECIPE](state, recipe){
+        let updated = false;
+        state.recipes.forEach( (rec, idx) =>{
+            if ( rec._id == recipe._id ){
+                updated = true;
+                state.recipes[idx] = recipe;
+            }
+        });
+        
+        //if we haven't found one, just add it in
+        if ( !updated )state.recipes.push(recipe);
     },
     [SAVING_RECIPE](state, saving){
         state.savingRecipe = saving;

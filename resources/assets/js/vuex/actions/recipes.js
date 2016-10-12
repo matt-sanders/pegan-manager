@@ -18,6 +18,7 @@ export function setRecipes({dispatch}){
 
 /**
  * Should save a recipe
+ * @param {Object} $recipe
  */
 export function saveRecipe({dispatch}, recipe){
     dispatch(types.SAVING_RECIPE, true);
@@ -32,4 +33,23 @@ export function saveRecipe({dispatch}, recipe){
             dispatch(types.RECIPE_ERR, true);
             dispatch(types.SAVING_RECIPE, false);
         });
+}
+
+/**
+ * Should update a recipe
+ * @param {Object} $recipe
+ */
+export function updateRecipe({dispatch}, recipe){
+    if ( !recipe._id ) return;
+    dispatch(types.SAVING_RECIPE, true);
+    dispatch(types.RECIPE_ERR, false);
+    Api.updateRecipe(recipe)
+        .then( response => {
+            let body = parseResponse(response);
+            dispatch(types.UPDATE_RECIPE, body.recipe);
+            dispatch(types.SAVING_RECIPE, false);
+        }, response => {
+            dispatch(types.RECIPE_ERR, true);
+            dispatch(types.SAVING_RECIPE, false);            
+        });        
 }

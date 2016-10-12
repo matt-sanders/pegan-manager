@@ -285,6 +285,34 @@ describe('Actions', () => {
 
             Vue.http.interceptors.shift();
         });
+        
+        it('updateRecipe', done => {
+            let recipes = [
+                {
+                    '_id': 1234,
+                    foo: 'bar'
+                }
+            ];
+            let recipe = {
+                '_id': 1234,
+                title: 'new'
+            };
+
+            Vue.http.interceptors.push((request, next) => {
+                var body = {recipe: recipe};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            testAction(recipeActions.updateRecipe, [recipe], recipeState, [
+                { name: 'SAVING_RECIPE', payload: [true] },
+                { name: 'RECIPE_ERR', payload: [false] },
+                { name: 'UPDATE_RECIPE', payload: [recipe] },
+                { name: 'SAVING_RECIPE', payload: [false] }
+            ], done);
+
+            Vue.http.interceptors.shift();
+        });
+        
     });
 
     describe("Ingredients", () => {

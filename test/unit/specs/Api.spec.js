@@ -18,6 +18,7 @@ Vue.http.interceptors.unshift((request, next)=>{
 
 let postSpy = sinon.spy(Vue.http, 'post');
 let getSpy = sinon.spy(Vue.http, 'get');
+let putSpy = sinon.spy(Vue.http, 'put');
 
 describe('Api', () => {
 
@@ -37,6 +38,15 @@ describe('Api', () => {
         };
         Api.saveRecipe(recipe);
         expect(Vue.http.post).to.be.calledWith(API_URL+'recipe', recipe);
+    });
+
+    it('updateRecipe', () => {
+        let recipe = {
+            '_id': '12354',
+            title: 'test'
+        };
+        Api.updateRecipe(recipe);
+        expect(Vue.http.put).to.be.calledWith(API_URL+'recipe/'+recipe._id, recipe);
     });
 
     it('getIngredients', () => {
