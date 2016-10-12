@@ -17,6 +17,7 @@ chai.use(sinonChai);
 
 let SaveRecipeSpy = sinon.spy();
 let SetRecipeSpy = sinon.spy();
+let UpdateRecipeSpy = sinon.spy();
 
 let IngredientMock = Vue.extend({
     props: ['ingredients'],
@@ -39,7 +40,8 @@ let recipeBase = {
 const RecipeEditWithMocks = RecipeEditInjector({
     '../vuex/actions/recipes': {
         saveRecipe: SaveRecipeSpy,
-        setRecipes: SetRecipeSpy
+        setRecipes: SetRecipeSpy,
+        updateRecipe: UpdateRecipeSpy
     },
     './RecipeIngredients.vue': IngredientMock
 });
@@ -111,8 +113,8 @@ describe('RecipeEdit', () => {
 
         //update recipe for output
         let outRecipe = Object.assign({}, recipeBase, recipe);
-        expect(SaveRecipeSpy).to.be.called;
-        expect(SaveRecipeSpy.args[0][1]).to.deep.equal(outRecipe);
+        expect(UpdateRecipeSpy).to.be.called;
+        expect(UpdateRecipeSpy.args[0][1]).to.deep.equal(outRecipe);
         
     });
 
@@ -138,6 +140,6 @@ describe('RecipeEdit', () => {
         
         let outRecipe = Object.assign({}, recipeBase, recipe);
         expect(SaveRecipeSpy).to.be.called;
-        expect(SaveRecipeSpy.args[1][1]).to.deep.equal(outRecipe);
+        expect(SaveRecipeSpy.args[0][1]).to.deep.equal(outRecipe);
     });
 });

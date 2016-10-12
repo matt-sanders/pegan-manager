@@ -79,7 +79,8 @@
          },
          actions: {
              saveRecipe: recipeActions.saveRecipe,
-             setRecipes: recipeActions.setRecipes
+             setRecipes: recipeActions.setRecipes,
+             updateRecipe: recipeActions.updateRecipe
          }
      },
      methods: {
@@ -115,7 +116,11 @@
                  recipe.ingredients.push(ingredient);
              });
 
-             this.saveRecipe(recipe);
+             if ( recipe._id ){
+                 this.updateRecipe(recipe);
+             } else {
+                 this.saveRecipe(recipe);
+             }
          }
      },
      computed: {
