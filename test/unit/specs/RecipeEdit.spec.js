@@ -23,6 +23,19 @@ let IngredientMock = Vue.extend({
     template: '<div></div>'
 });
 
+let recipeBase = {
+    title: '',
+    prep: '',
+    cook: '',
+    'yield': '',
+    desc: '',
+    directions: '',
+    tags: '',
+    link: '',
+    image: '',
+    ingredients: []
+};
+
 const RecipeEditWithMocks = RecipeEditInjector({
     '../vuex/actions/recipes': {
         saveRecipe: SaveRecipeSpy,
@@ -97,22 +110,34 @@ describe('RecipeEdit', () => {
         el.submit();
 
         //update recipe for output
-        let recipeBase = {
-            title: '',
-            prep: '',
-            cook: '',
-            'yield': '',
-            desc: '',
-            directions: '',
-            tags: '',
-            link: '',
-            image: '',
-            ingredients: ''
-        };
-
-        let outRecipe = Object.assign(recipeBase, recipe);
+        let outRecipe = Object.assign({}, recipeBase, recipe);
         expect(SaveRecipeSpy).to.be.called;
         expect(SaveRecipeSpy.args[0][1]).to.deep.equal(outRecipe);
         
+    });
+
+    it('should create a new record', () => {
+        store.state.recipes.recipes = [];
+        let router = getComponent();
+        router.go('/new');
+
+        let recipe = {
+            title: 'Foo',
+            desc: 'Some Desc',
+            directions: 'Some Directions'
+        };
+
+        let el = router.app.$children[0];
+
+        //populate our form
+        Object.keys(recipe).forEach(key=>{
+            el.recipeForm[key].value = recipe[key];
+        });
+
+        el.submit();
+        
+        let outRecipe = Object.assign({}, recipeBase, recipe);
+        expect(SaveRecipeSpy).to.be.called;
+        expect(SaveRecipeSpy.args[1][1]).to.deep.equal(outRecipe);
     });
 });
