@@ -21,11 +21,6 @@ class RecipeController extends Controller
         foreach ( $recipe->getFillable() as $field ){
             $recipe->{$field} = $request->{$field};
         }
-
-        //encode the image to save in our DB
-        if ( $request->hasFile('image') ){
-            $recipe->raw_image = $request->file('image');
-        }
         $recipe->save();
         return response()->json(['recipe' => $recipe]);
     }
