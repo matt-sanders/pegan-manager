@@ -1,7 +1,17 @@
 <template>
   <div class="recipe-edit">
-    <h1 v-if="newRecipe">New Recipe</h1>
-    <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
+    <div class="row">
+      <div class="col-md-8">
+        <h1 v-if="newRecipe">New Recipe</h1>
+        <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
+      </div>
+      <div class="col-md-4 text-right">
+        <div class="btn-group margin-top" role="group">
+          <a class="btn btn-success" :disabled="!formValid" href="#" @click.prevent="submit">{{working ? 'Saving...' : 'Save'}}</a>
+          <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
+        </div>
+      </div>
+    </div>
       <div class="row">
         <div class="col-md-4">
           <form v-on:submit.prevent="submit">
@@ -36,9 +46,6 @@
               </div>
 
               <formly-field :form.sync="recipeForm" :key="'image'"></formly-field>
-              
-              <button class="btn btn-success" :disabled="!formValid">{{working ? 'Saving...' : 'Save'}}</button>
-              <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
             </formly-form>
           </form>
         </div>
