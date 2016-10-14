@@ -27704,7 +27704,7 @@ function saveRecipe(recipe) {
 
 function updateRecipe(recipe) {
   setHeaders();
-  return _vue2.default.http.post(_constants.API_URL + 'recipe/' + recipe.get('_id'), recipe);
+  return _vue2.default.http.put(_constants.API_URL + 'recipe/' + recipe._id, recipe);
 }
 
 function getIngredients() {
@@ -28059,6 +28059,7 @@ exports.default = {
         return {
             newRecipe: false,
             ingredients: [],
+            image64: '',
             recipeForm: {
                 title: {
                     type: 'input',
@@ -28123,44 +28124,57 @@ exports.default = {
         }
     },
     methods: {
-        submit: function submit() {
+        set64: function set64() {
             var _this = this;
+
+            if (!this.recipeForm.image.files) {
+                this.image64 = '';
+                return;
+            }
+            var fr = new FileReader();
+            fr.onload = function (e) {
+                _this.image64 = e.target.result;
+            };
+            fr.readAsDataURL(this.recipeForm.image.files[0]);
+        },
+        submit: function submit() {
+            var _this2 = this;
 
             if (this.working || !this.recipeForm.$valid) return;
 
-            var recipe = new FormData();
-
-            if (this.recipe._id) recipe.append('_id', this.recipe._id);
-
+            var recipe = {};
             var patt = /^\$/;
             (0, _keys2.default)(this.recipeForm).forEach(function (key) {
                 if (patt.test(key)) return true;
-                recipe.append(key, _this.recipeForm[key].value);
+                recipe[key] = _this2.recipeForm[key].value;
             });
 
-            if (this.recipeForm.image.files) recipe.append('image', this.recipeForm.image.files);
+            recipe.image = this.image64 || '';
 
-            var ingredients = [];
-            this.ingredients.forEach(function (ing) {
-                var ingredient = {
-                    label: '',
-                    amount: '',
-                    unit: '',
-                    ingId: ''
-                };
-                if (ing.isLabel) {
-                    ingredient.label = ing.label;
-                } else {
-                    ingredient.ing_id = ing.ing_id;
-                    ingredient.amount = ing.amount;
-                    ingredient.unit = ing.unit;
-                }
-                ingredients.push(ingredient);
-            });
+            if (this.recipe._id) recipe._id = this.recipe._id;
 
-            recipe.append('ingredients', ingredients);
+            recipe.ingredients = [];
 
-            if (this.recipe._id) {
+            if (this.ingredients) {
+                this.ingredients.forEach(function (ing) {
+                    var ingredient = {
+                        label: '',
+                        amount: '',
+                        unit: '',
+                        ingId: ''
+                    };
+                    if (ing.isLabel) {
+                        ingredient.label = ing.label;
+                    } else {
+                        ingredient.ing_id = ing.ing_id;
+                        ingredient.amount = ing.amount;
+                        ingredient.unit = ing.unit;
+                    }
+                    recipe.ingredients.push(ingredient);
+                });
+            }
+
+            if (recipe._id) {
                 this.updateRecipe(recipe);
             } else {
                 this.saveRecipe(recipe);
@@ -28169,21 +28183,30 @@ exports.default = {
     },
     computed: {
         recipe: function recipe() {
-            var _this2 = this;
+            var _this3 = this;
 
             if (this.$route.params.recipeId == 'new') return {};
             var recipes = this.recipes.filter(function (recipe) {
-                return recipe._id == _this2.$route.params.recipeId;
+                return recipe._id == _this3.$route.params.recipeId;
             });
             if (recipes.length == 0) return {};
 
             (0, _keys2.default)(this.recipeForm).forEach(function (key) {
                 if (!recipes[0][key] || key == 'image') return;
-                _this2.recipeForm[key].value = recipes[0][key];
+                _this3.recipeForm[key].value = recipes[0][key];
             });
 
             this.ingredients = recipes[0].ingredients;
             return recipes[0];
+        },
+        formValid: function formValid() {
+            return this.recipeForm.$valid && (!this.recipeForm.image.value || this.recipeForm.image.value && this.image64);
+        }
+    },
+    watch: {
+        'recipeForm.image.files': function recipeFormImageFiles() {
+            if (!this.recipeForm.image.files) return;
+            this.set64();
         }
     },
     created: function created() {
@@ -28198,7 +28221,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <h1 v-if=\"newRecipe\">New Recipe</h1>\n  <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <div v-if=\"!newRecipe\">Image: {{recipe.image}}</div>\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\">\n            <button class=\"btn btn-success\" :disabled=\"!recipeForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n            <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <h1 v-if=\"newRecipe\">New Recipe</h1>\n  <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <div v-if=\"!newRecipe\">Image: {{recipe.image}}</div>\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\">\n            <button class=\"btn btn-success\" :disabled=\"!formValid\">{{working ? 'Saving...' : 'Save'}}</button>\n            <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28534,7 +28557,7 @@ function saveRecipe(_ref2, recipe) {
 function updateRecipe(_ref3, recipe) {
     var dispatch = _ref3.dispatch;
 
-    if (!recipe.get('_id')) return;
+    if (!recipe._id) return;
     dispatch(types.SAVING_RECIPE, true);
     dispatch(types.RECIPE_ERR, false);
     Api.updateRecipe(recipe).then(function (response) {
