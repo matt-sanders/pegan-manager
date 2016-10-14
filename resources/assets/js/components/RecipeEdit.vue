@@ -4,9 +4,39 @@
     <h1 v-if="!newRecipe">Edit {{recipe.title}}</h1>
       <div class="row">
         <div class="col-md-4">
-          <div v-if="!newRecipe">Image: {{recipe.image}}</div>
           <form v-on:submit.prevent="submit">
-            <formly-form :form="recipeForm">
+            <formly-form :form="recipeForm" :custom-layout="true">
+              <formly-field :form.sync="recipeForm" :key="'title'"></formly-field>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <formly-field :form.sync="recipeForm" :key="'prep'"></formly-field>
+                </div>
+                <div class="col-md-6">
+                  <formly-field :form.sync="recipeForm" :key="'cook'"></formly-field>
+                </div>
+              </div>
+
+              <formly-field :form.sync="recipeForm" :key="'yield'"></formly-field>
+
+              <formly-field :form.sync="recipeForm" :key="'desc'"></formly-field>
+
+              <formly-field :form.sync="recipeForm" :key="'directions'"></formly-field>
+
+              <formly-field :form.sync="recipeForm" :key="'tags'"></formly-field>
+
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <formly-field :form.sync="recipeForm" :key="'linkTitle'"></formly-field>
+                </div>
+                <div class="col-md-6">
+                  <formly-field :form.sync="recipeForm" :key="'link'"></formly-field>
+                </div>
+              </div>
+
+              <formly-field :form.sync="recipeForm" :key="'image'"></formly-field>
+              
               <button class="btn btn-success" :disabled="!formValid">{{working ? 'Saving...' : 'Save'}}</button>
               <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
             </formly-form>
@@ -14,6 +44,11 @@
         </div>
         <div class="col-md-4">
           <recipe-ingredients :ingredients="ingredients"></recipe-ingredients>
+
+          <div v-if="image64">
+            <h4>Image</h4>
+            <div class="recipeImage" v-bind:style="{ backgroundImage: 'url('+image64+')' };"></div>
+          </div>
         </div>
       </div>
   </div>
@@ -59,6 +94,10 @@
                  tags: {
                      type: 'input',
                      label: 'tags'
+                 },
+                 linkTitle: {
+                     type: 'input',
+                     label: 'link title'
                  },
                  link: {
                      type: 'input',
@@ -152,6 +191,9 @@
                  if ( !recipes[0][key] || key == 'image') return;
                  this.recipeForm[key].value = recipes[0][key];
              });
+
+             //reset the image
+             this.image64 = recipes[0].image;
 
              this.ingredients = recipes[0].ingredients;
              return recipes[0];

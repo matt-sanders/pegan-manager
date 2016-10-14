@@ -5791,7 +5791,7 @@ form div.form-group.formly-input label {
   font-size: 1em;
   color: #313131; }
 
-form div.form-group.formly-has-value label, form div.form-group.formly-has-focus label {
+form div.form-group.formly-has-value label, form div.form-group.formly-has-focus label, form div.form-group.formly-input.file label {
   top: 0;
   font-size: 0.8em;
   color: #7e7e7e; }
@@ -5803,45 +5803,33 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   margin-bottom: 0; }
 
 #main-nav {
-  background-color: #212121;
-  position: absolute;
+  background-color: #f7f7f7;
+  position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 50px;
+  width: 150px;
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease;
   overflow: hidden;
   height: 0;
-  z-index: 20; }
-  #main-nav:hover {
-    width: 200px; }
-    #main-nav:hover .nav-item a .nav-label {
-      opacity: 1; }
-  #main-nav .nav-item {
-    width: 200px;
-    opacity: 0;
-    -webkit-transition: opacity 0.5s ease 0.2s;
-    transition: opacity 0.5s ease 0.2s; }
-    #main-nav .nav-item a {
-      display: block;
-      text-align: left;
-      color: #a8a8a8;
-      line-height: 40px;
-      text-decoration: none;
-      -webkit-transition: all 0.5s ease;
-      transition: all 0.5s ease; }
-      #main-nav .nav-item a:hover {
-        background-color: #535353; }
-      #main-nav .nav-item a .glyphicon {
-        display: inline-block;
-        vertical-align: middle;
-        width: 50px;
-        text-align: center; }
-      #main-nav .nav-item a .nav-label {
-        opacity: 0;
-        -webkit-transition: all 0.5s ease;
-        transition: all 0.5s ease; }
+  z-index: 20;
+  border-right: 1px solid #eaeaea; }
+  #main-nav .nav-item a {
+    display: block;
+    text-align: left;
+    color: #a8a8a8;
+    line-height: 40px;
+    text-decoration: none;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease; }
+    #main-nav .nav-item a:hover {
+      color: #646464; }
+    #main-nav .nav-item a .glyphicon {
+      display: inline-block;
+      vertical-align: middle;
+      width: 50px;
+      text-align: center; }
 
 .active #main-nav {
   height: 100%; }
@@ -5889,6 +5877,11 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   background: rgba(0, 0, 0, 0.6);
   z-index: 21; }
 
+.recipeImage {
+  height: 500px;
+  background-size: cover;
+  background-position: center center; }
+
 html {
   height: 100%; }
 
@@ -5897,14 +5890,15 @@ body {
   background-color: transparent; }
 
 #app {
-  height: calc(100% - 50px);
+  height: 100%;
   position: relative;
   overflow: auto;
   -webkit-transition: background-color 0.5s ease;
-  transition: background-color 0.5s ease; }
+  transition: background-color 0.5s ease;
+  border-top: 1px solid #eaeaea;
+  background-color: #fff; }
   #app.active {
-    padding-left: 50px;
-    background-color: #f5f5f5; }
+    padding-left: 160px; }
 
 .panel {
   border: none; }

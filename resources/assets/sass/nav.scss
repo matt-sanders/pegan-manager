@@ -1,45 +1,33 @@
 #main-nav
 {
-    background-color: lighten(#000, 13%);
-    position: absolute;
+    background-color: #f7f7f7;
+    position: fixed;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 50px;
+    width: 150px;
     transition: all $speed $ease;
     overflow: hidden;
     height: 0;
     z-index: 20;
+    border-right: 1px solid #eaeaea;
 
-    &:hover
-          {
-              width: 200px;
 
-              .nav-item a .nav-label
-              {
-                  opacity: 1;
-              }//nav-label
-          }//hover
+    .nav-item
+    {   
+        a
+        {
+            display: block;
+            text-align: left;
+            color: $gray-light;
+            line-height: 40px;
+            text-decoration: none;
+            transition: all $speed $ease;
 
-          .nav-item
-          {
-              width: 200px;
-              opacity: 0;
-              transition: opacity $speed $ease 0.2s;
-              
-              a
-              {
-                  display: block;
-                  text-align: left;
-                  color: $gray-light;
-                  line-height: 40px;
-                  text-decoration: none;
-                  transition: all $speed $ease;
-
-                  &:hover
-                        {
-                            background-color: $gray-darker;
-                        }//hover
+            &:hover
+                  {
+                      color: $gray-dark;
+                  }//hover
 
                   &.v-link-active
                   {
@@ -53,15 +41,10 @@
                       width: 50px;
                       text-align: center;
                   }//glyphicon
-                  
-                  .nav-label
-                  {
-                      opacity: 0;
-                      transition: all $speed $ease;
-                  }//nav-label
-              }//a
+                 
+        }//a
 
-          }//nav-item
+    }//nav-item
           
 }//main-nav
 

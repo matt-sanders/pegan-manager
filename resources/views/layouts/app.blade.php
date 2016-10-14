@@ -26,11 +26,13 @@
     </style>
 </head>
 <body id="app-layout">
+  <!--
   <div class="container-fluid banner">
     <a class="navbar-brand" href="{{ url('/') }}">
       Recipe Manager
     </a>
   </div>
+  -->
 
   <div id="app"></div>
 

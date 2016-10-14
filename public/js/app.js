@@ -1302,7 +1302,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 41 */
 /***/ function(module, exports) {
 
-	module.exports = "\n<div class=\"form-group formly-input\" :class=\"{'formly-has-value': form[key].value, 'formly-has-focus': form[key].$active}\">\n  <label v-if=\"form[key].label\" :for=\"form[key].id ? form[key].id : null\">{{form[key].label}}</label>\n  <input class=\"form-control\" :class=\"form[key].classes\" :id=\"form[key].id ? form[key].id : null\" :type=\"form[key].inputType || text\" v-model=\"form[key].value\" @blur=\"onBlur\" @focus=\"onFocus\" @click=\"onClick\" @change=\"onChange\" @keyup=\"onKeyup\" @keydown=\"onKeydown\" v-formly-atts=\"form[key].atts\">\n</div>\n";
+	module.exports = "\n<div class=\"form-group formly-input\" :class=\"[ form[key].inputType, {'formly-has-value': form[key].value, 'formly-has-focus': form[key].$active}]\">\n  <label v-if=\"form[key].label\" :for=\"form[key].id ? form[key].id : null\">{{form[key].label}}</label>\n  <input class=\"form-control\" :class=\"form[key].classes\" :id=\"form[key].id ? form[key].id : null\" :type=\"form[key].inputType || text\" v-model=\"form[key].value\" @blur=\"onBlur\" @focus=\"onFocus\" @click=\"onClick\" @change=\"onChange\" @keyup=\"onKeyup\" @keydown=\"onKeydown\" v-formly-atts=\"form[key].atts\">\n</div>\n";
 
 /***/ },
 /* 42 */
@@ -28092,6 +28092,10 @@ exports.default = {
                     type: 'input',
                     label: 'tags'
                 },
+                linkTitle: {
+                    type: 'input',
+                    label: 'link title'
+                },
                 link: {
                     type: 'input',
                     label: 'link'
@@ -28196,6 +28200,8 @@ exports.default = {
                 _this3.recipeForm[key].value = recipes[0][key];
             });
 
+            this.image64 = recipes[0].image;
+
             this.ingredients = recipes[0].ingredients;
             return recipes[0];
         },
@@ -28221,7 +28227,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <h1 v-if=\"newRecipe\">New Recipe</h1>\n  <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <div v-if=\"!newRecipe\">Image: {{recipe.image}}</div>\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\">\n            <button class=\"btn btn-success\" :disabled=\"!formValid\">{{working ? 'Saving...' : 'Save'}}</button>\n            <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <h1 v-if=\"newRecipe\">New Recipe</h1>\n  <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\" :custom-layout=\"true\">\n            <formly-field :form.sync=\"recipeForm\" :key=\"'title'\"></formly-field>\n\n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'prep'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'cook'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'yield'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'desc'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'directions'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'tags'\"></formly-field>\n\n            \n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'linkTitle'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'link'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'image'\"></formly-field>\n            \n            <button class=\"btn btn-success\" :disabled=\"!formValid\">{{working ? 'Saving...' : 'Save'}}</button>\n            <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n\n        <div v-if=\"image64\">\n          <h4>Image</h4>\n          <div class=\"recipeImage\" v-bind:style=\"{ backgroundImage: 'url('+image64+')' };\"></div>\n        </div>\n      </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)

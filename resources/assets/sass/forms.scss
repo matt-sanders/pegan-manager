@@ -37,7 +37,8 @@ form
         }//formly-input
 
         &.formly-has-value,
-        &.formly-has-focus
+        &.formly-has-focus,
+        &.formly-input.file
          {
              label
              {
