@@ -16,9 +16,12 @@ chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
+
+
 // helper for testing action with expected mutations
 const testAction = (action, args, state, expectedMutations, done) => {
     let count = 0;
+    
     // mock dispatch
     const dispatch = (name, ...payload) => {
         const mutation = expectedMutations[count];
@@ -50,7 +53,7 @@ let authState = Auth.state;
 let recipeState = Recipes.state;
 let ingredientState = Ingredients.state;
 
-sinon.spy(router, 'go');
+let routerSpy = sinon.spy(router, 'go');
 
 describe('Actions', () => {
 
@@ -197,6 +200,7 @@ describe('Actions', () => {
 
         beforeEach(()=>{
             recipeState.recipes = [];
+            routerSpy.reset();
         });
         
         it('setRecipes', done =>{
@@ -245,7 +249,7 @@ describe('Actions', () => {
             Vue.http.interceptors.shift();
         });
 
-        it('saveRecipe redirect', () => {
+        it('saveRecipe redirect', done => {
             let recipes = [
                 {
                     foo: 'bar'
@@ -258,14 +262,23 @@ describe('Actions', () => {
 
             recipes.push(recipe);
 
+            
             Vue.http.interceptors.push((request, next) => {
                 var body = {recipe: recipe};
                 next(request.respondWith(body, { status: 200, data: body }));
             });
 
-            expect(router.go).to.be.calledWith('/recipe/test');
+            const dispatch = () => {};
+            
+            recipeActions.saveRecipe({dispatch}, recipe);
+            
+            setTimeout(() => {
+                expect(router.go).to.be.calledWith('/recipe/test');
+                done();
+            });
             
             Vue.http.interceptors.shift();
+             
         });
 
         it('saveRecipe error', done => {

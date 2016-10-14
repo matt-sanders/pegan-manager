@@ -89,9 +89,12 @@ This is the second step',
 
     /**
      * Should convert an image to base64
+     * --------------DEPRECATED-------------
+     * we are now doing this on the client side
      */
     public function testConvertImage()
     {
+        /*
         $path = __DIR__.'/test.jpg';
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $mime = finfo_file($finfo, $path);
@@ -116,6 +119,7 @@ This is the second step',
 
         //check it matches
         $this->assertEquals($image_64, $newRecipe->recipe->image);
+        */
         
     }
 
