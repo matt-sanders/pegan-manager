@@ -4,7 +4,7 @@
     <form v-on:submit.prevent="submit">
       <div class="btn-group">
         <button class="btn btn-default" type="submit">Add Ingredient</button>
-        <button class="btn btn-default" type="button">Create Ingredient</button>
+        <button class="btn btn-default" type="button" @click.prevent="openAddIngredient(true)">Create Ingredient</button>
       </div>
       <add-ingredient class="ingredient-wrap" v-for="ingredient in ingredients" :ingredient="ingredient"></add-ingredient>
     </form>
@@ -24,7 +24,8 @@
      vuex: {
          actions: {
              saveIngredient: ingredientActions.saveIngredient,
-             setIngredients: ingredientActions.setIngredients
+             setIngredients: ingredientActions.setIngredients,
+             openAddIngredient: ingredientActions.openAddIngredient
          }
      },
      components: {

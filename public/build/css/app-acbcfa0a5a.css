@@ -5889,7 +5889,10 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   top: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.9);
-  z-index: 20; }
+  z-index: 20;
+  display: none; }
+  .newIngredient.active {
+    display: block; }
 
 html {
   height: 100%; }

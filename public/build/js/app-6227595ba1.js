@@ -27880,8 +27880,17 @@ exports.default = {
     },
 
     vuex: {
+        getters: {
+            saving: function saving(state) {
+                return state.ingredients.saving;
+            },
+            open: function open(state) {
+                return state.ingredients.open;
+            }
+        },
         actions: {
-            saveIngredient: ingredientActions.saveIngredient
+            saveIngredient: ingredientActions.saveIngredient,
+            openAddIngredient: ingredientActions.openAddIngredient
         }
     },
     methods: {
@@ -27897,10 +27906,15 @@ exports.default = {
 
             this.saveIngredient(ingredient);
         }
+    },
+    watch: {
+        saving: function saving() {
+            if (!this.saving) this.openAddIngredient(false);
+        }
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"newIngredient\">\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"ingredientForm\">\n          <div class=\"btn-group\">\n            <button class=\"btn btn-success\" :disabled=\"!ingredientForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n            <button class=\"btn btn-default\" type=\"button\">Cancel</button>\n          </div>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"newIngredient\" :class=\"{'active': open}\">\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"ingredientForm\">\n          <div class=\"btn-group\">\n            <button class=\"btn btn-success\" :disabled=\"!ingredientForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n            <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"openAddIngredient(false)\">Cancel</button>\n          </div>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28273,7 +28287,8 @@ exports.default = {
     vuex: {
         actions: {
             saveIngredient: ingredientActions.saveIngredient,
-            setIngredients: ingredientActions.setIngredients
+            setIngredients: ingredientActions.setIngredients,
+            openAddIngredient: ingredientActions.openAddIngredient
         }
     },
     components: {
@@ -28300,7 +28315,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <h4>Ingredients</h4>\n  <form v-on:submit.prevent=\"submit\">\n    <div class=\"btn-group\">\n      <button class=\"btn btn-default\" type=\"submit\">Add Ingredient</button>\n      <button class=\"btn btn-default\" type=\"button\">Create Ingredient</button>\n    </div>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <h4>Ingredients</h4>\n  <form v-on:submit.prevent=\"submit\">\n    <div class=\"btn-group\">\n      <button class=\"btn btn-default\" type=\"submit\">Add Ingredient</button>\n      <button class=\"btn btn-default\" type=\"button\" @click.prevent=\"openAddIngredient(true)\">Create Ingredient</button>\n    </div>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28512,7 +28527,7 @@ function saveIngredient(_ref2, ingredient) {
 function openAddIngredient(_ref3, open) {
     var dispatch = _ref3.dispatch;
 
-    dispatch(_mutationTypes.OPEN_ADD_INGREDIENT, true);
+    dispatch(_mutationTypes.OPEN_ADD_INGREDIENT, open);
 }
 
 },{"../../api":49,"../mutation-types":67,"./utils.js":63}],62:[function(require,module,exports){

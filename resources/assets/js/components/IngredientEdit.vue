@@ -1,12 +1,12 @@
 <template>
-  <div class="newIngredient">
+  <div class="newIngredient" :class="{'active': open}">
     <div class="row margin-top">
       <div class="col-md-4 col-md-offset-4">
         <form v-on:submit.prevent="submit">
           <formly-form :form="ingredientForm">
             <div class="btn-group">
               <button class="btn btn-success" :disabled="!ingredientForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
-              <button class="btn btn-default" type="button">Cancel</button>
+              <button class="btn btn-default" type="button" @click.prevent="openAddIngredient(false)">Cancel</button>
             </div>
           </formly-form>
         </form>
@@ -39,8 +39,13 @@
          }
      },
      vuex: {
+         getters: {
+             saving: state => state.ingredients.saving,
+             open: state => state.ingredients.open
+         },
          actions: {
-             saveIngredient: ingredientActions.saveIngredient
+             saveIngredient: ingredientActions.saveIngredient,
+             openAddIngredient: ingredientActions.openAddIngredient
          }
      },
      methods: {
@@ -54,6 +59,11 @@
              });
 
              this.saveIngredient(ingredient);
+         }
+     },
+     watch: {
+         saving: function(){
+             if( !this.saving ) this.openAddIngredient(false);
          }
      }
  }

@@ -34,5 +34,5 @@ export function saveIngredient({dispatch}, ingredient){
  * Opens the form
  */
 export function openAddIngredient({dispatch}, open){
-    dispatch(OPEN_ADD_INGREDIENT, true);
+    dispatch(OPEN_ADD_INGREDIENT, open);
 }
