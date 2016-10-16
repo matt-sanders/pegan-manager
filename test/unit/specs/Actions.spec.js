@@ -332,6 +332,8 @@ describe('Actions', () => {
 
         beforeEach(()=>{
             ingredientState.ingredients = [];
+            ingredientState.open = false;
+            ingredientState.saving = false;
         });
         
         it('setIngredients', done => {
@@ -350,6 +352,28 @@ describe('Actions', () => {
             ], done);
 
             Vue.http.interceptors.shift();
+        });
+
+        it('saveIngredient', done => {
+            let ingredient = {};
+            Vue.http.interceptors.push((request, next) => {
+                var body = {ingredient: ingredient};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            testAction(ingredientActions.saveIngredient, [ingredient], ingredientState, [
+                {name: 'SAVING_INGREDIENT', payload: [true]},
+                {name: 'ADD_INGREDIENT', payload: [ingredient]},
+                {name: 'SAVING_INGREDIENT', payload: [false]}
+            ], done);
+
+            Vue.http.interceptors.shift();            
+        });
+
+        it('openAddIngredient', done => {
+            testAction(ingredientActions.openAddIngredient, [true], ingredientState, [
+                {name: 'OPEN_ADD_INGREDIENT', payload: [true]}
+            ],done);
         });
     });
 });

@@ -96,7 +96,9 @@ describe('Mutations', () =>{
 
         beforeEach(()=>{
             state = {
-                ingredients: []
+                ingredients: [],
+                open: false,
+                saving: false
             };
         });
 
@@ -117,6 +119,16 @@ describe('Mutations', () =>{
             Ingredients.mutations.ADD_INGREDIENT(state, ingredient);
             expect(state.ingredients).to.be.length(1);
             expect(state.ingredients[0]).to.deep.equal(ingredient);
+        });
+
+        it('OPEN_ADD_INGREDIENT', () => {
+            Ingredients.mutations.OPEN_ADD_INGREDIENT(state, true);
+            expect(state.open).to.be.true;
+        });
+
+        it('SAVING_INGREDIENT', () => {
+            Ingredients.mutations.SAVING_INGREDIENT(state, true);
+            expect(state.saving).to.be.true;
         });
         
     });

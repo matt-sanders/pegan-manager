@@ -46,16 +46,12 @@
               </div>
 
               <formly-field :form.sync="recipeForm" :key="'image'"></formly-field>
+              <div v-if="image64" class="recipeImage" v-bind:style="{ backgroundImage: 'url('+image64+')' };"></div>
             </formly-form>
           </form>
         </div>
         <div class="col-md-4">
           <recipe-ingredients :ingredients="ingredients"></recipe-ingredients>
-
-          <div v-if="image64">
-            <h4>Image</h4>
-            <div class="recipeImage" v-bind:style="{ backgroundImage: 'url('+image64+')' };"></div>
-          </div>
         </div>
       </div>
   </div>
@@ -96,7 +92,10 @@
                  directions: {
                      type: 'textarea',
                      label: 'directions',
-                     required: true
+                     required: true,
+                     atts: {
+                         rows: 10
+                     }
                  },
                  tags: {
                      type: 'input',

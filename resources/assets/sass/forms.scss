@@ -32,7 +32,7 @@ form
                 top: 20px;
                 margin-bottom: 0;
                 font-size: 1em;
-                color: $gray-base;
+                color: lighten($gray-dark, 10%);
             }//label
         }//formly-input
 

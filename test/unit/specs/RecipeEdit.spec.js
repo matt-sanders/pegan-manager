@@ -33,6 +33,7 @@ let recipeBase = {
     directions: '',
     tags: '',
     link: '',
+    linkTitle: '',
     image: '',
     ingredients: []
 };

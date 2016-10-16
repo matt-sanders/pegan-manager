@@ -88,3 +88,9 @@ body
               transform: rotate(90deg);
           }//hover
 }//new-recipe
+
+a,
+.btn
+ {
+     transition: all $speed $ease;
+ }

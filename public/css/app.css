@@ -5789,7 +5789,7 @@ form div.form-group.formly-input label {
   top: 20px;
   margin-bottom: 0;
   font-size: 1em;
-  color: #313131; }
+  color: #7e7e7e; }
 
 form div.form-group.formly-has-value label, form div.form-group.formly-has-focus label, form div.form-group.formly-input.file label {
   top: 0;
@@ -5878,9 +5878,18 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   z-index: 21; }
 
 .recipeImage {
-  height: 500px;
+  height: 200px;
   background-size: cover;
   background-position: center center; }
+
+.newIngredient {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 20; }
 
 html {
   height: 100%; }
@@ -5929,5 +5938,10 @@ body {
   .btn.new-recipe:hover {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg); }
+
+a,
+.btn {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease; }
 
 /*# sourceMappingURL=app.css.map */

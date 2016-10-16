@@ -27900,7 +27900,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"newIngredient\">\n  <form v-on:submit.prevent=\"submit\">\n    <formly-form :form=\"ingredientForm\">\n      <button class=\"btn btn-success\" :disabled=\"!ingredientForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n    </formly-form>\n  </form>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"newIngredient\">\n  <div class=\"row margin-top\">\n    <div class=\"col-md-4 col-md-offset-4\">\n      <form v-on:submit.prevent=\"submit\">\n        <formly-form :form=\"ingredientForm\">\n          <div class=\"btn-group\">\n            <button class=\"btn btn-success\" :disabled=\"!ingredientForm.$valid\">{{this.working ? 'Saving...' : 'Save'}}</button>\n            <button class=\"btn btn-default\" type=\"button\">Cancel</button>\n          </div>\n        </formly-form>\n      </form>\n    </div>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28086,7 +28086,10 @@ exports.default = {
                 directions: {
                     type: 'textarea',
                     label: 'directions',
-                    required: true
+                    required: true,
+                    atts: {
+                        rows: 10
+                    }
                 },
                 tags: {
                     type: 'input',
@@ -28227,7 +28230,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-8\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    </div>\n    <div class=\"col-md-4 text-right\">\n      <div class=\"btn-group margin-top\" role=\"group\">\n        <a class=\"btn btn-success\" :disabled=\"!formValid\" href=\"#\" @click.prevent=\"submit\">{{working ? 'Saving...' : 'Save'}}</a>\n        <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n      </div>\n    </div>\n  </div>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\" :custom-layout=\"true\">\n            <formly-field :form.sync=\"recipeForm\" :key=\"'title'\"></formly-field>\n\n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'prep'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'cook'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'yield'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'desc'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'directions'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'tags'\"></formly-field>\n\n            \n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'linkTitle'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'link'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'image'\"></formly-field>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n\n        <div v-if=\"image64\">\n          <h4>Image</h4>\n          <div class=\"recipeImage\" v-bind:style=\"{ backgroundImage: 'url('+image64+')' };\"></div>\n        </div>\n      </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-8\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    </div>\n    <div class=\"col-md-4 text-right\">\n      <div class=\"btn-group margin-top\" role=\"group\">\n        <a class=\"btn btn-success\" :disabled=\"!formValid\" href=\"#\" @click.prevent=\"submit\">{{working ? 'Saving...' : 'Save'}}</a>\n        <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n      </div>\n    </div>\n  </div>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\" :custom-layout=\"true\">\n            <formly-field :form.sync=\"recipeForm\" :key=\"'title'\"></formly-field>\n\n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'prep'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'cook'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'yield'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'desc'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'directions'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'tags'\"></formly-field>\n\n            \n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'linkTitle'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'link'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'image'\"></formly-field>\n            <div v-if=\"image64\" class=\"recipeImage\" v-bind:style=\"{ backgroundImage: 'url('+image64+')' };\"></div>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28297,7 +28300,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <h4>Ingredients</h4>\n  <form v-on:submit.prevent=\"submit\">\n    <button type=\"submit\">New Ingredient</button>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"ingredient-list\">\n  <h4>Ingredients</h4>\n  <form v-on:submit.prevent=\"submit\">\n    <div class=\"btn-group\">\n      <button class=\"btn btn-default\" type=\"submit\">Add Ingredient</button>\n      <button class=\"btn btn-default\" type=\"button\">Create Ingredient</button>\n    </div>\n    <add-ingredient class=\"ingredient-wrap\" v-for=\"ingredient in ingredients\" :ingredient=\"ingredient\"></add-ingredient>\n  </form>\n  <ingredient-edit></ingredient-edit>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28462,6 +28465,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.setIngredients = setIngredients;
 exports.saveIngredient = saveIngredient;
+exports.openAddIngredient = openAddIngredient;
 
 var _mutationTypes = require('../mutation-types');
 
@@ -28495,10 +28499,20 @@ function setIngredients(_ref) {
 function saveIngredient(_ref2, ingredient) {
     var dispatch = _ref2.dispatch;
 
+    dispatch(_mutationTypes.SAVING_INGREDIENT, true);
     Api.saveIngredient(ingredient).then(function (response) {
         var body = (0, _utils.parseResponse)(response);
         dispatch(_mutationTypes.ADD_INGREDIENT, body.ingredient);
-    }, function (response) {});
+        dispatch(_mutationTypes.SAVING_INGREDIENT, false);
+    }, function (response) {
+        dispatch(_mutationTypes.SAVING_INGREDIENT, false);
+    });
+}
+
+function openAddIngredient(_ref3, open) {
+    var dispatch = _ref3.dispatch;
+
+    dispatch(_mutationTypes.OPEN_ADD_INGREDIENT, true);
 }
 
 },{"../../api":49,"../mutation-types":67,"./utils.js":63}],62:[function(require,module,exports){
@@ -28647,13 +28661,19 @@ function _interopRequireDefault(obj) {
 }
 
 var state = {
-    ingredients: []
+    ingredients: [],
+    open: false,
+    saving: false
 };
 
 var mutations = (_mutations = {}, (0, _defineProperty3.default)(_mutations, _mutationTypes.SET_INGREDIENTS, function (state, ingredients) {
     state.ingredients = ingredients;
 }), (0, _defineProperty3.default)(_mutations, _mutationTypes.ADD_INGREDIENT, function (state, ingredient) {
     state.ingredients.push(ingredient);
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.OPEN_ADD_INGREDIENT, function (state, open) {
+    state.open = open;
+}), (0, _defineProperty3.default)(_mutations, _mutationTypes.SAVING_INGREDIENT, function (state, saving) {
+    state.saving = saving;
 }), _mutations);
 
 exports.default = {
@@ -28719,13 +28739,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 var SET_AUTH = exports.SET_AUTH = 'SET_AUTH';
 var SET_AUTH_ERR = exports.SET_AUTH_ERR = 'SET_AUTH_ERR';
+
 var SET_RECIPES = exports.SET_RECIPES = 'SET_RECIPES';
 var ADD_RECIPE = exports.ADD_RECIPE = 'ADD_RECIPE';
 var UPDATE_RECIPE = exports.UPDATE_RECIPE = 'UPDATE_RECIPE';
 var SAVING_RECIPE = exports.SAVING_RECIPE = 'SAVING_RECIPE';
 var RECIPE_ERR = exports.RECIPE_ERR = 'RECIPE_ERR';
+
 var SET_INGREDIENTS = exports.SET_INGREDIENTS = 'SET_INGREDIENTS';
 var ADD_INGREDIENT = exports.ADD_INGREDIENT = 'ADD_INGREDIENT';
+var OPEN_ADD_INGREDIENT = exports.OPEN_ADD_INGREDIENT = 'OPEN_ADD_INGREDIENT';
+var SAVING_INGREDIENT = exports.SAVING_INGREDIENT = 'SAVING_INGREDIENT';
 
 },{}],68:[function(require,module,exports){
 'use strict';

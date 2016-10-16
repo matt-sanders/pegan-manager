@@ -1,10 +1,17 @@
 <template>
   <div class="newIngredient">
-    <form v-on:submit.prevent="submit">
-      <formly-form :form="ingredientForm">
-        <button class="btn btn-success" :disabled="!ingredientForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
-      </formly-form>
-    </form>
+    <div class="row margin-top">
+      <div class="col-md-4 col-md-offset-4">
+        <form v-on:submit.prevent="submit">
+          <formly-form :form="ingredientForm">
+            <div class="btn-group">
+              <button class="btn btn-success" :disabled="!ingredientForm.$valid">{{this.working ? 'Saving...' : 'Save'}}</button>
+              <button class="btn btn-default" type="button">Cancel</button>
+            </div>
+          </formly-form>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 

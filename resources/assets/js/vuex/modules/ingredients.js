@@ -1,6 +1,8 @@
-import {SET_INGREDIENTS, ADD_INGREDIENT} from '../mutation-types';
+import {SET_INGREDIENTS, ADD_INGREDIENT, OPEN_ADD_INGREDIENT, SAVING_INGREDIENT} from '../mutation-types';
 const state = {
-    ingredients: []
+    ingredients: [],
+    open: false,
+    saving: false
 };
 
 const mutations = {
@@ -9,6 +11,12 @@ const mutations = {
     },
     [ADD_INGREDIENT](state, ingredient){
         state.ingredients.push(ingredient);
+    },
+    [OPEN_ADD_INGREDIENT](state, open){
+        state.open = open;
+    },
+    [SAVING_INGREDIENT](state, saving){
+        state.saving = saving;
     }
 };
 

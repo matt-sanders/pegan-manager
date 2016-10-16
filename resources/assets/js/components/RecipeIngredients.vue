@@ -2,7 +2,10 @@
   <div class="ingredient-list">
     <h4>Ingredients</h4>
     <form v-on:submit.prevent="submit">
-      <button type="submit">New Ingredient</button>
+      <div class="btn-group">
+        <button class="btn btn-default" type="submit">Add Ingredient</button>
+        <button class="btn btn-default" type="button">Create Ingredient</button>
+      </div>
       <add-ingredient class="ingredient-wrap" v-for="ingredient in ingredients" :ingredient="ingredient"></add-ingredient>
     </form>
     <ingredient-edit></ingredient-edit>
