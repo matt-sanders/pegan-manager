@@ -21,3 +21,64 @@
         display: block;
     }//active
 }//newIngredient
+
+.ingredient-items
+{
+    .ingredient-item
+    {
+        label.toggle-edit
+        {
+            margin-right: 5px;
+            margin-bottom: 0;
+            
+            input
+            {
+                display: none;
+            }//input
+            
+            span
+            {
+                cursor: pointer;
+                text-align: center;
+                transition: all $speed $ease;
+                &:hover
+                      {
+                          color: $brand-primary;
+                      }//hover
+            }//span
+        }//label
+        
+        > div
+        {
+            display: inline-block;
+            vertical-align: middle;
+        }//div
+
+        &.editing
+        {
+            label.toggle-edit
+            {
+                span
+                {
+                    color: $brand-primary;
+                }//span
+            }//toggle-edit
+
+            input[type='text']
+            {
+                box-shadow: none;
+                outline: none;
+                border: none;
+                border-bottom: 1px solid $gray-light;
+            }//text
+
+            .ing-input
+            {
+                input[type='text']
+                {
+                    width: 30px;
+                }//input
+            }//ing-input
+        }//editing
+    }//ingredient-item
+}//ingredient-list

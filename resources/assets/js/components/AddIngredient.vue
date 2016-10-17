@@ -1,7 +1,11 @@
 <template>
-  <div class="ingredient-item">
+  <div class="ingredient-item" :class="{'editing': ingredient.edit}">
+    <label for="ingredient_edit_{{idx}}" class="toggle-edit">
+      <input type="checkbox" v-model="ingredient.edit" id="ingredient_edit_{{idx}}">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </label>
     <div v-show="ingredient.edit">
-      <div v-show="!ingredient.label">
+      <div v-show="!ingredient.label" class="ing-input">
         <input type="text" v-model="ingredient.amount" placeholder="amt">
         <select v-model="ingredient.unit">
           <option value="cup">Cup</option>
@@ -11,7 +15,7 @@
           <option v-for="ing in availableIngredients" value="{{ing._id}}">{{ing.title}}</option>
         </select>
       </div>
-      <div v-show="ingredient.label">
+      <div v-show="ingredient.label" class="label-input">
         <input type="text" v-model="ingredient.label" placeholder="eg For the sauce">
       </div>
       <label for="ingredient_{{idx}}" class="'active': ingredient.isLabel">
@@ -23,10 +27,6 @@
       <div v-show="ingredient.label">{{ingredient.label}}</div>
       <div v-show="!ingredient.label">{{ingredient.amount}} {{ingredient.unit}} {{ingredientLabel}}</div>
     </div>
-    <label for="ingredient_edit_{{idx}}">
-      edit
-      <input type="checkbox" v-model="ingredient.edit" id="ingredient_edit_{{idx}}">
-    </label>
   </div>
 </template>
 
