@@ -8,16 +8,21 @@ import VueFormly from 'vue-formly';
 import VueFormlyBootstrap from 'vue-formly-bootstrap';
 const RecipeListInjector = require('!!vue?inject!../../../resources/assets/js/components/RecipeList.vue');
 import recipes from '../../../resources/assets/js/vuex/modules/recipes';
+import VueRouter from 'vue-router';
 Vue.use(Vuex);
 Vue.use(VueFormly);
 Vue.use(VueFormlyBootstrap);
+Vue.use(VueRouter);
 chai.use(sinonChai);
 
 let RecipeSpy = sinon.spy();
+let DeleteSpy = sinon.spy();
+let ConfSpy = sinon.stub(window, 'confirm').returns(true);
 
 const RecipeListWithMocks = RecipeListInjector({
     '../vuex/actions/recipes': {
-        setRecipes: RecipeSpy
+        setRecipes: RecipeSpy,
+        deleteRecipe: DeleteSpy
     }
 });
 
@@ -28,21 +33,34 @@ let store = new Vuex.Store({
 });
 
 const getComponent = () => {
-    let vm = new Vue({
-        template: '<div><recipe-list v-ref:recipe></recipe-list></div>',
-        components: {
-            'recipe-list': RecipeListWithMocks
-        },
+
+    let router = new VueRouter({abstract: true});
+    let vm = Vue.extend({
+        template: '<div><router-view></router-view></div>',
         store: store
-    }).$mount();
+    });
+
+    router.map({
+        '/':{
+            component: RecipeListWithMocks
+        }
+    });
+
     
-    return vm;
+    router.start(vm, document.createElement('div'));
+    
+    return router;
+    
 };
 
 describe('RecipeList', () => {
-    it('should display error on no recipes', () => {
+    it('should confirm before deleting a recipe', () => {
+        let router = getComponent();
 
-        //getComponent();
-        //expect(RecipeSpy).to.be.called;
+        let el = router.app.$children[0];
+        let recipe = {};
+        el.removeRecipe(recipe);
+        expect(ConfSpy).to.be.called;
+        expect(DeleteSpy.args[0][1]).to.deep.equal(recipe);
     });
 });

@@ -86,7 +86,8 @@ describe('RecipeEdit', () => {
     it('should populate the form with the correct recipe data', () =>{
         let recipe = {
             '_id': 1234,
-            'title': 'Foo'
+            title: 'Foo',
+            ingredients: []
         };
 
         store.state.recipes.recipes = [recipe];

@@ -54,6 +54,7 @@ let recipeState = Recipes.state;
 let ingredientState = Ingredients.state;
 
 let routerSpy = sinon.spy(router, 'go');
+let setRecipeSpy = sinon.spy(recipeActions, 'setRecipes');
 
 describe('Actions', () => {
 
@@ -261,7 +262,6 @@ describe('Actions', () => {
             };
 
             recipes.push(recipe);
-
             
             Vue.http.interceptors.push((request, next) => {
                 var body = {recipe: recipe};
@@ -274,8 +274,11 @@ describe('Actions', () => {
             
             setTimeout(() => {
                 expect(router.go).to.be.calledWith('/recipe/test');
+                expect(setRecipeSpy).to.be.called;
                 done();
             });
+
+            setRecipeSpy.reset();
             
             Vue.http.interceptors.shift();
              
@@ -323,6 +326,30 @@ describe('Actions', () => {
                 { name: 'SAVING_RECIPE', payload: [false] }
             ], done);
 
+            Vue.http.interceptors.shift();
+        });
+
+        it('deleteRecipe', done => {
+            Vue.http.interceptors.push((request, next) => {
+                var body = {};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+
+            let recipe = {
+                '_id': 1234
+            };
+            let dispatch = () => {};
+            let state = {};
+            
+            recipeActions.deleteRecipe({dispatch, state}, recipe);
+
+            setTimeout(()=>{
+                //expect(router.go).to.be.calledWith('/recipes');
+                expect(setRecipeSpy).to.be.called;
+                done();
+            });
+
+            setRecipeSpy.reset();
             Vue.http.interceptors.shift();
         });
         

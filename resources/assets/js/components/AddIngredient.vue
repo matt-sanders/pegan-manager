@@ -1,30 +1,38 @@
 <template>
-  <div class="ingredient-item" :class="{'editing': ingredient.edit}">
-    <label for="ingredient_edit_{{idx}}" class="toggle-edit">
+  <div class="ingredient-item" :class="{'editing': ingredient.edit}" v-show="!ingredient.remove">
+    <pre>
+{{ingredient | json }}
+    </pre>
+    <label for="ingredient_edit_{{idx}}" class="toggle-edit glyph-check">
       <input type="checkbox" v-model="ingredient.edit" id="ingredient_edit_{{idx}}">
       <span class="glyphicon glyphicon-pencil"></span>
     </label>
     <div v-show="ingredient.edit">
-      <div v-show="!ingredient.label" class="ing-input">
+      <div v-show="!ingredient.isLabel" class="ing-input">
         <input type="text" v-model="ingredient.amount" placeholder="amt">
         <select v-model="ingredient.unit">
           <option value="cup">Cup</option>
         </select>
         <select v-model="ingredient.ing_id">
           <option value=''>Select Ingredient</option>
-          <option v-for="ing in availableIngredients" value="{{ing._id}}">{{ing.title}}</option>
+          <option v-for="ing in availableIngredients" value="{{ing._id}}">{{ing.title}}{{ing.desc ? ' - '+ing.desc : ''}}</option>
         </select>
       </div>
-      <div v-show="ingredient.label" class="label-input">
+      <div v-show="ingredient.isLabel" class="label-input">
         <input type="text" v-model="ingredient.label" placeholder="eg For the sauce">
       </div>
-      <label for="ingredient_{{idx}}" class="'active': ingredient.isLabel">
-        label
-        <input type="checkbox" v-model="ingredient.label" value="true" id="ingredient_{{idx}}">
+      <label for="ingredient_{{idx}}" :class="{'active': ingredient.isLabel}" class="label-toggle glyph-check">
+        <input type="checkbox" v-model="ingredient.isLabel" value="true" id="ingredient_{{idx}}">
+        <span class="glyphicon glyphicon-tag"></span>
+      </label>
+
+      <label for="ingredient_remove_{{idx}}" class="glyph-check">
+        <input type="checkbox" v-model="ingredient.remove" value="true" id="ingredient_remove_{{idx}}">
+        <span class="glyphicon glyphicon-remove"></span>
       </label>
     </div>
     <div v-show="!ingredient.edit">
-      <div v-show="ingredient.label">{{ingredient.label}}</div>
+      <div v-show="ingredient.label" class="ingredient-label">{{ingredient.label}}</div>
       <div v-show="!ingredient.label">{{ingredient.amount}} {{ingredient.unit}} {{ingredientLabel}}</div>
     </div>
   </div>

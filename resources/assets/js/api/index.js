@@ -47,6 +47,15 @@ export function updateRecipe(recipe){
 }
 
 /**
+ * Deletes a recipe
+ * @param {String} $recipeID
+ */
+export function deleteRecipe(recipeID){
+    setHeaders();
+    return Vue.http.delete(API_URL+'recipe/'+recipeID);
+}
+
+/**
  * Retrieves all ingredients
  * @return {Promise}
  */

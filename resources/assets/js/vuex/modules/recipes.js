@@ -7,6 +7,16 @@ const state = {
 
 const mutations = {
     [SET_RECIPES](state, recipes){
+        recipes.forEach( recipe => {
+            if ( typeof recipe.ingredients != 'object' || recipe.ingredients.length == 0 ) return true;
+            recipe.ingredients.forEach( ing => {
+                if ( ing.label ){
+                    ing.isLabel = true;
+                } else {
+                    ing.label = '';
+                }
+            });
+        });
         state.recipes = recipes;
     },
     [ADD_RECIPE](state, recipe){

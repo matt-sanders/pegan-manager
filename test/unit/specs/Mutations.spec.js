@@ -42,11 +42,21 @@ describe('Mutations', () =>{
             let recipes = [
                 {
                     foo: 'bar',
-                    id: 'something'
+                    id: 'something',
+                    ingredients: [
+                        {
+                            label: false
+                        },
+                        {
+                            label: 'test'
+                        }
+                    ]
                 }
             ];
             Recipes.mutations.SET_RECIPES(state, recipes);
             expect(state.recipes).to.deep.equal(recipes);
+            expect(state.recipes[0].ingredients[0].label).to.equal('');
+            expect(state.recipes[0].ingredients[1].isLabel).to.be.true;
         });
 
         it('ADD_RECIPE', () => {

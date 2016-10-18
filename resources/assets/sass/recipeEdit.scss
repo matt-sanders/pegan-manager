@@ -30,39 +30,26 @@
         {
             margin-right: 5px;
             margin-bottom: 0;
-            
-            input
-            {
-                display: none;
-            }//input
-            
-            span
-            {
-                cursor: pointer;
-                text-align: center;
-                transition: all $speed $ease;
-                &:hover
-                      {
-                          color: $brand-primary;
-                      }//hover
-            }//span
         }//label
         
         > div
         {
             display: inline-block;
             vertical-align: middle;
+
+            > div
+            {
+                display: inline-block;
+            }//> div
         }//div
+
+        .ingredient-label
+        {
+            font-weight: bold;
+        }//ingredient-label
 
         &.editing
         {
-            label.toggle-edit
-            {
-                span
-                {
-                    color: $brand-primary;
-                }//span
-            }//toggle-edit
 
             input[type='text']
             {

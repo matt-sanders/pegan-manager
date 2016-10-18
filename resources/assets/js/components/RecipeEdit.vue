@@ -63,6 +63,7 @@
  export default {
      data() {
          return {
+             recipe: {},
              newRecipe: false,
              ingredients: [],
              image64: '',
@@ -201,7 +202,9 @@
              //reset the image
              this.image64 = recipes[0].image;
 
+             //set the ingredients
              this.ingredients = recipes[0].ingredients;
+
              return recipes[0];
          },
          formValid(){

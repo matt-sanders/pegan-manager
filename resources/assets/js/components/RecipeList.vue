@@ -2,6 +2,9 @@
   <div class="margin-top" >
     <div v-show="recipes.length > 0" class="recipe-list">
       <div v-for="recipe in recipes">
+        <a href="#" @click.prevent="removeRecipe(recipe)">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
         <a v-link="'/recipe/'+recipe._id">{{recipe.title}}</a>
       </div>
     </div>
@@ -28,7 +31,18 @@
              recipes: state => state.recipes.recipes
          },
          actions: {
-             setRecipes: recipeActions.setRecipes
+             setRecipes: recipeActions.setRecipes,
+             deleteRecipe: recipeActions.deleteRecipe
+         }
+     },
+     methods: {
+         removeRecipe(recipe){
+             
+             let c = confirm('Are you sure you want to delete this recipe?');
+             if ( c == true ){
+                 this.deleteRecipe(recipe);
+             }
+             
          }
      },
      created(){

@@ -19,6 +19,7 @@ Vue.http.interceptors.unshift((request, next)=>{
 let postSpy = sinon.spy(Vue.http, 'post');
 let getSpy = sinon.spy(Vue.http, 'get');
 let putSpy = sinon.spy(Vue.http, 'put');
+let delSpy = sinon.spy(Vue.http, 'delete');
 
 describe('Api', () => {
 
@@ -47,6 +48,11 @@ describe('Api', () => {
         };
         Api.updateRecipe(recipe);
         expect(Vue.http.put).to.be.calledWith(API_URL+'recipe/'+recipe._id, recipe);
+    });
+
+    it('deleteRecipe', () => {
+        Api.deleteRecipe('12345');
+        expect(Vue.http.delete).to.be.calledWith(API_URL+'recipe/12345');
     });
 
     it('getIngredients', () => {

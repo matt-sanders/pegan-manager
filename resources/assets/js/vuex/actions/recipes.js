@@ -29,6 +29,7 @@ export function saveRecipe({dispatch}, recipe){
             dispatch(types.ADD_RECIPE, body.recipe);
             dispatch(types.SAVING_RECIPE, false);
             router.go('/recipe/'+body.recipe._id);
+            this.setRecipes();
         }, response => {
             dispatch(types.RECIPE_ERR, true);
             dispatch(types.SAVING_RECIPE, false);
@@ -52,4 +53,16 @@ export function updateRecipe({dispatch}, recipe){
             dispatch(types.RECIPE_ERR, true);
             dispatch(types.SAVING_RECIPE, false);            
         });        
+}
+
+/**
+ * Should delete a recipe, then re-retrieve the recipes
+ */
+export function deleteRecipe({dispatch}, recipe){
+    if ( !recipe._id ) return;
+    Api.deleteRecipe(recipe._id)
+        .then(response => {
+            this.setRecipes();
+        }, response => {
+        });
 }

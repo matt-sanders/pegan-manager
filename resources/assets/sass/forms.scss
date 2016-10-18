@@ -49,3 +49,24 @@ form
          }//active, value
     }//form-group
 }//form
+
+label.glyph-check
+{
+    cursor: pointer;
+    
+    input
+    {
+        display: none;
+    }//input
+
+    span
+    {
+        transition: all $speed $ease;
+    }//span
+
+    &:hover span,
+    input:checked + span
+              {
+                  color: $brand-primary;
+              }//checked
+}//glyph-check

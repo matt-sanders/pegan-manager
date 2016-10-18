@@ -7,7 +7,7 @@
         <button class="btn btn-default" type="button" @click.prevent="openAddIngredient(true)">Create Ingredient</button>
       </div>
       <div class="ingredient-items margin-top">
-        <add-ingredient class="ingredient-wrap" v-for="ingredient in ingredients" :ingredient="ingredient" :idx="$index"></add-ingredient>
+        <add-ingredient class="ingredient-wrap" v-for="ingredient in ingredients" :ingredient.sync="ingredient" :idx="$index"></add-ingredient>
       </div>
     </form>
     <ingredient-edit></ingredient-edit>

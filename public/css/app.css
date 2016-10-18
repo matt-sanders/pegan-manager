@@ -5796,6 +5796,17 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
   font-size: 0.8em;
   color: #7e7e7e; }
 
+label.glyph-check {
+  cursor: pointer; }
+  label.glyph-check input {
+    display: none; }
+  label.glyph-check span {
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease; }
+  label.glyph-check:hover span,
+  label.glyph-check input:checked + span {
+    color: #409BB6; }
+
 .margin-top {
   margin-top: 20px; }
 
@@ -5900,22 +5911,15 @@ form div.form-group.formly-has-value label, form div.form-group.formly-has-focus
 .ingredient-items .ingredient-item label.toggle-edit {
   margin-right: 5px;
   margin-bottom: 0; }
-  .ingredient-items .ingredient-item label.toggle-edit input {
-    display: none; }
-  .ingredient-items .ingredient-item label.toggle-edit span {
-    cursor: pointer;
-    text-align: center;
-    -webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease; }
-    .ingredient-items .ingredient-item label.toggle-edit span:hover {
-      color: #409BB6; }
 
 .ingredient-items .ingredient-item > div {
   display: inline-block;
   vertical-align: middle; }
+  .ingredient-items .ingredient-item > div > div {
+    display: inline-block; }
 
-.ingredient-items .ingredient-item.editing label.toggle-edit span {
-  color: #409BB6; }
+.ingredient-items .ingredient-item .ingredient-label {
+  font-weight: bold; }
 
 .ingredient-items .ingredient-item.editing input[type='text'] {
   box-shadow: none;
