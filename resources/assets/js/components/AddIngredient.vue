@@ -1,8 +1,5 @@
 <template>
   <div class="ingredient-item" :class="{'editing': ingredient.edit}" v-show="!ingredient.remove">
-    <pre>
-{{ingredient | json }}
-    </pre>
     <label for="ingredient_edit_{{idx}}" class="toggle-edit glyph-check">
       <input type="checkbox" v-model="ingredient.edit" id="ingredient_edit_{{idx}}">
       <span class="glyphicon glyphicon-pencil"></span>
