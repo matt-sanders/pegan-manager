@@ -1,5 +1,5 @@
 <template>
-  <div id="main-nav">
+  <div id="main-nav" v-touch:swipeLeft="setMenu(false)">
     <div class="nav-item" v-for="item in items">
       <a v-link="item.route">
         <span class="glyphicon glyphicon-{{item.icon}}"></span>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+ import * as menuActions from '../vuex/actions/menu';
  export default {
      data(){
          return {
@@ -26,6 +27,9 @@
                  }
              ]
          }
+     },
+     actions: {
+         setMenu: menuActions.setMenu
      }
  }
 </script>

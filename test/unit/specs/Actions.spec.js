@@ -8,10 +8,12 @@ import VueResource from 'vue-resource';
 import * as authActions from '../../../resources/assets/js/vuex/actions/auth';
 import * as recipeActions from '../../../resources/assets/js/vuex/actions/recipes';
 import * as ingredientActions from '../../../resources/assets/js/vuex/actions/ingredients';
+import * as menuActions from '../../../resources/assets/js/vuex/actions/menu';
 import {router} from '../../../resources/assets/js/app';
 import Auth from '../../../resources/assets/js/vuex/modules/auth';
 import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
 import Ingredients from '../../../resources/assets/js/vuex/modules/ingredients';
+import Menu from '../../../resources/assets/js/vuex/modules/menu';
 chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
@@ -52,11 +54,20 @@ const creds = {
 let authState = Auth.state;
 let recipeState = Recipes.state;
 let ingredientState = Ingredients.state;
+let menuState = Menu.state;
 
 let routerSpy = sinon.spy(router, 'go');
 let setRecipeSpy = sinon.spy(recipeActions, 'setRecipes');
 
 describe('Actions', () => {
+
+    describe('Menu', () => {
+        it('should be true', done => {
+            testAction(menuActions.setMenu, [true], menuState, [
+                { name: 'SET_MENU', payload: [true] }
+            ], done);
+        });
+    });
 
     describe('Auth', () => {
 

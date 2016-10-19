@@ -8,10 +8,12 @@ import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
 import VueFormly from 'vue-formly';
 import VueFormlyBootstrap from 'vue-formly-bootstrap';
+import VueTouch from 'vue-touch';
 Vue.use(VueFormly);
 Vue.use(VueFormlyBootstrap);
 Vue.use(VueResource);
 Vue.use(VueRouter);
+Vue.use(VueTouch);
 
 setHeaders();
 
