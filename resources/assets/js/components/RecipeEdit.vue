@@ -54,6 +54,12 @@
           <recipe-ingredients :ingredients="ingredients"></recipe-ingredients>
         </div>
       </div>
+      <div class="text-right">
+        <div class="btn-group margin-top" role="group">
+          <a class="btn btn-success" :disabled="!formValid" href="#" @click.prevent="submit">{{working ? 'Saving...' : 'Save'}}</a>
+          <a class="btn btn-default" v-link="'/recipes'">Cancel</a>
+        </div>
+      </div>
   </div>
 </template>
 

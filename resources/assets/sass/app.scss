@@ -36,11 +36,28 @@ body
     transition: background-color $speed $ease;
     border-top: 1px solid #eaeaea;
     background-color: #fff;
+    overflow-x: hidden;
 
     &.active
     {
-        padding-left: 160px;
+        @media ( min-width: $screen-sm ){
+            padding-left: 160px;
+        }
     }//active
+
+    &.menu-active
+    {
+        .container-fluid
+        {
+            left: 150px;
+            position: relative;
+
+            @media ( min-width: $screen-sm ){
+                left: 0;
+                position: static;
+            }
+        }//container-fluid
+    }//menu-active
 }
 
 .panel

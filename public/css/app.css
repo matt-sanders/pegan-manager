@@ -5819,7 +5819,6 @@ label.glyph-check {
 #main-nav {
   background-color: #f7f7f7;
   position: fixed;
-  left: 0;
   top: 0;
   bottom: 0;
   width: 150px;
@@ -5828,7 +5827,11 @@ label.glyph-check {
   overflow: hidden;
   height: 0;
   z-index: 20;
-  border-right: 1px solid #eaeaea; }
+  border-right: 1px solid #eaeaea;
+  left: -150px; }
+  @media (min-width: 768px) {
+    #main-nav {
+      left: 0; } }
   #main-nav .nav-item a {
     display: block;
     text-align: left;
@@ -5849,6 +5852,9 @@ label.glyph-check {
   height: 100%; }
   .active #main-nav .nav-item {
     opacity: 1; }
+
+.menu-active #main-nav {
+  left: 0; }
 
 @media screen and (max-width: 991px) {
   #login .panel {
@@ -5944,9 +5950,18 @@ body {
   -webkit-transition: background-color 0.5s ease;
   transition: background-color 0.5s ease;
   border-top: 1px solid #eaeaea;
-  background-color: #fff; }
-  #app.active {
-    padding-left: 160px; }
+  background-color: #fff;
+  overflow-x: hidden; }
+  @media (min-width: 768px) {
+    #app.active {
+      padding-left: 160px; } }
+  #app.menu-active .container-fluid {
+    left: 150px;
+    position: relative; }
+    @media (min-width: 768px) {
+      #app.menu-active .container-fluid {
+        left: 0;
+        position: static; } }
 
 .panel {
   border: none; }

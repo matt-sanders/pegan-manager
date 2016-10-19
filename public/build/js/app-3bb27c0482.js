@@ -28351,7 +28351,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid\">\n    <router-view></router-view>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid margin-bottom\">\n    <router-view></router-view>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -28362,7 +28362,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Loader.vue":90,"./components/Nav.vue":92,"./vuex/actions/auth":97,"./vuex/store":105,"vue":83,"vue-hot-reload-api":80}],86:[function(require,module,exports){
+},{"./components/Loader.vue":90,"./components/Nav.vue":92,"./vuex/actions/auth":97,"./vuex/store":106,"vue":83,"vue-hot-reload-api":80}],86:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28955,7 +28955,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-8\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    </div>\n    <div class=\"col-md-4 text-right\">\n      <div class=\"btn-group margin-top\" role=\"group\">\n        <a class=\"btn btn-success\" :disabled=\"!formValid\" href=\"#\" @click.prevent=\"submit\">{{working ? 'Saving...' : 'Save'}}</a>\n        <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n      </div>\n    </div>\n  </div>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\" :custom-layout=\"true\">\n            <formly-field :form.sync=\"recipeForm\" :key=\"'title'\"></formly-field>\n\n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'prep'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'cook'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'yield'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'desc'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'directions'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'tags'\"></formly-field>\n\n            \n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'linkTitle'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'link'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'image'\"></formly-field>\n            <div v-if=\"image64\" class=\"recipeImage\" v-bind:style=\"{ backgroundImage: 'url('+image64+')' };\"></div>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"recipe-edit\">\n  <div class=\"row\">\n    <div class=\"col-md-8\">\n      <h1 v-if=\"newRecipe\">New Recipe</h1>\n      <h1 v-if=\"!newRecipe\">Edit {{recipe.title}}</h1>\n    </div>\n    <div class=\"col-md-4 text-right\">\n      <div class=\"btn-group margin-top\" role=\"group\">\n        <a class=\"btn btn-success\" :disabled=\"!formValid\" href=\"#\" @click.prevent=\"submit\">{{working ? 'Saving...' : 'Save'}}</a>\n        <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n      </div>\n    </div>\n  </div>\n    <div class=\"row\">\n      <div class=\"col-md-4\">\n        <form v-on:submit.prevent=\"submit\">\n          <formly-form :form=\"recipeForm\" :custom-layout=\"true\">\n            <formly-field :form.sync=\"recipeForm\" :key=\"'title'\"></formly-field>\n\n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'prep'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'cook'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'yield'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'desc'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'directions'\"></formly-field>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'tags'\"></formly-field>\n\n            \n            <div class=\"row\">\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'linkTitle'\"></formly-field>\n              </div>\n              <div class=\"col-md-6\">\n                <formly-field :form.sync=\"recipeForm\" :key=\"'link'\"></formly-field>\n              </div>\n            </div>\n\n            <formly-field :form.sync=\"recipeForm\" :key=\"'image'\"></formly-field>\n            <div v-if=\"image64\" class=\"recipeImage\" v-bind:style=\"{ backgroundImage: 'url('+image64+')' };\"></div>\n          </formly-form>\n        </form>\n      </div>\n      <div class=\"col-md-4\">\n        <recipe-ingredients :ingredients=\"ingredients\"></recipe-ingredients>\n      </div>\n    </div>\n    <div class=\"text-right\">\n      <div class=\"btn-group margin-top\" role=\"group\">\n        <a class=\"btn btn-success\" :disabled=\"!formValid\" href=\"#\" @click.prevent=\"submit\">{{working ? 'Saving...' : 'Save'}}</a>\n        <a class=\"btn btn-default\" v-link=\"'/recipes'\">Cancel</a>\n      </div>\n    </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -29193,7 +29193,7 @@ function setAuthErr(_ref6, error) {
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":86,"../../app":87,"../mutation-types":104,"./utils.js":100}],98:[function(require,module,exports){
+},{"../../api":86,"../../app":87,"../mutation-types":105,"./utils.js":100}],98:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29251,7 +29251,7 @@ function openAddIngredient(_ref3, open) {
     dispatch(_mutationTypes.OPEN_ADD_INGREDIENT, open);
 }
 
-},{"../../api":86,"../mutation-types":104,"./utils.js":100}],99:[function(require,module,exports){
+},{"../../api":86,"../mutation-types":105,"./utils.js":100}],99:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29341,7 +29341,7 @@ function deleteRecipe(_ref4, recipe) {
     }, function (response) {});
 }
 
-},{"../../api":86,"../../app":87,"../mutation-types":104,"./utils.js":100}],100:[function(require,module,exports){
+},{"../../api":86,"../../app":87,"../mutation-types":105,"./utils.js":100}],100:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29392,7 +29392,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":104,"babel-runtime/helpers/defineProperty":5}],102:[function(require,module,exports){
+},{"../mutation-types":105,"babel-runtime/helpers/defineProperty":5}],102:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29432,7 +29432,37 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":104,"babel-runtime/helpers/defineProperty":5}],103:[function(require,module,exports){
+},{"../mutation-types":105,"babel-runtime/helpers/defineProperty":5}],103:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _mutationTypes = require('../mutation-types');
+
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
+
+var state = {
+    active: false
+};
+
+var mutations = (0, _defineProperty3.default)({}, _mutationTypes.SET_MENU, function (state, active) {
+    state.active = active;
+});
+
+exports.default = {
+    state: state,
+    mutations: mutations
+};
+
+},{"../mutation-types":105,"babel-runtime/helpers/defineProperty":5}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29496,7 +29526,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":104,"babel-runtime/helpers/defineProperty":5,"babel-runtime/helpers/typeof":6}],104:[function(require,module,exports){
+},{"../mutation-types":105,"babel-runtime/helpers/defineProperty":5,"babel-runtime/helpers/typeof":6}],105:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29516,7 +29546,9 @@ var ADD_INGREDIENT = exports.ADD_INGREDIENT = 'ADD_INGREDIENT';
 var OPEN_ADD_INGREDIENT = exports.OPEN_ADD_INGREDIENT = 'OPEN_ADD_INGREDIENT';
 var SAVING_INGREDIENT = exports.SAVING_INGREDIENT = 'SAVING_INGREDIENT';
 
-},{}],105:[function(require,module,exports){
+var SET_MENU = exports.SET_MENU = 'SET_MENU';
+
+},{}],106:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29543,6 +29575,10 @@ var _ingredients = require('./modules/ingredients');
 
 var _ingredients2 = _interopRequireDefault(_ingredients);
 
+var _menu = require('./modules/menu');
+
+var _menu2 = _interopRequireDefault(_menu);
+
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -29553,10 +29589,11 @@ exports.default = new _vuex2.default.Store({
     modules: {
         auth: _auth2.default,
         recipes: _recipes2.default,
-        ingredients: _ingredients2.default
+        ingredients: _ingredients2.default,
+        menu: _menu2.default
     }
 });
 
-},{"./modules/auth":101,"./modules/ingredients":102,"./modules/recipes":103,"vue":83,"vuex":84}]},{},[87]);
+},{"./modules/auth":101,"./modules/ingredients":102,"./modules/menu":103,"./modules/recipes":104,"vue":83,"vuex":84}]},{},[87]);
 
 //# sourceMappingURL=app.js.map

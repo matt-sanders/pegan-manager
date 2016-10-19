@@ -1,7 +1,7 @@
 <template>
   <div :class="{'active': authenticated}">
     <main-nav></main-nav>
-    <div class="container-fluid">
+    <div class="container-fluid margin-bottom">
       <router-view></router-view>
     </div>
   </div>

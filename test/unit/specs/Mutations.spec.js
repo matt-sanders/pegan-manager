@@ -3,10 +3,27 @@ const expect = chai.expect;
 import Auth from '../../../resources/assets/js/vuex/modules/auth';
 import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
 import Ingredients from '../../../resources/assets/js/vuex/modules/ingredients';
+import Menu from '../../../resources/assets/js/vuex/modules/menu';
 
 let state;
 
 describe('Mutations', () =>{
+    describe('Auth', () => {
+
+        beforeEach(()=>{
+            state = {
+                active: false
+            };
+        });
+
+        it('SET_MENU', () => {
+            Menu.mutations.SET_MENU(state, true);
+            expect(state.active).to.be.true;
+            Menu.mutations.SET_MENU(state, false);
+            expect(state.active).to.be.false;
+        });
+
+    });
 
     describe('Auth', () => {
 

@@ -2,7 +2,6 @@
 {
     background-color: #f7f7f7;
     position: fixed;
-    left: 0;
     top: 0;
     bottom: 0;
     width: 150px;
@@ -11,6 +10,11 @@
     height: 0;
     z-index: 20;
     border-right: 1px solid #eaeaea;
+    left: -150px;
+
+    @media (min-width: $screen-sm ){
+        left: 0;
+    }
 
 
     .nav-item
@@ -59,3 +63,11 @@
         }//nav-item
     }//main-nav
 }//active
+
+.menu-active
+{
+    #main-nav
+    {
+        left: 0;
+    }//main-nav
+}//menu-active
