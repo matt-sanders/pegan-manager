@@ -28887,6 +28887,7 @@ exports.default = {
 
             if (this.ingredients) {
                 this.ingredients.forEach(function (ing) {
+                    if (ing.remove) return true;
                     var ingredient = {
                         label: '',
                         amount: '',

@@ -161,6 +161,7 @@
              //get all the ingredients
              if ( this.ingredients ){
                  this.ingredients.forEach((ing) => {
+                     if ( ing.remove ) return true;
                      let ingredient = {
                          label: '',
                          amount: '',

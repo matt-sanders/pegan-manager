@@ -98,6 +98,27 @@ describe('RecipeEdit', () => {
         expect(router.app.$el.querySelectorAll('input.form-control')[0].value).to.equal(recipe.title);
     });
 
+    it('should not include deleted ingredient items', () => {
+        let recipe = {
+            '_id': 1234,
+            'title': 'Foo',
+            'desc': 'Some Desc',
+            'directions': 'Some Directions',
+            'ingredients': []
+        };
+        store.state.recipes.recipes = [recipe];
+        let router = getComponent();
+        router.go('/1234');
+
+        let el = router.app.$children[0];
+        el.ingredients.push({label: 'test1'});
+        el.ingredients.push({label: 'test', remove: true});
+        el.submit();
+
+        expect(UpdateRecipeSpy.args[0][1].ingredients).to.be.length(1);
+        UpdateRecipeSpy.reset();
+    });
+
     it('should update an existing record', () => {
         let recipe = {
             '_id': 1234,
