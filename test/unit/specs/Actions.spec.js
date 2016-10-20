@@ -9,6 +9,7 @@ import * as authActions from '../../../resources/assets/js/vuex/actions/auth';
 import * as recipeActions from '../../../resources/assets/js/vuex/actions/recipes';
 import * as ingredientActions from '../../../resources/assets/js/vuex/actions/ingredients';
 import * as menuActions from '../../../resources/assets/js/vuex/actions/menu';
+import * as utils from '../../../resources/assets/js/vuex/actions/utils';
 import {router} from '../../../resources/assets/js/app';
 import Auth from '../../../resources/assets/js/vuex/modules/auth';
 import Recipes from '../../../resources/assets/js/vuex/modules/recipes';
@@ -72,17 +73,44 @@ describe('Actions', () => {
     describe('Auth', () => {
 
         describe('check auth', () => {
-            it('should be false', done => {
+            it('no jwt should be false', done => {
                 localStorage.removeItem('id_token');
                 testAction(authActions.checkAuth, [], authState, [
                     { name: 'SET_AUTH', payload: [false] }
                 ],done);
             });
             
-            it('should be true', done => {
-                localStorage.setItem('id_token', '1234');
+            it('valid key should be true', done => {
+                //create a new timestamp
+                let timestamp = Math.round(new Date().getTime() / 1000 );
+                //add an hour
+                timestamp += 3600;
+                //get the unix date
+                let datetime = new Date(timestamp * 1000).getTime();
+                let payload = {
+                    exp: datetime
+                };
+                let jwt = '1234.'+utils.encodeBase64(payload);
+                localStorage.setItem('id_token', jwt);
                 testAction(authActions.checkAuth, [], authState, [
                     { name: 'SET_AUTH', payload: [true] }
+                ],done);
+            });
+
+            it('expired jwt should be false', done => {
+                //create a new timestamp
+                let timestamp = Math.round(new Date().getTime() / 1000 );
+                //less an hour
+                timestamp -= 3600;
+                //get the unix date
+                let datetime = new Date(timestamp * 1000).getTime();
+                let payload = {
+                    exp: datetime
+                };
+                let jwt = '1234.'+utils.encodeBase64(payload);
+                localStorage.setItem('id_token', jwt);
+                testAction(authActions.checkAuth, [], authState, [
+                    { name: 'SET_AUTH', payload: [false] }
                 ],done);
             });
         });

@@ -2,6 +2,7 @@ import * as types from '../mutation-types';
 import {parseResponse} from './utils.js';
 import {router} from '../../app';
 import * as Api from '../../api';
+import * as utils from './utils';
 
 /**
 * Logs a user in
@@ -54,7 +55,15 @@ export function handleError({dispatch}, response){
  */
 export function checkAuth({dispatch}){
     let jwt = localStorage.getItem('id_token');
-    setAuth({dispatch}, !!jwt);
+    let currentTime = new Date().getTime();
+    let isExpired = jwt ? utils.decodeBase64(jwt.split('.')[1]).exp < currentTime : true;
+    if ( isExpired ){
+        localStorage.removeItem('id_token');
+        setAuth({dispatch}, false);
+        router.go('/login');
+    } else {
+        setAuth({dispatch}, true);
+    }
 }
 
 /**
