@@ -55,8 +55,12 @@ export function handleError({dispatch}, response){
  */
 export function checkAuth({dispatch}){
     let jwt = localStorage.getItem('id_token');
-    let currentTime = new Date().getTime();
-    let isExpired = jwt ? utils.decodeBase64(jwt.split('.')[1]).exp < currentTime : true;
+    let isExpired = true;
+    if ( jwt ){
+        let currentTime = new Date().getTime();
+        let expiredTime = new Date(utils.decodeBase64(jwt.split('.')[1]).exp * 1000 );
+        isExpired = expiredTime  < currentTime;
+    }
     if ( isExpired ){
         localStorage.removeItem('id_token');
         setAuth({dispatch}, false);
