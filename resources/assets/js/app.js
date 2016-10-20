@@ -31,6 +31,9 @@ router.map({
     '/recipe/:recipeId': {
         component: RecipeEdit,
         auth: true
+    },
+    '/logout':{
+        deAuth: true
     }
 });
 
@@ -41,6 +44,10 @@ router.redirect({
 router.beforeEach(transition => {
     if ( transition.to.auth ){
         router.app.checkAuth();
+        transition.next();
+    } else if ( transition.to.deAuth ){
+        router.app.logout();
+        transition.next();
     } else {
         transition.next();
     }

@@ -105,7 +105,7 @@ describe('Actions', () => {
                 //get the unix date
                 let datetime = new Date(timestamp * 1000).getTime();
                 let payload = {
-                    exp: datetime
+                    exp: datetime / 1000
                 };
                 let jwt = '1234.'+utils.encodeBase64(payload);
                 localStorage.setItem('id_token', jwt);

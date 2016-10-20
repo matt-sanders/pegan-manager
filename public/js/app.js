@@ -31145,29 +31145,35 @@ var _Loader = require('./components/Loader.vue');
 
 var _Loader2 = _interopRequireDefault(_Loader);
 
-var _ToggleNav = require('./components/ToggleNav.vue');
-
-var _ToggleNav2 = _interopRequireDefault(_ToggleNav);
-
 var _auth = require('./vuex/actions/auth');
+
+var _menu = require('./vuex/actions/menu');
+
+var menuActions = _interopRequireWildcard(_menu);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
     components: {
         mainNav: _Nav2.default,
-        Loader: _Loader2.default,
-        ToggleNav: _ToggleNav2.default
+        Loader: _Loader2.default
     },
     store: _store2.default,
     vuex: {
         getters: {
             authenticated: function authenticated(state) {
                 return state.auth.authenticated;
+            },
+            menuActive: function menuActive(state) {
+                return state.menu.active;
             }
         },
         actions: {
-            checkAuth: _auth.checkAuth
+            checkAuth: _auth.checkAuth,
+            setMenu: menuActions.setMenu,
+            logout: _auth.logout
         }
     },
     created: function created() {
@@ -31175,7 +31181,7 @@ exports.default = {
     }
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated}\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid margin-bottom\">\n    <toggle-nav></toggle-nav>\n    <router-view></router-view>\n  </div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div :class=\"{'active': authenticated, 'menu-active': menuActive}\" v-touch:swiperight=\"setMenu(true)\" v-touch:swipeleft=\"setMenu(false)\">\n  <main-nav></main-nav>\n  <div class=\"container-fluid margin-bottom\">\n    <router-view></router-view>\n  </div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -31186,7 +31192,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-5430aac2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./components/Loader.vue":94,"./components/Nav.vue":96,"./components/ToggleNav.vue":100,"./vuex/actions/auth":102,"./vuex/store":112,"vue":87,"vue-hot-reload-api":82}],90:[function(require,module,exports){
+},{"./components/Loader.vue":94,"./components/Nav.vue":96,"./vuex/actions/auth":101,"./vuex/actions/menu":103,"./vuex/store":111,"vue":87,"vue-hot-reload-api":82}],90:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31248,7 +31254,7 @@ function saveIngredient(ingredient) {
   return _vue2.default.http.post(_constants.API_URL + 'ingredient', ingredient);
 }
 
-},{"../constants":101,"vue":87}],91:[function(require,module,exports){
+},{"../constants":100,"vue":87}],91:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31323,6 +31329,9 @@ router.map({
     '/recipe/:recipeId': {
         component: _RecipeEdit2.default,
         auth: true
+    },
+    '/logout': {
+        deAuth: true
     }
 });
 
@@ -31333,6 +31342,10 @@ router.redirect({
 router.beforeEach(function (transition) {
     if (transition.to.auth) {
         router.app.checkAuth();
+        transition.next();
+    } else if (transition.to.deAuth) {
+        router.app.logout();
+        transition.next();
     } else {
         transition.next();
     }
@@ -31385,7 +31398,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-4f8c694b", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/ingredients":103,"vue":87,"vue-hot-reload-api":82}],93:[function(require,module,exports){
+},{"../vuex/actions/ingredients":102,"vue":87,"vue-hot-reload-api":82}],93:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31472,7 +31485,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-7bd0635c", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/ingredients":103,"babel-runtime/core-js/object/keys":3,"vue":87,"vue-hot-reload-api":82}],94:[function(require,module,exports){
+},{"../vuex/actions/ingredients":102,"babel-runtime/core-js/object/keys":3,"vue":87,"vue-hot-reload-api":82}],94:[function(require,module,exports){
 "use strict";
 if (module.exports.__esModule) module.exports = module.exports.default
 ;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"loader\">\n  <div class=\"spinner\"></div>\n</div>\n"
@@ -31559,7 +31572,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-63f434e2", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/auth":102,"vue":87,"vue-hot-reload-api":82}],96:[function(require,module,exports){
+},{"../vuex/actions/auth":101,"vue":87,"vue-hot-reload-api":82}],96:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31603,7 +31616,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78a23448", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/menu":104,"vue":87,"vue-hot-reload-api":82}],97:[function(require,module,exports){
+},{"../vuex/actions/menu":103,"vue":87,"vue-hot-reload-api":82}],97:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31816,7 +31829,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-78b15c8f", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":105,"./RecipeIngredients.vue":98,"babel-runtime/core-js/object/keys":3,"vue":87,"vue-hot-reload-api":82}],98:[function(require,module,exports){
+},{"../vuex/actions/recipes":104,"./RecipeIngredients.vue":98,"babel-runtime/core-js/object/keys":3,"vue":87,"vue-hot-reload-api":82}],98:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31887,7 +31900,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-32d384cd", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/ingredients":103,"./AddIngredient.vue":92,"./IngredientEdit.vue":93,"vue":87,"vue-hot-reload-api":82}],99:[function(require,module,exports){
+},{"../vuex/actions/ingredients":102,"./AddIngredient.vue":92,"./IngredientEdit.vue":93,"vue":87,"vue-hot-reload-api":82}],99:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31941,44 +31954,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update("_v-69693523", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"../vuex/actions/recipes":105,"vue":87,"vue-hot-reload-api":82}],100:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _menu = require('../vuex/actions/menu');
-
-var menuActions = _interopRequireWildcard(_menu);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-exports.default = {
-    vuex: {
-        getters: {
-            menuActive: function menuActive(state) {
-                return state.menu.active;
-            }
-        },
-        actions: {
-            setMenu: menuActions.setMenu
-        }
-    }
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"toggle-nav-wrapper\">\n  <a href=\"#\" @click.prevent=\"setMenu(true)\" class=\"toggle-menu-open\"></a>\n  <a href=\"#\" @click.prevent=\"setMenu(false)\" class=\"toggle-menu-cover\"></a>\n</div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-fb17c1b0", module.exports)
-  } else {
-    hotAPI.update("_v-fb17c1b0", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"../vuex/actions/menu":104,"vue":87,"vue-hot-reload-api":82}],101:[function(require,module,exports){
+},{"../vuex/actions/recipes":104,"vue":87,"vue-hot-reload-api":82}],100:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31986,7 +31962,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
 
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32054,6 +32030,7 @@ function logout(_ref2) {
 
     localStorage.removeItem('id_token');
     setAuth({ dispatch: dispatch }, false);
+    dispatch(types.SET_MENU, false);
     _app.router.go('/login');
 }
 
@@ -32096,7 +32073,7 @@ function setAuthErr(_ref6, error) {
     dispatch(types.SET_AUTH_ERR, error);
 }
 
-},{"../../api":90,"../../app":91,"../mutation-types":111,"./utils":106,"./utils.js":106}],103:[function(require,module,exports){
+},{"../../api":90,"../../app":91,"../mutation-types":110,"./utils":105,"./utils.js":105}],102:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32154,7 +32131,7 @@ function openAddIngredient(_ref3, open) {
     dispatch(_mutationTypes.OPEN_ADD_INGREDIENT, open);
 }
 
-},{"../../api":90,"../mutation-types":111,"./utils.js":106}],104:[function(require,module,exports){
+},{"../../api":90,"../mutation-types":110,"./utils.js":105}],103:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32170,7 +32147,7 @@ function setMenu(_ref, active) {
   dispatch(_mutationTypes.SET_MENU, active);
 }
 
-},{"../mutation-types":111}],105:[function(require,module,exports){
+},{"../mutation-types":110}],104:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32260,7 +32237,7 @@ function deleteRecipe(_ref4, recipe) {
     }, function (response) {});
 }
 
-},{"../../api":90,"../../app":91,"../mutation-types":111,"./utils.js":106}],106:[function(require,module,exports){
+},{"../../api":90,"../../app":91,"../mutation-types":110,"./utils.js":105}],105:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32300,7 +32277,7 @@ function decodeBase64(data) {
     return JSON.parse(window.atob(data));
 }
 
-},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/typeof":7}],107:[function(require,module,exports){
+},{"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/typeof":7}],106:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32335,7 +32312,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":111,"babel-runtime/helpers/defineProperty":6}],108:[function(require,module,exports){
+},{"../mutation-types":110,"babel-runtime/helpers/defineProperty":6}],107:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32375,7 +32352,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":111,"babel-runtime/helpers/defineProperty":6}],109:[function(require,module,exports){
+},{"../mutation-types":110,"babel-runtime/helpers/defineProperty":6}],108:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32405,7 +32382,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":111,"babel-runtime/helpers/defineProperty":6}],110:[function(require,module,exports){
+},{"../mutation-types":110,"babel-runtime/helpers/defineProperty":6}],109:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32469,7 +32446,7 @@ exports.default = {
     mutations: mutations
 };
 
-},{"../mutation-types":111,"babel-runtime/helpers/defineProperty":6,"babel-runtime/helpers/typeof":7}],111:[function(require,module,exports){
+},{"../mutation-types":110,"babel-runtime/helpers/defineProperty":6,"babel-runtime/helpers/typeof":7}],110:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32491,7 +32468,7 @@ var SAVING_INGREDIENT = exports.SAVING_INGREDIENT = 'SAVING_INGREDIENT';
 
 var SET_MENU = exports.SET_MENU = 'SET_MENU';
 
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32537,6 +32514,6 @@ exports.default = new _vuex2.default.Store({
     }
 });
 
-},{"./modules/auth":107,"./modules/ingredients":108,"./modules/menu":109,"./modules/recipes":110,"vue":87,"vuex":88}]},{},[91]);
+},{"./modules/auth":106,"./modules/ingredients":107,"./modules/menu":108,"./modules/recipes":109,"vue":87,"vuex":88}]},{},[91]);
 
 //# sourceMappingURL=app.js.map

@@ -37,6 +37,7 @@ export function login({dispatch}, creds, redirect = false ){
 export function logout({dispatch}){
     localStorage.removeItem('id_token');
     setAuth({dispatch}, false);
+    dispatch(types.SET_MENU, false);
     router.go('/login');
 }
 

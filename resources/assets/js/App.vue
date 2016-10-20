@@ -1,8 +1,7 @@
 <template>
-  <div :class="{'active': authenticated}">
+  <div :class="{'active': authenticated, 'menu-active': menuActive}" v-touch:swipeRight="setMenu(true)" v-touch:swipeLeft="setMenu(false)">
     <main-nav></main-nav>
     <div class="container-fluid margin-bottom">
-      <toggle-nav></toggle-nav>
       <router-view></router-view>
     </div>
   </div>
@@ -12,21 +11,23 @@
  import store from './vuex/store';
  import mainNav from './components/Nav.vue';
  import Loader from './components/Loader.vue';
- import ToggleNav from './components/ToggleNav.vue';
- import {checkAuth} from './vuex/actions/auth';
+ import {checkAuth, logout} from './vuex/actions/auth';
+ import * as menuActions from './vuex/actions/menu';
  export default {
      components: {
          mainNav,
-         Loader,
-         ToggleNav
+         Loader
      },
      store: store,
      vuex: {
          getters: {
-             authenticated: state => state.auth.authenticated
+             authenticated: state => state.auth.authenticated,
+             menuActive: state => state.menu.active
          },
          actions: {
-             checkAuth: checkAuth
+             checkAuth: checkAuth,
+             setMenu: menuActions.setMenu,
+             logout: logout
          }
      },
      created(){

@@ -71,3 +71,44 @@
         left: 0;
     }//main-nav
 }//menu-active
+
+.toggle-nav-wrapper
+{
+    height: 20px;
+
+    @media (min-width: $screen-md)
+    {
+        display: none;
+    }//md
+}//toggle-nav-wrapper
+
+.toggle-menu-open,
+.toggle-menu-open::before,
+.toggle-menu-open::after
+                       {
+                           cursor: pointer;
+                           border-radius: 1px;
+                           height: 5px;
+                           width: 35px;
+                           background: #000;
+                           position: absolute;
+                           display: block;
+                           content: '';
+                           transition: all $speed $ease;
+                           border: none;
+
+                           @media (min-width: $screen-md)
+                           {
+                               display: none;
+                           }//md
+                       }
+
+.toggle-menu-open::before
+                       {
+                           top: -10px;
+                       }
+
+.toggle-menu-open::after
+                       {
+                           bottom: -10px;
+                       }

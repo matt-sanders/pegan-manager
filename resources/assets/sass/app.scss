@@ -33,7 +33,7 @@ body
     height: 100%;
     position: relative;
     overflow: auto;
-    transition: background-color $speed $ease;
+    transition: all $speed $ease;
     border-top: 1px solid #eaeaea;
     background-color: #fff;
     overflow-x: hidden;
@@ -58,6 +58,12 @@ body
             }
         }//container-fluid
     }//menu-active
+
+    .container-fluid
+    {
+        transition: all $speed $ease;
+        left: 0;
+    }//container-fluid
 }
 
 .panel
@@ -111,3 +117,8 @@ a,
  {
      transition: all $speed $ease;
  }
+
+.panel
+{
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}//panel

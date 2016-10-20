@@ -5856,6 +5856,38 @@ label.glyph-check {
 .menu-active #main-nav {
   left: 0; }
 
+.toggle-nav-wrapper {
+  height: 20px; }
+  @media (min-width: 992px) {
+    .toggle-nav-wrapper {
+      display: none; } }
+
+.toggle-menu-open,
+.toggle-menu-open::before,
+.toggle-menu-open::after {
+  cursor: pointer;
+  border-radius: 1px;
+  height: 5px;
+  width: 35px;
+  background: #000;
+  position: absolute;
+  display: block;
+  content: '';
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  border: none; }
+  @media (min-width: 992px) {
+    .toggle-menu-open,
+    .toggle-menu-open::before,
+    .toggle-menu-open::after {
+      display: none; } }
+
+.toggle-menu-open::before {
+  top: -10px; }
+
+.toggle-menu-open::after {
+  bottom: -10px; }
+
 @media screen and (max-width: 991px) {
   #login .panel {
     margin-left: 20px;
@@ -5947,8 +5979,8 @@ body {
   height: 100%;
   position: relative;
   overflow: auto;
-  -webkit-transition: background-color 0.5s ease;
-  transition: background-color 0.5s ease;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
   border-top: 1px solid #eaeaea;
   background-color: #fff;
   overflow-x: hidden; }
@@ -5962,6 +5994,10 @@ body {
       #app.menu-active .container-fluid {
         left: 0;
         position: static; } }
+  #app .container-fluid {
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    left: 0; }
 
 .panel {
   border: none; }
@@ -5997,5 +6033,8 @@ a,
 .btn {
   -webkit-transition: all 0.5s ease;
   transition: all 0.5s ease; }
+
+.panel {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
 
 /*# sourceMappingURL=app.css.map */
