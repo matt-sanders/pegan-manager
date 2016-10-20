@@ -32274,7 +32274,7 @@ function encodeBase64(data) {
 }
 
 function decodeBase64(data) {
-    return JSON.parse(window.atob(data));
+    return JSON.parse(atob(data));
 }
 
 },{"babel-runtime/core-js/json/stringify":1,"babel-runtime/helpers/typeof":7}],106:[function(require,module,exports){

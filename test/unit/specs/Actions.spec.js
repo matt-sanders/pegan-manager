@@ -19,8 +19,6 @@ chai.use(sinonChai);
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
-
-
 // helper for testing action with expected mutations
 const testAction = (action, args, state, expectedMutations, done) => {
     let count = 0;
@@ -290,6 +288,19 @@ describe('Actions', () => {
         });
 
         it('saveRecipe redirect', done => {
+
+            //create a new timestamp
+            let timestamp = Math.round(new Date().getTime() / 1000 );
+            //add an hour
+            timestamp += 3600;
+            //get the unix date
+            let datetime = new Date(timestamp * 1000).getTime();
+            let payload = {
+                exp: datetime
+            };
+            let jwt = '1234.'+utils.encodeBase64(payload);
+            localStorage.setItem('id_token', jwt);
+            
             let recipes = [
                 {
                     foo: 'bar'
@@ -310,13 +321,12 @@ describe('Actions', () => {
             const dispatch = () => {};
             
             recipeActions.saveRecipe({dispatch}, recipe);
-            
             setTimeout(() => {
                 expect(router.go).to.be.calledWith('/recipe/test');
                 expect(setRecipeSpy).to.be.called;
                 done();
-            });
-
+            },0);
+            
             setRecipeSpy.reset();
             
             Vue.http.interceptors.shift();

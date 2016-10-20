@@ -12,5 +12,5 @@ export function encodeBase64(data){
 }
 
 export function decodeBase64(data){
-    return JSON.parse(window.atob(data));
+    return JSON.parse(atob(data));
 }
