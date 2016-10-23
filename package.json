@@ -24,6 +24,7 @@
     "coveralls": "2.11.12",
     "font-awesome": "^4.6.1",
     "gulp": "^3.9.1",
+    "gulp-environments": "^0.1.1",
     "inject-loader": "2.0.1",
     "isparta-loader": "2.0.0",
     "jasmine-core": "^2.4.1",
