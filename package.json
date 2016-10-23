@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "prod": "gulp --production",
+    "prod": "APP_ENV=production gulp --production",
     "dev": "gulp watch",
     "test": "karma start test/unit/karma.conf.js"
   },
@@ -22,9 +22,13 @@
     "bulma": "^0.1.0",
     "chai": "^3.5.0",
     "coveralls": "2.11.12",
+    "envify": "^3.4.1",
     "font-awesome": "^4.6.1",
+    "fs": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-environments": "^0.1.1",
+    "gulp-replace-task": "^0.11.0",
+    "gulp-util": "^3.0.7",
     "inject-loader": "2.0.1",
     "isparta-loader": "2.0.0",
     "jasmine-core": "^2.4.1",

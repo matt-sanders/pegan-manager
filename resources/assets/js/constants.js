@@ -1,2 +1,3 @@
-import environments from 'gulp-environments';
-export const API_URL = environments.development() ? 'http://localhost:8000/api/' : 'https://pegan-recipe-manager.herokuapp.com';
+import config from './config';
+export const API_URL = config.api.base_url+'/api/';
+export const ORIGIN = config.api.origin;

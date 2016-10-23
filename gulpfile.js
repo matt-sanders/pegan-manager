@@ -1,11 +1,17 @@
 var elixir = require('laravel-elixir')
 
+
+/*elixir.config.js.browserify = {
+    transformers: [{ name: 'envify' }]
+};*/
+
 elixir(function (mix) {
     mix.sass('app.scss')
 
-    // mix.scripts([], 'public/js/vendor.js')
+    mix.browserify('app.js', null, null, {
+        transform: ['envify']
+    })
 
-    mix.browserify('app.js')
 
     mix.version(['js/app.js', 'css/app.css'])
 });

@@ -1,6 +1,5 @@
 import Vue from 'vue';
-import environments from 'gulp-environments';
-import {API_URL} from '../constants'
+import {API_URL, ORIGIN} from '../constants'
 
 /**
  * Makes a request to the login url
@@ -15,7 +14,7 @@ export function login(creds){
  * Sets the authorisation header
  */
 export function setHeaders(){
-    Vue.http.headers.common['Access-Control-Allow-Origin'] = environments.development() ? 'http://localhost' : 'https://pegan-recipe-manager.herokuapp.com';
+    Vue.http.headers.common['Access-Control-Allow-Origin'] = ORIGIN;
     Vue.http.headers.common['Authorization'] = 'Bearer'+localStorage.getItem('id_token');
 }
 
