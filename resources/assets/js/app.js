@@ -33,6 +33,9 @@ router.map({
         auth: true
     },
     '/logout':{
+        component: {
+            template: '<div></div>'
+        },
         deAuth: true
     }
 });
