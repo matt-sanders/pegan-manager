@@ -173,6 +173,11 @@ return [
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
 
+        /*
+         * Reverse Proxies
+         */
+        Fideloper\Proxy\TrustedProxyServiceProvider::class,
+
     ],
 
     /*

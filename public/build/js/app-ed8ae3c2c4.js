@@ -31961,6 +31961,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var API_URL = exports.API_URL = 'http://localhost:8000/api/';
+console.log(window);
 
 },{}],101:[function(require,module,exports){
 'use strict';
