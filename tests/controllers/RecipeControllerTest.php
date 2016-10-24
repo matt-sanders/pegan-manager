@@ -204,4 +204,23 @@ This is the second step',
         $this->get('/api/recipe'.$recipe->_id, [], $this->headers());
         $this->assertResponseStatus(404);
     }
+
+    /**
+     * Should get the last updated date of a recipe
+     */
+    public function testLastUpdatedRecipe(){
+        $this->createRecipe([], true);
+        $this->createRecipe([], true);
+        
+        $this->get('/api/recipes', [], $this->headers());
+        $response = $this->assertResponseStatus(200);
+        $recipes = $this->decodeResponse($response)->recipes;
+
+        $this->get('/api/last-updated', [], $this->headers());
+        $response = $this->decodeResponse($response);
+
+        //last timestamp
+        $ts = strtotime($recipes[1]->updated_at);
+        $this->assertEquals($ts, $response->lastUpdated);
+    }
 }

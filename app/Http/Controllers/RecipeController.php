@@ -75,4 +75,17 @@ class RecipeController extends Controller
         $recipe = Recipe::find($id);
         return response()->json(['recipe' => $recipe]);
     }
+
+    /**
+     * Gets the timestamp of the last updated recipe
+     *
+     * @return Response
+     */
+    
+    public function retrieveLastUpdated(){
+        $recipe = Recipe::orderBy('update_at', 'desc')->first();
+        return response()->json(['lastUpdated' => $recipe->updated_at->timestamp ]);
+    }
+    
+    
 }
