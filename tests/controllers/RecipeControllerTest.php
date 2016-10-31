@@ -223,4 +223,15 @@ This is the second step',
         $ts = strtotime($recipes[1]->updated_at);
         $this->assertEquals($ts, $response->lastUpdated);
     }
+
+    /**
+     * Should retrieve a list of units
+     */
+    public function testUnits(){
+        $this->get('/api/units', [], $this->headers());
+        $response = $this->assertResponseStatus(200);
+        $units = $this->decodeResponse($response)->units;
+        $this->assertEquals($units[0]->single, 'cup');
+        $this->assertEquals($units[0]->plural, 'cups');
+    }
 }

@@ -64,8 +64,15 @@ class CreateUnits extends Migration
                 'conversion' => 0.264172
             ]
         ];
-        $unit = new Unit;
-        $unit->save();
+        foreach ( $units as $unit ){
+            $Unit = new Unit;
+
+            foreach ( $unit as $key => $val ){
+                $Unit[$key] = $val;
+            }
+            
+            $Unit->save();
+        }
     }
 
     /**

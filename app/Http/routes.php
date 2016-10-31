@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api', 'middleware' => 'cors'], function(){
     Route::get('/recipes', 'RecipeController@retrieveAll');
     Route::get('/recipe/{id}', 'RecipeController@retrieveOne');
     Route::get('/last-updated', 'RecipeController@retrieveLastUpdated');
+    Route::get('/units', 'UnitController@retrieveAll');
     
     Route::group(['middleware' => ['jwt.auth']], function(){
         Route::post('/ingredient', 'IngredientController@store');

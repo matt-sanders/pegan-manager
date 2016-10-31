@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "prod": "APP_ENV=production gulp --production",
-    "dev": "gulp watch",
+    "dev": "APP_ENV=development gulp watch",
     "test": "karma start test/unit/karma.conf.js"
   },
   "devDependencies": {
