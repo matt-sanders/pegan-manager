@@ -18,6 +18,7 @@ chai.use(sinonChai);
 let SaveRecipeSpy = sinon.spy();
 let SetRecipeSpy = sinon.spy();
 let UpdateRecipeSpy = sinon.spy();
+let SetUnitSpy = sinon.spy();
 
 let IngredientMock = Vue.extend({
     props: ['ingredients'],
@@ -42,7 +43,8 @@ const RecipeEditWithMocks = RecipeEditInjector({
     '../vuex/actions/recipes': {
         saveRecipe: SaveRecipeSpy,
         setRecipes: SetRecipeSpy,
-        updateRecipe: UpdateRecipeSpy
+        updateRecipe: UpdateRecipeSpy,
+        setUnits: SetUnitSpy
     },
     './RecipeIngredients.vue': IngredientMock
 });

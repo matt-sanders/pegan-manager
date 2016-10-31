@@ -28,6 +28,12 @@ describe('Api', () => {
         expect(Vue.http.post).to.be.calledWith(API_URL+'authenticate', {});
     });
 
+
+    it('getUnits', () => {
+        Api.getUnits();
+        expect(Vue.http.get).to.be.calledWith(API_URL+'units');
+    });    
+
     it('getRecipes', () => {
         Api.getRecipes();
         expect(Vue.http.get).to.be.calledWith(API_URL+'recipes');

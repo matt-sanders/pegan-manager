@@ -238,7 +238,27 @@ describe('Actions', () => {
 
         beforeEach(()=>{
             recipeState.recipes = [];
+            recipeState.units = [];
             routerSpy.reset();
+        });
+
+        it('setUnits', done => {
+            let units = [
+                {
+                    single: 'cup',
+                    plural: 'cups'
+                }
+            ];
+            Vue.http.interceptors.push((request, next) => {
+                var body = {units: units};
+                next(request.respondWith(body, { status: 200, data: body }));
+            });
+            
+            testAction(recipeActions.setUnits, [], recipeState, [
+                { name: 'SET_UNITS', payload: [units] },
+            ], done);
+
+            Vue.http.interceptors.shift();
         });
         
         it('setRecipes', done =>{

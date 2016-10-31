@@ -51,7 +51,8 @@ describe('Mutations', () =>{
             state = {
                 recipes: [],
                 savingRecipe: false,
-                recipeErr: false
+                recipeErr: false,
+                units: []
             };
         });
 
@@ -116,6 +117,17 @@ describe('Mutations', () =>{
         it('RECIPE_ERR', () => {
             Recipes.mutations.RECIPE_ERR(state, true);
             expect(state.recipeErr).to.be.true;
+        });
+
+        it('SET_UNITS', () => {
+            let units = [
+                {
+                    single: 'cup',
+                    plural: 'cups'
+                }
+            ];
+            Recipes.mutations.SET_UNITS(state, units);
+            expect(state.units).to.deep.equal(units);
         });
     });
 
