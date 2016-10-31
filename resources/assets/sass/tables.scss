@@ -1,0 +1,21 @@
+.table
+{
+    &.table-hover
+    {
+        .on-hover
+        {
+            display: none;
+        }//on-hover
+        
+        tr
+        {
+            &:hover
+                  {
+                      .on-hover
+                      {
+                          display: initial;
+                      }//on-hover
+                  }//hover
+        }//tr
+    }//table-hover
+}//table

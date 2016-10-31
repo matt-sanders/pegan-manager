@@ -4,6 +4,19 @@ import {router} from '../../app';
 import * as Api from '../../api';
 
 /**
+ * Should retrieve all the units
+ */
+export function setUnits({dispatch}){
+    Api.getUnits()
+        .then( response => {
+            let body = parseResponse(response);
+            dispatch(types.SET_UNITS, body.units);
+        }, response => {
+
+        });
+}
+
+/**
  * Should retrieve all recipes
  */
 export function setRecipes({dispatch}){

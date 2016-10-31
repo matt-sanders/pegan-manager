@@ -133,7 +133,8 @@
          actions: {
              saveRecipe: recipeActions.saveRecipe,
              setRecipes: recipeActions.setRecipes,
-             updateRecipe: recipeActions.updateRecipe
+             updateRecipe: recipeActions.updateRecipe,
+             setUnits: recipeActions.setUnits
          }
      },
      methods: {
@@ -227,6 +228,7 @@
      },
      created(){
          this.setRecipes();
+         this.setUnits();
          if ( this.$route.params.recipeId == 'new' ){
              this.newRecipe = true;
          }

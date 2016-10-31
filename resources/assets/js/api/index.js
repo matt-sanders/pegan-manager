@@ -19,6 +19,14 @@ export function setHeaders(){
 }
 
 /**
+ * Retrieves all available units
+ * @return {Promise}
+ */
+export function getUnits(){
+    return Vue.http.get(API_URL+'units');
+}
+
+/**
  * Retrieves all available recipes
  * @return {Promise}
  */

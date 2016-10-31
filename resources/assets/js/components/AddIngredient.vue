@@ -8,7 +8,7 @@
       <div v-show="!ingredient.isLabel" class="ing-input">
         <input type="text" v-model="ingredient.amount" placeholder="amt">
         <select v-model="ingredient.unit">
-          <option value="cup">Cup</option>
+          <option v-for="unit in units" :value="unit._id">{{unit.single}}</option>
         </select>
         <select v-model="ingredient.ing_id">
           <option value=''>Select Ingredient</option>
@@ -30,7 +30,7 @@
     </div>
     <div v-show="!ingredient.edit">
       <div v-show="ingredient.label" class="ingredient-label">{{ingredient.label}}</div>
-      <div v-show="!ingredient.label">{{ingredient.amount}} {{ingredient.unit}} {{ingredientLabel}}</div>
+      <div v-show="!ingredient.label">{{ingredient.amount}} {{unitsById[ingredient.unit]}} {{ingredientLabel}}</div>
     </div>
   </div>
 </template>
@@ -45,11 +45,19 @@
                  return this.ingredient.ing_id == ing._id;
              });
              return ingredient.length == 0 ? '' : ingredient[0].title;
+         },
+         unitsById: function(){
+             let units = {};
+             this.units.forEach( unit => {
+                 units[ unit._id ] = unit.single;
+             });
+             return units;
          }
      },
      vuex: {
          getters: {
-             availableIngredients: state => state.ingredients.ingredients
+             availableIngredients: state => state.ingredients.ingredients,
+             units: state => state.recipes.units
          }
      }
  }

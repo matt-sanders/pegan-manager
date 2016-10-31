@@ -8,6 +8,7 @@ export const ADD_RECIPE = 'ADD_RECIPE';
 export const UPDATE_RECIPE = 'UPDATE_RECIPE';
 export const SAVING_RECIPE = 'SAVING_RECIPE';
 export const RECIPE_ERR = 'RECIPE_ERR';
+export const SET_UNITS = 'SET_UNITS';
 
 //Ingredients
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
