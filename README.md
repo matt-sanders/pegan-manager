@@ -14,6 +14,7 @@ Download the repo and run:
 $ php composer.phar install
 $ php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\JWTAuthServiceProvider"
 $ php artisan jwt:generate
+$ php artisan migrate
 ```
 Make sure you copy the .env.example file to .env and .env.testing respectively.
 
@@ -37,7 +38,7 @@ Tests are located in `/tests`
 
 ###VueJS
 
-This is still in development. However, once ready you can `npm install` and `npm run dev` to start gulp which will watch for changes on all js and sass files.
+`npm install` and `npm run dev` to start gulp which will watch for changes on all js and sass files.
 
 ####Unit Testing
 ```sh
