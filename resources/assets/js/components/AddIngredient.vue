@@ -8,6 +8,7 @@
       <div v-show="!ingredient.isLabel" class="ing-input">
         <input type="text" v-model="ingredient.amount" placeholder="amt">
         <select v-model="ingredient.unit">
+          <option value=''>No unit</option>
           <option v-for="unit in units" :value="unit._id">{{unit.single}}</option>
         </select>
         <select v-model="ingredient.ing_id">

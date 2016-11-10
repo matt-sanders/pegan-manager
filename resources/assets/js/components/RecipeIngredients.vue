@@ -38,7 +38,7 @@
          addIngredient(){
              let ingredient = {
                  label: false,
-                 unit: 'cup',
+                 unit: '',
                  amount: '',
                  ing_id: '',
                  edit: true
