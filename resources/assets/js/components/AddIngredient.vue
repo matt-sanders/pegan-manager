@@ -57,7 +57,14 @@
      },
      vuex: {
          getters: {
-             availableIngredients: state => state.ingredients.ingredients,
+             availableIngredients: state => {
+                 let ings = [...state.ingredients.ingredients];
+                 return ings.sort(function(a, b){
+                     if ( a.title < b.title ) return -1;
+                     if ( a.title > b.title ) return 1;
+                     return 0;
+                 });
+             },
              units: state => state.recipes.units
          }
      }
