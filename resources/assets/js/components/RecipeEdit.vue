@@ -173,7 +173,8 @@
                          label: '',
                          amount: '',
                          unit: '',
-                         ingId: ''
+                         ingId: '',
+                         notes: ''
                      };
                      if ( ing.isLabel ) {
                          ingredient.label = ing.label;
@@ -181,6 +182,7 @@
                          ingredient.ing_id = ing.ing_id;
                          ingredient.amount = ing.amount;
                          ingredient.unit = ing.unit;
+                         ingredient.notes = ing.notes;
                      }
                      recipe.ingredients.push(ingredient);
                  });

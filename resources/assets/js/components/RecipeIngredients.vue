@@ -41,6 +41,7 @@
                  unit: '',
                  amount: '',
                  ing_id: '',
+                 notes: '',
                  edit: true
              };
              this.ingredients.push(ingredient);

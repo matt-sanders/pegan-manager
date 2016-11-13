@@ -6,7 +6,7 @@
     </label>
     <div v-show="ingredient.edit">
       <div v-show="!ingredient.isLabel" class="ing-input">
-        <input type="text" v-model="ingredient.amount" placeholder="amt">
+        <input type="text" v-model="ingredient.amount" placeholder="amt" class="ing-amount">
         <select v-model="ingredient.unit">
           <option value=''>No unit</option>
           <option v-for="unit in units" :value="unit._id">{{unit.single}}</option>
@@ -15,6 +15,9 @@
           <option value=''>Select Ingredient</option>
           <option v-for="ing in availableIngredients" value="{{ing._id}}">{{ing.title}}{{ing.desc ? ' - '+ing.desc : ''}}</option>
         </select>
+        <div class="ing-notes">
+          <input type="text" v-model="ingredient.notes" placeholder="notes">
+        </div>
       </div>
       <div v-show="ingredient.isLabel" class="label-input">
         <input type="text" v-model="ingredient.label" placeholder="eg For the sauce">

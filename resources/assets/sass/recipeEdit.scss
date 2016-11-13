@@ -61,10 +61,18 @@
 
             .ing-input
             {
-                input[type='text']
+                input[type='text'].ing-amount
                 {
                     width: 30px;
                 }//input
+
+                .ing-notes
+                {
+                    input
+                    {
+                        width: 100%;
+                    }//input
+                }//ing-notes
             }//ing-input
         }//editing
     }//ingredient-item
