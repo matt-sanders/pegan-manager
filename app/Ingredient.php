@@ -12,6 +12,6 @@ class Ingredient extends Moloquent
      * @var array
      */
     protected $fillable = [
-        'title', 'desc', 'type'
+        'title', 'desc', 'type', 'recipeId'
     ];
 }
